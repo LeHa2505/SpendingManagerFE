@@ -62,18 +62,20 @@
           <p>Số lượng khách hàng mới</p>
         </div>
 
-        <div class="chart-wrapper card">
-          <canvas
-            baseChart
-            [datasets]="barChartNewCustomerData"
-            [labels]="barChartNewCustomerLabels"
-            [options]="barChartNewCustomerOptions"
-            [plugins]="barChartNewCustomerPlugins"
-            [legend]="barChartNewCustomerLegend"
-            [type]="barChartNewCustomerType"
-          >
-          </canvas>
-        </div>
+        <ngx-charts-pie-chart
+        [view]="view"
+        [scheme]="colorScheme"
+        [results]="single"
+        [gradient]="gradient"
+        [legend]="showLegend"
+        [legendPosition]="legendPosition"
+        [labels]="showLabels"
+        [doughnut]="isDoughnut"
+        (select)="onSelect($event)"
+        (activate)="onActivate($event)"
+        (deactivate)="onDeactivate($event)"
+        >
+      </ngx-charts-pie-chart>
       </nz-card>
     </div>
     <div nz-col [nzSpan]="12">

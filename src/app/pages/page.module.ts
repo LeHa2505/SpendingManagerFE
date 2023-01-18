@@ -1,11 +1,9 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { ComponentsModule } from 'src/app/shared/components/components.module';
-import { ShippingOrderListModule } from './shipping-order-list/shipping-order-list.module';
-import { ShippingOrderListComponent } from './shipping-order-list/shipping-order-list.component';
+import { NzCalendarModule } from 'ng-zorro-antd/calendar';
 
 import { PageRoutingModule } from './page-routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -19,13 +17,16 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { CreateShippingOrderComponent } from './create-shipping-order/create-shipping-order.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HomeComponent } from './home/home.component';
+import { CatalogueManagerComponent } from './catalogue-manager/catalogue-manager.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 
 @NgModule({
-  declarations: [DashboardComponent, ShippingOrderListComponent, CreateShippingOrderComponent],
+  declarations: [DashboardComponent, CreateShippingOrderComponent, HomeComponent, CatalogueManagerComponent],
   imports: [
-    CommonModule,
     PageRoutingModule,
     NzTableModule,
     NzDividerModule,
@@ -37,12 +38,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     NzGridModule,
     NzButtonModule,
     NzIconModule,
-    ShippingOrderListModule,
     HttpClientModule,
     NzInputModule,
     NzFormModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    NzCalendarModule,
+    NgxChartsModule,
+    BrowserAnimationsModule 
   ],
 })
 export class DashboardModule {}

@@ -19,6 +19,8 @@ import { NzAnchorModule } from 'ng-zorro-antd/anchor';
 import { LayoutComponent } from './layout/layout.component';
 import { NgChartsModule } from 'ng2-charts';
 import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzCalendarModule } from 'ng-zorro-antd/calendar';
+import { CommonModule } from '@angular/common';
 
 registerLocaleData(vi);
 
@@ -37,7 +39,10 @@ registerLocaleData(vi);
     NgChartsModule,
     NzIconModule,
     NzButtonModule,
-    NzTableModule
+    NzTableModule,
+    NzCalendarModule,
+    CommonModule
+    
   ],
   providers: [{ provide: NZ_I18N, useValue: vi_VN }],
   bootstrap: [AppComponent],

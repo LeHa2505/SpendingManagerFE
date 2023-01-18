@@ -10,13 +10,10 @@
   >
     <div class="sidebar-logo">
       <img
-        src="https://images-platform.99static.com//uvFE6upH3Rp9U3yUg67YP0gswVg=/0x0:500x500/fit-in/500x500/99designs-contests-attachments/86/86496/attachment_86496607"
+        src="../../assets/kisspng-money-bag-computer-icons-coin-tax-market-5abbb0febf56f2.7630683415222499827837.jpg"
         alt="logo"
       />
-      <div>
-        <h1 class="account-name">Geeks</h1>
-        <h1 class="email">geeks@gmail.com</h1>
-      </div>
+      <span style="margin: 1em; font-size: 16px"><strong>Menu</strong></span>
     </div>
     <ul
       nz-menu
@@ -52,11 +49,32 @@
             class="trigger"
             nz-icon
             [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
-          ></span>
+          >
+          </span>
           <span style="margin: 1em; font-size: 16px"
-            >FaceNet Customer Management</span
+            ><strong>Spending Management</strong></span
           >
         </span>
+
+        <div class="header-user">
+          <div class="user-menu">
+            <span style="font-size: 16px">
+              <strong>{{ role }}</strong>
+            </span>
+            <span>
+              <span
+                style="font-size: 16px; color: #007bc3"
+                nz-icon
+                nzType="logout"
+                nzTheme="outline"
+              ></span>
+              <span style="margin-left: 0.5em; font-size: 16px">Log out</span>
+            </span>
+          </div>
+          <span class="avartar-img" 
+            ><strong>{{ avatar }}</strong></span
+          >
+        </div>
       </div>
     </nz-header>
     <nz-content>
@@ -67,8 +85,8 @@
     <nz-footer
       style="text-align: center; padding: 0 25px 10px 25px; margin-top: -8px"
     >
-      ©Copyright <a href="https://facenet.vn/">FaceNet</a>. All Rights Reserved.
-      Designed by <a href="https://facenet.vn/">FaceNet</a>
+      ©Copyright <a href="https://facenet.vn/">Group 8</a>. All Rights Reserved.
+      Designed by <a href="https://facenet.vn/">Group 8</a>
     </nz-footer>
   </nz-layout>
 </nz-layout>
