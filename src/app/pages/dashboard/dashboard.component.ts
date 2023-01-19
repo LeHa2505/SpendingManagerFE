@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import {
   UntypedFormBuilder,
   UntypedFormControl,
@@ -19,6 +19,52 @@ export class DashboardComponent implements OnInit {
       route: '/dashboard',
     },
   ];
+
+  inOutcomeSelect = 'outcome';
+  monthSelected = '1';
+  yearSelected = '2023';
+  monthArray = [
+    { label: 'Tháng 1', value: '1' },
+    { label: 'Tháng 2', value: '2' },
+    { label: 'Tháng 3', value: '3' },
+    { label: 'Tháng 4', value: '4' },
+    { label: 'Tháng 5', value: '5' },
+    { label: 'Tháng 6', value: '6' },
+    { label: 'Tháng 7', value: '7' },
+    { label: 'Tháng 8', value: '8' },
+    { label: 'Tháng 9', value: '9' },
+    { label: 'Tháng 10', value: '10' },
+    { label: 'Tháng 11', value: '11' },
+    { label: 'Tháng 12', value: '12' },
+  ];
+
+  
+  yearArray = ['2017', '2018', '2019', '2020', '2021', '2022', '2023'];
+  timeSelected = 'year';
+  isDisabled = true;
+
+  onChangeTime(newTimeSelected) {
+    console.log(newTimeSelected);
+    this.timeSelected = newTimeSelected;
+    if (newTimeSelected === 'year') {
+      this.isDisabled = true;
+    } else this.isDisabled = false;
+    console.log(this.isDisabled);
+  }
+
+  onChangeInOutcome(newValue) {
+    this.inOutcomeSelect = newValue;
+    console.log(this.inOutcomeSelect);
+  }
+
+  catalogueSelected = 'All';
+  catalogueArray = [
+    {label: 'Tất cả', value: 'All'},
+    {label: 'Ăn uống', value: 'Food'},
+    {label: 'Đi lại', value: 'Transport'},
+    {label: 'Mỹ phẩm', value: 'Make-up'},
+  ];
+
 
   barChartAccumulatedNumberOfCustomersOptions: ChartOptions = {
     responsive: true,
@@ -87,50 +133,19 @@ export class DashboardComponent implements OnInit {
       pointHoverBorderColor: '#007bff',
       tension: 0.35,
       fill: true,
-      label: 'income',
+      label: '',
     },
   ];
   // events
-  public chartClicked(e: any): void {
-    console.log(e);
-  }
+  // public chartClicked(e: any): void {
+  //   console.log(e);
+  // }
 
-  public chartHovered(e: any): void {
-    console.log(e);
-  }
+  // public chartHovered(e: any): void {
+  //   console.log(e);
+  // }
   constructor() {}
-  inOutcomeSelect = 'income';
-  monthSelected = '1';
-  yearSelected = '2023';
-  monthArray = [
-    { label: 'Tháng 1', value: '1' },
-    { label: 'Tháng 2', value: '2' },
-    { label: 'Tháng 3', value: '3' },
-    { label: 'Tháng 4', value: '4' },
-    { label: 'Tháng 5', value: '5' },
-    { label: 'Tháng 6', value: '6' },
-    { label: 'Tháng 7', value: '7' },
-    { label: 'Tháng 8', value: '8' },
-    { label: 'Tháng 9', value: '9' },
-    { label: 'Tháng 10', value: '10' },
-    { label: 'Tháng 11', value: '11' },
-    { label: 'Tháng 12', value: '12' },
-  ];
-
   
-  yearArray = ['2017', '2018', '2019', '2020', '2021', '2022', '2023'];
-  timeSelected = 'year';
-  isDisabled = true;
-  onChangeTime(newTimeSelected) {
-    console.log(newTimeSelected);
-    this.timeSelected = newTimeSelected;
-    if (newTimeSelected === 'year') {
-      this.isDisabled = true;
-    } else this.isDisabled = false;
-    console.log(this.isDisabled);
-    
-    // ... do other stuff here ...
-  }
 
   ngOnInit(): void {
     console.log(this.inOutcomeSelect);

@@ -2,62 +2,85 @@
 <div>
   <!--Filter-->
   <div class="filter-box">
-    <div class="filter-item">
-      <nz-select
-      nzShowSearch
-      nzAllowClear
-      nzPlaceHolder=""
-      [(ngModel)]="inOutcomeSelect"
-    >
-      <nz-option nzLabel="Thu" nzValue="income">Thu</nz-option>
-      <nz-option nzLabel="Chi" nzValue="outcome">Chi</nz-option>
-    </nz-select>
+    <div style="display: flex; align-items: center">
+      <div class="filter-item">
+        <nz-select
+          nzShowSearch
+          nzAllowClear
+          nzPlaceHolder=""
+          [(ngModel)]="inOutcomeSelect"
+          (ngModelChange)="onChangeInOutcome($event)"
+        >
+          <nz-option nzLabel="Thu" nzValue="income">Thu</nz-option>
+          <nz-option nzLabel="Chi" nzValue="outcome">Chi</nz-option>
+        </nz-select>
+      </div>
+
+      <div class="filter-item">
+        <nz-select
+          nzShowSearch
+          nzAllowClear
+          nzPlaceHolder=""
+          [(ngModel)]="timeSelected"
+          (ngModelChange)="onChangeTime($event)"
+        >
+          <nz-option nzLabel="Theo năm" nzValue="year"></nz-option>
+          <nz-option nzLabel="Theo tháng" nzValue="month"></nz-option>
+        </nz-select>
+      </div>
+
+      <div class="filter-item">
+        <nz-select
+          nzShowSearch
+          nzAllowClear
+          nzPlaceHolder=""
+          [(ngModel)]="yearSelected"
+        >
+          <nz-option
+            *ngFor="let item of yearArray"
+            nzLabel="{{ item }}"
+            nzValue="{{ item }}"
+          ></nz-option>
+        </nz-select>
+      </div>
+
+      <div class="filter-item">
+        <nz-select
+          nzShowSearch
+          nzAllowClear
+          nzPlaceHolder=""
+          [(ngModel)]="monthSelected"
+          [disabled]="isDisabled"
+        >
+          <nz-option
+            *ngFor="let item of monthArray"
+            nzLabel="{{ item.label }}"
+            nzValue="{{ item.value }}"
+          ></nz-option>
+        </nz-select>
+      </div>
     </div>
-
-    <div class="filter-item">
-      <nz-select
-      nzShowSearch
-      nzAllowClear
-      nzPlaceHolder=""
-      [(ngModel)]="timeSelected"
-      (ngModelChange)="onChangeTime($event)"
-    >
-      <nz-option nzLabel="Theo năm" nzValue="year"></nz-option>
-      <nz-option nzLabel="Theo tháng" nzValue="month"></nz-option>
-    </nz-select>
+    <div class="filter-item" style="float: right">
+      <span>Lọc theo</span>
+      <nz-select style="margin-left: 1rem;"
+        nzShowSearch
+        nzAllowClear
+        nzPlaceHolder=""
+        [(ngModel)]="catalogueSelected"
+      >
+        <nz-option
+          *ngFor="let item of catalogueArray"
+          nzLabel="{{ item.label }}"
+          nzValue="{{ item.value }}"
+        ></nz-option>
+      </nz-select>
     </div>
-
-    <div class="filter-item">
-      <nz-select
-      nzShowSearch
-      nzAllowClear
-      nzPlaceHolder=""
-      [(ngModel)]="yearSelected"
-    >
-      <nz-option *ngFor="let item of yearArray" nzLabel="{{item}}" nzValue="{{item}}"></nz-option>
-    </nz-select>
-
-    </div>
-
-    <div class="filter-item">
-      <nz-select
-      nzShowSearch
-      nzAllowClear
-      nzPlaceHolder=""
-      [(ngModel)]="monthSelected"
-      [disabled]="isDisabled"
-    >
-      <nz-option *ngFor="let item of monthArray" nzLabel="{{item.label}}" nzValue="{{item.value}}"></nz-option>
-    </nz-select>
-    </div>
-
-    
   </div>
 
   <!-- chart  -->
   <div nz-row [nzAlign]="'center'">
     <div nz-col [nzSpan]="12">
-      <div style="display: block; width: 60%">
+      <div style="width: 60%; margin-left: auto; margin-right: auto">
         <canvas
           baseChart
           [datasets]="pieChartNumberOfSpendingData"
