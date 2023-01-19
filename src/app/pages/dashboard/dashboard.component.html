@@ -20,6 +20,7 @@
       nzAllowClear
       nzPlaceHolder=""
       [(ngModel)]="timeSelected"
+      (ngModelChange)="onChangeTime($event)"
     >
       <nz-option nzLabel="Theo năm" nzValue="year"></nz-option>
       <nz-option nzLabel="Theo tháng" nzValue="month"></nz-option>
@@ -35,6 +36,7 @@
     >
       <nz-option *ngFor="let item of yearArray" nzLabel="{{item}}" nzValue="{{item}}"></nz-option>
     </nz-select>
+
     </div>
 
     <div class="filter-item">
@@ -43,6 +45,7 @@
       nzAllowClear
       nzPlaceHolder=""
       [(ngModel)]="monthSelected"
+      [disabled]="isDisabled"
     >
       <nz-option *ngFor="let item of monthArray" nzLabel="{{item.label}}" nzValue="{{item.value}}"></nz-option>
     </nz-select>
