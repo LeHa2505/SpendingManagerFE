@@ -1,17 +1,22 @@
 import { Component, Input, OnInit } from '@angular/core';
-import {
-  UntypedFormBuilder,
-  UntypedFormControl,
-  UntypedFormGroup,
-} from '@angular/forms';
-
 import { ChartOptions, ChartType, ChartDataset, Scale } from 'chart.js';
+
+interface tableData {
+  catalogue: string;
+  amount: number;
+}
+
+interface tableDataTime {
+  month: string;
+  amount: number;
+}
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.less'],
 })
+
 export class DashboardComponent implements OnInit {
   listBreadCrumb = [
     {
@@ -61,7 +66,7 @@ export class DashboardComponent implements OnInit {
   catalogueArray = [
     {label: 'Tất cả', value: 'All'},
     {label: 'Ăn uống', value: 'Food'},
-    {label: 'Đi lại', value: 'Transport'},
+    {label: 'Tháng 2', value: 'Transport'},
     {label: 'Mỹ phẩm', value: 'Make-up'},
   ];
 
@@ -144,6 +149,56 @@ export class DashboardComponent implements OnInit {
   // public chartHovered(e: any): void {
   //   console.log(e);
   // }
+
+  //table
+  totalAmount =   29000000;
+  listOfData: tableData[] = [
+    {
+      catalogue: 'Ăn uống',
+      amount: 100000,
+    },
+    {
+      catalogue: 'Tháng 2',
+      amount: 200000,
+    },
+    {
+      catalogue: 'Tháng 3',
+      amount: 250000,
+    },
+    {
+      catalogue: 'Tháng 4',
+      amount: 200000,
+    },
+    {
+      catalogue: 'Tháng 5',
+      amount: 200000,
+    },
+  ];
+
+  totalAmountTime = 29000000;
+  averageAmount = 120000000;
+  listOfDataTime: tableDataTime[] = [
+    {
+      month: 'Tháng 1',
+      amount: 100000,
+    },
+    {
+      month: 'Tháng 2',
+      amount: 200000,
+    },
+    {
+      month: 'Du lịch',
+      amount: 250000,
+    },
+    {
+      month: 'Mua sắm',
+      amount: 200000,
+    },
+    {
+      month: 'Học tập',
+      amount: 200000,
+    },
+  ];
   constructor() {}
   
 

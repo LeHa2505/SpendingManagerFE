@@ -35,6 +35,7 @@
           nzAllowClear
           nzPlaceHolder=""
           [(ngModel)]="yearSelected"
+          [nzOptionOverflowSize]="5"
         >
           <nz-option
             *ngFor="let item of yearArray"
@@ -62,11 +63,13 @@
     </div>
     <div class="filter-item" style="float: right">
       <span>Lọc theo</span>
-      <nz-select style="margin-left: 1rem;"
+      <nz-select
+        style="margin-left: 1rem"
         nzShowSearch
         nzAllowClear
         nzPlaceHolder=""
         [(ngModel)]="catalogueSelected"
+        [nzOptionOverflowSize]="5"
       >
         <nz-option
           *ngFor="let item of catalogueArray"
@@ -106,6 +109,48 @@
         >
         </canvas>
       </div>
+    </div>
+  </div>
+
+  <!--table-->
+  <div nz-row style="margin-top: 3rem;">
+    <div nz-col [nzSpan]="12">
+      <nz-table #basicTable [nzData]="listOfData" 
+      [nzTotal] = '2'
+      style="width: 60%; margin-left: auto; margin-right: auto">
+        <thead>
+          <tr>
+            <th>Tổng</th>
+            <th style="color: #1890FF;">{{ totalAmount }} đ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of listOfData">
+            <td>{{ data.catalogue }}</td>
+            <td>{{ data.amount }} đ</td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+    <div nz-col [nzSpan]="12">
+      <nz-table #basicTable [nzData]="listOfData" style="width: 60%; margin-left: auto; margin-right: auto">
+        <thead>
+          <tr>
+            <th>Tổng</th>
+            <th style="color: #1890FF;">{{ totalAmountTime }} đ</th>
+          </tr>
+          <tr>
+            <th>Trung bình</th>
+            <th style="color: #1890FF;">{{ averageAmount }} đ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of listOfDataTime">
+            <td>{{ data.month }}</td>
+            <td>{{ data.amount }} đ</td>
+          </tr>
+        </tbody>
+      </nz-table>
     </div>
   </div>
 </div>
