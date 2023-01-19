@@ -21,6 +21,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HomeComponent } from './home/home.component';
 import { CatalogueManagerComponent } from './catalogue-manager/catalogue-manager.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { NzSelectModule } from 'ng-zorro-antd/select';
 // import { ChartsModule } from 'ng2-charts/ng2-charts';
 
 
@@ -50,6 +51,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     NzCalendarModule,
     // NgModel,
     NgxChartsModule,
+    NzSelectModule
     // BrowserAnimationsModule 
   ],
 })

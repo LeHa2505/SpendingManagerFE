@@ -1,64 +1,85 @@
 <app-breadcrumb [listBreadCrumb]="listBreadCrumb"></app-breadcrumb>
 <div>
-  <!--Filter search-->
-  <form nz-form [formGroup]="validateForm" class="ant-advanced-search-form">
-    <div nz-row [nzGutter]="24">
-      <div nz-col [nzSpan]="8" *ngFor="let control of controlArray" [hidden]="!control.show">
-        <nz-form-item>
-          <nz-form-label [nzFor]="'field' + control.index">Field {{ control.index }}</nz-form-label>
-          <nz-form-control>
-            <input
-              nz-input
-              placeholder="placeholder"
-              [formControlName]="'field' + control.index"
-              [attr.id]="'field' + control.index"
-            />
-          </nz-form-control>
-        </nz-form-item>
-      </div>
+  <!--Filter-->
+  <div class="filter-box">
+    <div class="filter-item">
+      <nz-select
+      nzShowSearch
+      nzAllowClear
+      nzPlaceHolder=""
+      [(ngModel)]="inOutcomeSelect"
+    >
+      <nz-option nzLabel="Thu" nzValue="income">Thu</nz-option>
+      <nz-option nzLabel="Chi" nzValue="outcome">Chi</nz-option>
+    </nz-select>
     </div>
-    <div nz-row>
-      <div nz-col [nzSpan]="24" class="search-area">
-        <button nz-button [nzType]="'primary'">Search</button>
-        <button nz-button (click)="resetForm()">Clear</button>
-        <a class="collapse" (click)="toggleCollapse()">
-          Collapse
-          <span nz-icon [nzType]="isCollapse ? 'down' : 'up'"></span>
-        </a>
-      </div>
+
+    <div class="filter-item">
+      <nz-select
+      nzShowSearch
+      nzAllowClear
+      nzPlaceHolder=""
+      [(ngModel)]="timeSelected"
+    >
+      <nz-option nzLabel="Theo năm" nzValue="year"></nz-option>
+      <nz-option nzLabel="Theo tháng" nzValue="month"></nz-option>
+    </nz-select>
     </div>
-  </form>
+
+    <div class="filter-item">
+      <nz-select
+      nzShowSearch
+      nzAllowClear
+      nzPlaceHolder=""
+      [(ngModel)]="yearSelected"
+    >
+      <nz-option *ngFor="let item of yearArray" nzLabel="{{item}}" nzValue="{{item}}"></nz-option>
+    </nz-select>
+    </div>
+
+    <div class="filter-item">
+      <nz-select
+      nzShowSearch
+      nzAllowClear
+      nzPlaceHolder=""
+      [(ngModel)]="monthSelected"
+    >
+      <nz-option *ngFor="let item of monthArray" nzLabel="{{item.label}}" nzValue="{{item.value}}"></nz-option>
+    </nz-select>
+    </div>
+
+    
+  </div>
 
   <!-- chart  -->
   <div nz-row [nzAlign]="'center'">
     <div nz-col [nzSpan]="12">
-        <div style="display: block; width: 60%;">
-          <canvas
-            baseChart
-            [datasets]="pieChartNumberOfSpendingData"
-            [labels]="pieChartNumberOfSpendingLabels"
-            [options]="pieChartNumberOfSpendingOptions"
-            [plugins]="pieChartNumberOfSpendingPlugins"
-            [legend]="pieChartNumberOfSpendingLegend"
-            [type]="pieChartNumberOfSpendingType"
-          >
-          </canvas>
-        </div>
+      <div style="display: block; width: 60%">
+        <canvas
+          baseChart
+          [datasets]="pieChartNumberOfSpendingData"
+          [labels]="pieChartNumberOfSpendingLabels"
+          [options]="pieChartNumberOfSpendingOptions"
+          [plugins]="pieChartNumberOfSpendingPlugins"
+          [legend]="pieChartNumberOfSpendingLegend"
+          [type]="pieChartNumberOfSpendingType"
+        >
+        </canvas>
+      </div>
     </div>
     <div nz-col [nzSpan]="12">
-        <div class="">
-          <canvas
-            baseChart
-            [datasets]="barChartAccumulatedNumberOfCustomersData"
-            [labels]="barChartAccumulatedNumberOfCustomersLabels"
-            [options]="barChartAccumulatedNumberOfCustomersOptions"
-            [plugins]="barChartAccumulatedNumberOfCustomersPlugins"
-            [legend]="barChartAccumulatedNumberOfCustomersLegend"
-            [type]="barChartAccumulatedNumberOfCustomersType"
-          >
-          </canvas>
-        </div>
+      <div class="">
+        <canvas
+          baseChart
+          [datasets]="barChartAccumulatedNumberOfCustomersData"
+          [labels]="barChartAccumulatedNumberOfCustomersLabels"
+          [options]="barChartAccumulatedNumberOfCustomersOptions"
+          [plugins]="barChartAccumulatedNumberOfCustomersPlugins"
+          [legend]="barChartAccumulatedNumberOfCustomersLegend"
+          [type]="barChartAccumulatedNumberOfCustomersType"
+        >
+        </canvas>
+      </div>
     </div>
   </div>
- 
- </div>
+</div>
