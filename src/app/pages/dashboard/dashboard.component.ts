@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+
+
 
 import { ChartOptions, ChartType, ChartDataset, Scale } from 'chart.js';
 
@@ -15,33 +18,6 @@ export class DashboardComponent implements OnInit {
     },
   ];
 
-  // chart
-  barChartNewCustomerOptions: ChartOptions = {
-    responsive: true,
-  };
-  barChartNewCustomerLabels: string[] = [
-    'Mon',
-    'Tue',
-    'Wed',
-    'Thu',
-    'Fri',
-    'Sat',
-    'Sun',
-  ];
-  barChartNewCustomerType: ChartType = 'bar';
-  barChartNewCustomerLegend = false;
-  barChartNewCustomerPlugins = [];
-  barChartNewCustomerData: ChartDataset[] = [
-    {
-      data: [45, 37, 60, 70, 46, 33, 40],
-      backgroundColor: '#7978ff',
-      borderColor: '#007bff',
-      hoverBackgroundColor: '#597a9e',
-      barThickness: 30,
-      borderRadius: 10,
-    },
-  ];
-
   barChartAccumulatedNumberOfCustomersOptions: ChartOptions = {
     responsive: true,
   };
@@ -55,21 +31,31 @@ export class DashboardComponent implements OnInit {
     'Sun',
   ];
   barChartAccumulatedNumberOfCustomersType: ChartType = 'bar';
-  barChartAccumulatedNumberOfCustomersLegend = false;
+  barChartAccumulatedNumberOfCustomersLegend = true;
   barChartAccumulatedNumberOfCustomersPlugins = [];
   barChartAccumulatedNumberOfCustomersData: ChartDataset[] = [
     {
       data: [45, 37, 60, 70, 46, 33, 40],
-      backgroundColor: '#c47aff',
+      backgroundColor: '#1890FF',
       borderColor: '#007bff',
       hoverBackgroundColor: '#597a9e',
+      label: 'income',
+    },
+    {
+      data: [45, 37, 60, 70, 46, 33, 40],
+      backgroundColor: '#F67F9B',
+      borderColor: '#007bff',
+      hoverBackgroundColor: '#597a9e',
+      label: 'outcome',
     },
   ];
 
-  lineChartNumberOfSellerOptions: ChartOptions = {
+  
+  // public pieChartType:string = 'pie';
+  pieChartNumberOfSpendingOptions: ChartOptions = {
     responsive: true,
   };
-  lineChartNumberOfSellerLabels: string[] = [
+  pieChartNumberOfSpendingLabels: string[] = [
     'Mon',
     'Tue',
     'Wed',
@@ -78,95 +64,53 @@ export class DashboardComponent implements OnInit {
     'Sat',
     'Sun',
   ];
-  lineChartNumberOfSellerType: ChartType = 'line';
-  lineChartNumberOfSellerLegend = false;
-  lineChartNumberOfSellerPlugins = [];
-  lineChartNumberOfSellerData: ChartDataset[] = [
+  pieChartNumberOfSpendingType: ChartType = 'pie';
+  pieChartNumberOfSpendingLegend = true;
+  pieChartNumberOfSpendingPlugins = [];
+  pieChartNumberOfSpendingData: ChartDataset[] = [
     {
       data: [45, 37, 60, 70, 46, 33, 40],
-      backgroundColor: 'rgb(179 208 249 / 48%)',
-      borderColor: '#007bff',
+      backgroundColor: ['#93d9d9', '#ffa1b5', '#86c7f3', '#ffe29a', '#f1f2f4', '#fa9092', '#fed29d'],
+      borderColor: '#fff',
       hoverBackgroundColor: '#597a9e',
       hoverBorderWidth: 10,
       pointBackgroundColor: '#007bff',
       pointHoverBorderColor: '#007bff',
       tension: 0.35,
       fill: true,
+      label: 'income'
     },
   ];
-
-  lineChartUnapprovedCustomersOptions: ChartOptions = {
-    responsive: true,
-  };
-  lineChartUnapprovedCustomersLabels: string[] = [
-    'Mon',
-    'Tue',
-    'Wed',
-    'Thu',
-    'Fri',
-    'Sat',
-    'Sun',
-  ];
-  lineChartUnapprovedCustomersType: ChartType = 'line';
-  lineChartUnapprovedCustomersLegend = false;
-  lineChartUnapprovedCustomersPlugins = [];
-  lineChartUnapprovedCustomersData: ChartDataset[] = [
-    {
-      data: [45, 37, 60, 70, 46, 33, 40],
-      borderColor: '#66bfbf',
-      hoverBackgroundColor: '#597a9e',
-      hoverBorderWidth: 10,
-      pointBackgroundColor: '#66bfbf',
-      pointHoverBorderColor: '#66bfbf',
-    },
-  ];
-  // ---
-  single = [
-    {
-      "name": "Germany",
-      "value": 8940000
-    },
-    {
-      "name": "USA",
-      "value": 5000000
-    },
-    {
-      "name": "France",
-      "value": 7200000
-    },
-      {
-      "name": "UK",
-      "value": 6200000
-    }
-  ];
-  view: any[] = [700, 400];
-
-  // options
-  gradient: boolean = true;
-  showLegend: boolean = true;
-  showLabels: boolean = true;
-  isDoughnut: boolean = false;
-  legendPosition: string = 'below';
-
-  colorScheme = {
-    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA', '#000000'],
-  };
-
-  constructor() {
-    Object.assign(this, this.single );
+  // events
+  public chartClicked(e:any):void {
+    console.log(e);
+  }
+ 
+  public chartHovered(e:any):void {
+    console.log(e);
   }
 
-  onSelect(data): void {
-    console.log('Item clicked', JSON.parse(JSON.stringify(data)));
+  validateForm!: UntypedFormGroup;
+  controlArray: Array<{ index: number; show: boolean }> = [];
+  isCollapse = true;
+
+  toggleCollapse(): void {
+    this.isCollapse = !this.isCollapse;
+    this.controlArray.forEach((c, index) => {
+      c.show = this.isCollapse ? index < 6 : true;
+    });
   }
 
-  onActivate(data): void {
-    console.log('Activate', JSON.parse(JSON.stringify(data)));
+  resetForm(): void {
+    this.validateForm.reset();
   }
+  constructor(private fb: UntypedFormBuilder){}
 
-  onDeactivate(data): void {
-    console.log('Deactivate', JSON.parse(JSON.stringify(data)));
+  ngOnInit(): void {
+    this.validateForm = this.fb.group({});
+    for (let i = 0; i < 10; i++) {
+      this.controlArray.push({ index: i, show: i < 6 });
+      this.validateForm.addControl(`field${i}`, new UntypedFormControl());
   }
-
-  ngOnInit(): void {}
+}
 }

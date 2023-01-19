@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+// import { NgModel } from '@angular/forms';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -20,7 +21,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HomeComponent } from './home/home.component';
 import { CatalogueManagerComponent } from './catalogue-manager/catalogue-manager.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+// import { ChartsModule } from 'ng2-charts/ng2-charts';
+
+
+// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 
@@ -44,8 +48,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ReactiveFormsModule,
     FormsModule,
     NzCalendarModule,
+    // NgModel,
     NgxChartsModule,
-    BrowserAnimationsModule 
+    // BrowserAnimationsModule 
   ],
 })
 export class DashboardModule {}

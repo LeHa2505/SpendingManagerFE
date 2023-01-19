@@ -1,90 +1,52 @@
 <app-breadcrumb [listBreadCrumb]="listBreadCrumb"></app-breadcrumb>
 <div>
-  <!-- card -->
-  <nz-card>
-    <div nz-row>
-      <div class="card-item" nz-col [nzXl]="6" [nzSm]="12" [nzXs]="24">
-        <div>
-          <span class="card-number">1230</span
-          ><span
-            class="card-icon"
-            nz-icon
-            nzType="user"
-            nzTheme="outline"
-          ></span>
-        </div>
-        <p class="card-title">Số lượng khách hàng</p>
-      </div>
-      <div class="card-item" nz-col [nzXl]="6" [nzSm]="12" [nzXs]="24">
-        <div>
-          <span class="card-number">1230</span
-          ><span
-            class="card-icon"
-            nz-icon
-            nzType="team"
-            nzTheme="outline"
-          ></span>
-        </div>
-        <p class="card-title">Số lượng seller</p>
-      </div>
-      <div class="card-item" nz-col [nzXl]="6" [nzSm]="12" [nzXs]="24">
-        <div>
-          <span class="card-number">1230</span
-          ><span
-            class="card-icon"
-            nz-icon
-            nzType="user-add"
-            nzTheme="outline"
-          ></span>
-        </div>
-        <p class="card-title">Số lượng KH cần duyệt</p>
-      </div>
-      <div class="card-item" nz-col [nzXl]="6" [nzSm]="12" [nzXs]="24">
-        <div>
-          <span class="card-number">1230</span
-          ><span
-            class="card-icon"
-            nz-icon
-            nzType="user-switch"
-            nzTheme="outline"
-          ></span>
-        </div>
-        <p class="card-title">Số lượng seller cần duyệt</p>
+  <!--Filter search-->
+  <form nz-form [formGroup]="validateForm" class="ant-advanced-search-form">
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="8" *ngFor="let control of controlArray" [hidden]="!control.show">
+        <nz-form-item>
+          <nz-form-label [nzFor]="'field' + control.index">Field {{ control.index }}</nz-form-label>
+          <nz-form-control>
+            <input
+              nz-input
+              placeholder="placeholder"
+              [formControlName]="'field' + control.index"
+              [attr.id]="'field' + control.index"
+            />
+          </nz-form-control>
+        </nz-form-item>
       </div>
     </div>
-  </nz-card>
+    <div nz-row>
+      <div nz-col [nzSpan]="24" class="search-area">
+        <button nz-button [nzType]="'primary'">Search</button>
+        <button nz-button (click)="resetForm()">Clear</button>
+        <a class="collapse" (click)="toggleCollapse()">
+          Collapse
+          <span nz-icon [nzType]="isCollapse ? 'down' : 'up'"></span>
+        </a>
+      </div>
+    </div>
+  </form>
 
   <!-- chart  -->
-  <div nz-row>
+  <div nz-row [nzAlign]="'center'">
     <div nz-col [nzSpan]="12">
-      <nz-card>
-        <div class="chart-title">
-          <p>Số lượng khách hàng mới</p>
+        <div style="display: block; width: 60%;">
+          <canvas
+            baseChart
+            [datasets]="pieChartNumberOfSpendingData"
+            [labels]="pieChartNumberOfSpendingLabels"
+            [options]="pieChartNumberOfSpendingOptions"
+            [plugins]="pieChartNumberOfSpendingPlugins"
+            [legend]="pieChartNumberOfSpendingLegend"
+            [type]="pieChartNumberOfSpendingType"
+          >
+          </canvas>
         </div>
-
-        <ngx-charts-pie-chart
-        [view]="view"
-        [scheme]="colorScheme"
-        [results]="single"
-        [gradient]="gradient"
-        [legend]="showLegend"
-        [legendPosition]="legendPosition"
-        [labels]="showLabels"
-        [doughnut]="isDoughnut"
-        (select)="onSelect($event)"
-        (activate)="onActivate($event)"
-        (deactivate)="onDeactivate($event)"
-        >
-      </ngx-charts-pie-chart>
-      </nz-card>
     </div>
     <div nz-col [nzSpan]="12">
-      <nz-card>
-        <div class="chart-title">
-          <p>Số lượng khách hàng lũy kế</p>
-        </div>
-
-        <div class="chart-wrapper card">
+        <div class="">
           <canvas
             baseChart
             [datasets]="barChartAccumulatedNumberOfCustomersData"
@@ -96,47 +58,7 @@
           >
           </canvas>
         </div>
-      </nz-card>
     </div>
   </div>
-  <div nz-row>
-    <div nz-col [nzSpan]="12">
-      <nz-card>
-        <div class="chart-title">
-          <p>Số lượng seller đang hoạt động</p>
-        </div>
-        <div class="chart-wrapper card">
-          <canvas
-            baseChart
-            [datasets]="lineChartNumberOfSellerData"
-            [labels]="lineChartNumberOfSellerLabels"
-            [options]="lineChartNumberOfSellerOptions"
-            [plugins]="lineChartNumberOfSellerPlugins"
-            [legend]="lineChartNumberOfSellerLegend"
-            [type]="lineChartNumberOfSellerType"
-          >
-          </canvas>
-        </div>
-      </nz-card>
-    </div>
-    <div nz-col [nzSpan]="12">
-      <nz-card>
-        <div class="chart-title">
-          <p>Số lượng khách hàng cần phê duyệt</p>
-        </div>
-        <div class="chart-wrapper card">
-          <canvas
-            baseChart
-            [datasets]="lineChartUnapprovedCustomersData"
-            [labels]="lineChartUnapprovedCustomersLabels"
-            [options]="lineChartUnapprovedCustomersOptions"
-            [plugins]="lineChartUnapprovedCustomersPlugins"
-            [legend]="lineChartUnapprovedCustomersLegend"
-            [type]="lineChartUnapprovedCustomersType"
-          >
-          </canvas>
-        </div>
-      </nz-card>
-    </div>
-  </div>
-</div>
+ 
+ </div>
