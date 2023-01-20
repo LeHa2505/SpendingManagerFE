@@ -1,0 +1,23 @@
+<h3 nz-typography style="text-align: center; font-size: 24px">
+  <strong>LỊCH</strong>
+</h3>
+
+<nz-calendar
+  [(ngModel)]="date"
+  [(nzMode)]="mode"
+  (nzPanelChange)="panelChange($event)"
+>
+    <div *nzDateCell="let date" class="events">
+        <ng-container *ngFor="let item of listData; let i = index">
+        <div *ngIf="date.getDate() === item.date " class="date-content">
+            <span style="color: #1890FF;">
+                <span nz-icon nzType="plus" nzTheme="outline" style="font-size: 12px;"></span>
+                {{ item.income }} đ</span>
+              <span style="color: #F86060;">
+                <span nz-icon nzType="minus" nzTheme="outline" style="font-size: 12px;"></span>
+                {{ item.outcome }} đ</span>
+        </div>
+    </ng-container>
+
+    </div>
+</nz-calendar>
