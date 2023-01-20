@@ -23,14 +23,18 @@ import { CatalogueManagerComponent } from './catalogue-manager/catalogue-manager
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 // import { ChartsModule } from 'ng2-charts/ng2-charts';
-
-
+import { IconImageComponent } from '../component/icon-image/icon-image.component';
+import { ButtonAddComponent } from '../component/button-add/button-add.component';
+import { NzModalModule } from 'ng-zorro-antd/modal';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { InOutManagerComponent } from './in-out-manager/in-out-manager.component';
+import { LimitManagerComponent } from './limit-manager/limit-manager.component';
 
 
 
 @NgModule({
-  declarations: [DashboardComponent, CreateShippingOrderComponent, HomeComponent, CatalogueManagerComponent],
+  declarations: [DashboardComponent, CreateShippingOrderComponent, HomeComponent, CatalogueManagerComponent, IconImageComponent, ButtonAddComponent, InOutManagerComponent, LimitManagerComponent ],
   imports: [
     PageRoutingModule,
     NzTableModule,
@@ -51,7 +55,9 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
     NzCalendarModule,
     // NgModel,
     NgxChartsModule,
-    NzSelectModule
+    NzSelectModule,
+    NzModalModule,
+    
     // BrowserAnimationsModule 
   ],
 })

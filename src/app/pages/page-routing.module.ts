@@ -4,6 +4,8 @@ import { CatalogueManagerComponent } from './catalogue-manager/catalogue-manager
 import { CreateShippingOrderComponent } from './create-shipping-order/create-shipping-order.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HomeComponent } from './home/home.component';
+import { InOutManagerComponent } from './in-out-manager/in-out-manager.component';
+import { LimitManagerComponent } from './limit-manager/limit-manager.component';
 
 
 const routes: Routes = [
@@ -22,6 +24,14 @@ const routes: Routes = [
   {
     path: 'create-shipping-order',
     component: CreateShippingOrderComponent,
+  },
+  {
+    path: 'spending-info-manager',
+    component: InOutManagerComponent,
+  },
+  {
+    path: 'limitcash-manager',
+    component: LimitManagerComponent,
   },
 
 ];

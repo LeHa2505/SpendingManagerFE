@@ -49,7 +49,6 @@ export class DashboardComponent implements OnInit {
   isDisabled = true;
 
   onChangeTime(newTimeSelected) {
-    console.log(newTimeSelected);
     this.timeSelected = newTimeSelected;
     if (newTimeSelected === 'year') {
       this.isDisabled = true;
@@ -66,7 +65,7 @@ export class DashboardComponent implements OnInit {
   catalogueArray = [
     {label: 'Tất cả', value: 'All'},
     {label: 'Ăn uống', value: 'Food'},
-    {label: 'Tháng 2', value: 'Transport'},
+    {label: 'Phương tiện', value: 'Transport'},
     {label: 'Mỹ phẩm', value: 'Make-up'},
   ];
 

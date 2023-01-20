@@ -1,1 +1,105 @@
-<p>catalogue-manager works!</p>
+<h3 nz-typography style="text-align: center; font-size: 24px">
+  <strong>DANH MỤC RIÊNG</strong>
+</h3>
+
+<!--Create new item-->
+<app-button-add
+  [btnName]="'Tạo danh mục mới'"
+  [iconBtn]="'plus-circle'"
+  style="font-size: 1rem"
+  (click)="showModal()"
+></app-button-add>
+
+<!--table-->
+<div>
+  <nz-table #basicTable [nzData]="listOfData">
+    <thead>
+      <tr class="head-style">
+        <th>Tên</th>
+        <th>Thời gian tạo</th>
+        <th>Sửa</th>
+        <th>Xóa</th>
+      </tr>
+    </thead>
+    <tbody style="text-align: center">
+      <tr *ngFor="let data of basicTable.data">
+        <td
+          class="catalogue-name"
+          style="border-radius: 1.5rem 0rem 0rem 1.5rem; padding: 0.5rem 2rem"
+        >
+          <app-icon-image
+            [iconImg]="'shop'"
+            style="margin-right: 2rem; margin-left: 3rem"
+          ></app-icon-image>
+          <span>{{ data.name }}</span>
+        </td>
+        <td>{{ data.time }}</td>
+        <td style="text-align: center; font-size: 1.2rem">
+          <span
+            style="cursor: pointer"
+            nz-icon
+            nzType="edit"
+            nzTheme="fill"
+          ></span>
+        </td>
+        <td
+          style="
+            border-radius: 0rem 1.5rem 1.5rem 0rem;
+            text-align: center;
+            font-size: 1.2rem;
+          "
+        >
+          <span
+            style="cursor: pointer"
+            nz-icon
+            nzType="delete"
+            nzTheme="fill"
+          ></span>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</div>
+
+<!--Modal-->
+<nz-modal
+  [(nzVisible)]="isVisible"
+  nzTitle="Thêm mới danh mục"
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleOk()"
+  [nzOkLoading]="isOkLoading"
+  nzOkText = "Tạo mới"
+>
+  <div *nzModalContent>
+    <div>
+      <label for="input-catalogue">Tên danh mục</label> <br />
+      <input
+        nz-input
+        placeholder="Điền tên danh mục"
+        [(ngModel)]="valueInputCatalogue"
+        id="input-catalogue"
+        onchange="addCatalogue($even)"
+      />
+      <br />
+    </div>
+    <div style="margin-top: 1.5rem; width: auto">
+      <label for="input-catalogue">Tên icon</label> <br />
+      <nz-select
+        nzShowSearch
+        nzAllowClear
+        [(ngModel)]="catalogueIcon"
+        style="width: 100%"
+        nzLabel="catalogueIcon"
+      >
+        <nz-option
+          *ngFor="let item of catalogueIconArray"
+          nzLabel="{{ item }}"
+          nzValue="{{ item }}"
+          nzCustomContent
+        >
+          <app-icon-image [iconImg]="item"></app-icon-image>
+        </nz-option>
+      </nz-select>
+    </div>
+  </div>
+</nz-modal>
