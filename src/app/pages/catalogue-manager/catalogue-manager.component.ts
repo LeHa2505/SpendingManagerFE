@@ -14,19 +14,23 @@ import { Component } from '@angular/core';
 export class CatalogueManagerComponent {
   listOfData = [
     {
-      name: 'Mua sắm',
+      icon: 'car',
+      name: 'Đi lại',
       time: '20/1/2023'
     },
     {
-      name: 'Mua sắm',
+      icon: 'medicine-box',
+      name: 'Y tế',
       time: '20/1/2023'
     },
     {
-      name: 'Mua sắm',
+      icon: 'dollar-circle',
+      name: 'Tiết kiệm',
       time: '20/1/2023'
     },
     {
-      name: 'Mua sắm',
+      icon: 'customer-service',
+      name: 'Giải trí',
       time: '20/1/2023'
     }
   ];
@@ -36,32 +40,54 @@ export class CatalogueManagerComponent {
 
   showModal(): void {
     this.isVisible = true;
-  }
-
-  handleOk(): void {
-    this.isOkLoading = true;
-    setTimeout(() => {
-      this.isVisible = false;
-      this.isOkLoading = false;
-    }, 1000);
+    this.valueInputCatalogue = '';
+    this.catalogueIcon = 'car';
   }
 
   handleCancel(): void {
     this.isVisible = false;
   }
 
-  valueInputCatalogue?: string;
+  valueInputCatalogue: string;
   newItem: any;
   catalogueIcon = 'car';
-  catalogueIconArray = ['car', 'medicine-box', 'dollar-circle', 'customer-service']
 
   addCatalogue(valueInputCatalogue) {
+    valueInputCatalogue = this.valueInputCatalogue;
+    const newTime = ((new Date).getDay).toString;
+    console.log(newTime); 
+    
     this.newItem = {
+      icon: this.catalogueIcon,
       name: valueInputCatalogue,
-      time: (new Date).toString
+      time: newTime,
     }
-    this.catalogueIconArray.push()
-    console.log(this.catalogueIconArray);
+    this.listOfData.push(this.newItem)
+    console.log(this.listOfData);
+  }
+
+  onCurrentPageDataChange(listOfCurrentPageData: any[]): void {
+    this.listOfData = listOfCurrentPageData;
+    console.log(this.listOfData);
+    
+  }
+
+
+  handleOk(): void {
+     this.isVisible = false;
+     this.addCatalogue(this.newItem);
+     this.onCurrentPageDataChange(this.listOfData);
+    // this.isOkLoading = true;
+    // setTimeout(() => {
+    //   this.isVisible = false;
+    //   this.isOkLoading = false;
+    // }, 1000);
+  }
+
+  ngOnInit(): void {
+    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
+    //Add 'implements OnInit' to the class.
+    console.log('fddfdf'+this.valueInputCatalogue);
     
   }
 }
