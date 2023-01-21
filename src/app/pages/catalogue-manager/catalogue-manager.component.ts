@@ -16,22 +16,22 @@ export class CatalogueManagerComponent {
     {
       icon: 'car',
       name: 'Đi lại',
-      time: '20/1/2023'
+      time: '1/20/2023'
     },
     {
       icon: 'medicine-box',
       name: 'Y tế',
-      time: '20/1/2023'
+      time: '1/20/2023'
     },
     {
       icon: 'dollar-circle',
       name: 'Tiết kiệm',
-      time: '20/1/2023'
+      time: '1/20/2023'
     },
     {
       icon: 'customer-service',
       name: 'Giải trí',
-      time: '20/1/2023'
+      time: '1/20/2023'
     }
   ];
 
@@ -54,21 +54,17 @@ export class CatalogueManagerComponent {
 
   addCatalogue(valueInputCatalogue) {
     valueInputCatalogue = this.valueInputCatalogue;
-    const newTime = ((new Date).getDay).toString;
-    console.log(newTime); 
-    
+    const newTime = new Date();    
     this.newItem = {
       icon: this.catalogueIcon,
       name: valueInputCatalogue,
-      time: newTime,
+      time: newTime.toLocaleDateString(),
     }
     this.listOfData.push(this.newItem)
-    console.log(this.listOfData);
   }
 
   onCurrentPageDataChange(listOfCurrentPageData: any[]): void {
     this.listOfData = listOfCurrentPageData;
-    console.log(this.listOfData);
     
   }
 
@@ -84,10 +80,14 @@ export class CatalogueManagerComponent {
     // }, 1000);
   }
 
+  isVisibleEdit = false;
+
+  showModalEdit() {
+    this.isVisibleEdit = true;
+  }
+
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-    //Add 'implements OnInit' to the class.
-    console.log('fddfdf'+this.valueInputCatalogue);
-    
+    //Add 'implements OnInit' to the class.    
   }
 }
