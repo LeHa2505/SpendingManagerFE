@@ -6,6 +6,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { ComponentsModule } from 'src/app/shared/components/components.module';
 import { NzCalendarModule } from 'ng-zorro-antd/calendar';
 
+
 import { PageRoutingModule } from './page-routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
@@ -16,7 +17,6 @@ import { IconsProviderModule } from '../icons-provider.module';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzFormModule } from 'ng-zorro-antd/form';
-import { CreateShippingOrderComponent } from './create-shipping-order/create-shipping-order.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HomeComponent } from './home/home.component';
 import { CatalogueManagerComponent } from './catalogue-manager/catalogue-manager.component';
@@ -35,7 +35,7 @@ import { DetailInfoComponent } from './detail-info/detail-info.component';
 
 
 @NgModule({
-  declarations: [DashboardComponent, CreateShippingOrderComponent, HomeComponent, CatalogueManagerComponent, IconImageComponent, ButtonAddComponent, InOutManagerComponent, LimitManagerComponent, DetailInfoComponent ],
+  declarations: [DashboardComponent, HomeComponent, CatalogueManagerComponent, IconImageComponent, ButtonAddComponent, InOutManagerComponent, LimitManagerComponent, DetailInfoComponent ],
   imports: [
     PageRoutingModule,
     NzTableModule,
