@@ -54,6 +54,7 @@
           "
         >
           <span
+          (click)="showModalEdit()"
             style="cursor: pointer"
             nz-icon
             nzType="delete"
@@ -65,7 +66,7 @@
   </nz-table>
 </div>
 
-<!--Modal-->
+<!--Modal Add item-->
 <nz-modal
   [(nzVisible)]="isVisible"
   [nzTitle]="addTitle"
