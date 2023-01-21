@@ -40,6 +40,7 @@
         <td>{{ data.time }}</td>
         <td style="text-align: center; font-size: 1.2rem">
           <span
+            (click)="showModalEdit(data)"
             style="cursor: pointer"
             nz-icon
             nzType="edit"
@@ -54,7 +55,7 @@
           "
         >
           <span
-          (click)="showModalEdit()"
+          (click)="showDeleteConfirm(data)"
             style="cursor: pointer"
             nz-icon
             nzType="delete"
@@ -99,14 +100,61 @@
         nzLabel="catalogueIcon"
       >
         <nz-option
-          *ngFor="let item of listOfData"
-          nzLabel="{{ item.icon }}"
-          nzValue="{{ item.icon }}"
+          *ngFor="let item of iconArray"
+          nzLabel="{{ item }}"
+          nzValue="{{ item }}"
           nzCustomContent
         >
-          <app-icon-image [iconImg]="item.icon"></app-icon-image>
+          <app-icon-image [iconImg]="item"></app-icon-image>
         </nz-option>
       </nz-select>
     </div>
   </div>
 </nz-modal>
+
+<!--Modal Edit-->
+<nz-modal
+[(nzVisible)]="isVisibleEdit"
+[nzTitle]="editTitle"
+(nzOnCancel)="handleEditCancel()"
+(nzOnOk)="handleEditOk()"
+>
+<ng-template #editTitle style="text-align: center"
+  >Chỉnh sửa danh mục</ng-template
+>
+<ng-container *nzModalContent>
+  <div>
+    <label for="input-catalogue">Tên danh mục</label> <br />
+    <input
+      nz-input
+      placeholder="Tên danh mục"
+      [(ngModel)]="valueInputCatalogue"
+      id="input-catalogue"
+      
+    />
+    <br />
+  </div>
+  <div style="margin-top: 1.5rem; width: auto">
+    <label for="input-catalogue">Tên icon</label> <br />
+    <nz-select
+      nzShowSearch
+      nzAllowClear
+      [(ngModel)]="catalogueIcon"
+      style="width: 100%"
+      nzLabel="catalogueIcon"
+    >
+      <nz-option
+        *ngFor="let item of listOfData"
+        nzLabel="{{ item.icon }}"
+        nzValue="{{ item.icon }}"
+        nzCustomContent
+      >
+        <app-icon-image [iconImg]="item.icon"></app-icon-image>
+      </nz-option>
+    </nz-select>
+  </div>
+</ng-container>
+</nz-modal>
+
+<!--Confirm-->
+
