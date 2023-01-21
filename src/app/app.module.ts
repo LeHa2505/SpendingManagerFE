@@ -22,6 +22,7 @@ import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzCalendarModule } from 'ng-zorro-antd/calendar';
 import { CommonModule } from '@angular/common';
 
+
 registerLocaleData(vi);
 
 @NgModule({
@@ -41,8 +42,7 @@ registerLocaleData(vi);
     NzButtonModule,
     NzTableModule,
     NzCalendarModule,
-    CommonModule
-    
+    CommonModule,
   ],
   providers: [{ provide: NZ_I18N, useValue: vi_VN }],
   bootstrap: [AppComponent],
