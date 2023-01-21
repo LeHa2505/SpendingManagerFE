@@ -30,11 +30,12 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { InOutManagerComponent } from './in-out-manager/in-out-manager.component';
 import { LimitManagerComponent } from './limit-manager/limit-manager.component';
+import { DetailInfoComponent } from './detail-info/detail-info.component';
 
 
 
 @NgModule({
-  declarations: [DashboardComponent, CreateShippingOrderComponent, HomeComponent, CatalogueManagerComponent, IconImageComponent, ButtonAddComponent, InOutManagerComponent, LimitManagerComponent ],
+  declarations: [DashboardComponent, CreateShippingOrderComponent, HomeComponent, CatalogueManagerComponent, IconImageComponent, ButtonAddComponent, InOutManagerComponent, LimitManagerComponent, DetailInfoComponent ],
   imports: [
     PageRoutingModule,
     NzTableModule,
