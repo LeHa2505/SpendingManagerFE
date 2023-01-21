@@ -5,6 +5,10 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { ComponentsModule } from 'src/app/shared/components/components.module';
 import { NzCalendarModule } from 'ng-zorro-antd/calendar';
+import { SearchPipe } from './in-out-manager/search.pipe';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzAlertModule } from 'ng-zorro-antd/alert';
+
 
 
 import { PageRoutingModule } from './page-routing.module';
@@ -27,15 +31,27 @@ import { IconImageComponent } from '../component/icon-image/icon-image.component
 import { ButtonAddComponent } from '../component/button-add/button-add.component';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
 import { InOutManagerComponent } from './in-out-manager/in-out-manager.component';
 import { LimitManagerComponent } from './limit-manager/limit-manager.component';
 import { DetailInfoComponent } from './detail-info/detail-info.component';
 
-
-
 @NgModule({
-  declarations: [DashboardComponent, HomeComponent, CatalogueManagerComponent, IconImageComponent, ButtonAddComponent, InOutManagerComponent, LimitManagerComponent, DetailInfoComponent ],
+  declarations: [
+    DashboardComponent,
+    HomeComponent,
+    CatalogueManagerComponent,
+    IconImageComponent,
+    ButtonAddComponent,
+    InOutManagerComponent,
+    LimitManagerComponent,
+    DetailInfoComponent,
+    SearchPipe,
+  ],
   imports: [
     PageRoutingModule,
     NzTableModule,
@@ -58,8 +74,10 @@ import { DetailInfoComponent } from './detail-info/detail-info.component';
     NgxChartsModule,
     NzSelectModule,
     NzModalModule,
-    
-    // BrowserAnimationsModule 
+    NzDatePickerModule,
+    NzAlertModule
+
+    // BrowserAnimationsModule
   ],
 })
 export class DashboardModule {}

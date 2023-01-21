@@ -1,1 +1,64 @@
-<p>limit-manager works!</p>
+<h3 nz-typography style="text-align: center; font-size: 24px">
+    <strong>DANH SÁCH HẠN MỨC</strong>
+  </h3>
+  
+  <app-button-add
+    [btnName]="'Tạo hạn mức mới'"
+    [iconBtn]="'plus-circle'"
+    style="font-size: 1rem"
+  ></app-button-add>
+  
+  <div>
+    <nz-table #basicTable [nzData]="listOfData">
+      <thead>
+        <tr class="head-style">
+          <th>Tên</th>
+          <th>Thời gian</th>
+          <th>Hạn mức</th>
+          <th>Sửa</th>
+          <th>Xóa</th>
+        </tr>
+      </thead>
+      <tbody style="text-align: center">
+        <tr *ngFor="let data of basicTable.data">
+          <td
+            class="catalogue-name"
+            style="border-radius: 1.5rem 0rem 0rem 1.5rem; padding: 0.5rem 2rem"
+          >
+            <app-icon-image
+              [iconImg]="data.icon"
+              style="margin-right: 2rem; margin-left: 3rem"
+            ></app-icon-image>
+            <span>{{ data.type }}</span>
+          </td>
+          <td>{{ data.time }}</td>
+          <td>{{ data.limitcash }}</td>
+          <td style="text-align: center; font-size: 1.2rem">
+            <span
+              (click)="showModalEdit(data)"
+              style="cursor: pointer"
+              nz-icon
+              nzType="edit"
+              nzTheme="fill"
+            ></span>
+          </td>
+          <td
+            style="
+              border-radius: 0rem 1.5rem 1.5rem 0rem;
+              text-align: center;
+              font-size: 1.2rem;
+            "
+          >
+            <span
+              (click)="showDeleteConfirm(data)"
+              style="cursor: pointer"
+              nz-icon
+              nzType="delete"
+              nzTheme="fill"
+            ></span>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
+  
