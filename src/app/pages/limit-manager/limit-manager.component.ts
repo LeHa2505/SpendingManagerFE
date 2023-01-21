@@ -6,5 +6,33 @@ import { Component } from '@angular/core';
   styleUrls: ['./limit-manager.component.less']
 })
 export class LimitManagerComponent {
+  listOfData = [
+    {
+      icon: 'shopping', 
+      type: 'Mua sắm',
+      time: '1/2023',
+      limitcash: 2000000
+    },
+     {
+      icon: 'shopping', 
+      type: 'Mua sắm',
+      time: '1/2023',
+      limitcash: 2000000
+    },
+     {
+      icon: 'shopping', 
+      type: 'Mua sắm',
+      time: '1/2023',
+      limitcash: 2000000
+    },
+     {
+      icon: 'shopping', 
+      type: 'Mua sắm',
+      time: '1/2023',
+      limitcash: 2000000
+    }
+  ];
+
+  
 
 }
