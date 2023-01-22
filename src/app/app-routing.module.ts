@@ -8,6 +8,11 @@ const routes: Routes = [
       import('./pages/page.module').then((m) => m.DashboardModule),
   },
   {
+    path: 'login',
+    loadChildren: () =>
+      import('./authentication/authentication.module').then((m) => m.AuthenticationModule),
+  },
+  {
     path: 'exception',
     loadChildren: () =>
       import('./shared/exception/exception.module').then(

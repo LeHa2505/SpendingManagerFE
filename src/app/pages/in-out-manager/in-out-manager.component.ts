@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { SearchPipe } from './search.pipe';
 import { getISOWeek } from 'date-fns';
+import { NzModalService } from 'ng-zorro-antd/modal';
 
 
 @Component({
@@ -87,9 +88,28 @@ export class InOutManagerComponent {
   }
 
   isVisible = false;
+  comfirmText = 'Tạo mới';    
 
   showModal() {
     this.isVisible = true;
+  }
+
+  showModalEdit(data) {
+    this.isVisible = true;
+  }
+
+  showDeleteConfirm(data): void {
+    // const deleteId = this.listOfData.indexOf(data);
+    this.modal.confirm({
+      nzTitle: 'Xác nhận xóa?',
+      nzContent: '',
+      nzOkText: 'Xóa',
+      nzOkType: 'primary',
+      nzOkDanger: true,
+      nzOnOk: () => console.log(''),
+      nzCancelText: 'Hủy',
+      nzOnCancel: () => console.log('Cancel'),
+    });
   }
 
   handleOk(): void {
@@ -98,5 +118,9 @@ export class InOutManagerComponent {
 
   handleCancel(): void {
     this.isVisible = false;
+  }
+
+  constructor(private modal: NzModalService) {
+    
   }
 }

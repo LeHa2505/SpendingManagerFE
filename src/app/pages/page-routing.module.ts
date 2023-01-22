@@ -8,6 +8,7 @@ import { InOutManagerComponent } from './in-out-manager/in-out-manager.component
 import { LimitManagerComponent } from './limit-manager/limit-manager.component';
 
 
+
 const routes: Routes = [
   {
     path: '',
@@ -33,6 +34,14 @@ const routes: Routes = [
     path: 'user-infomation',
     component: DetailInfoComponent,
   },
+  // {
+  //   path: 'login',
+  //   component: LoginComponent,
+  // },
+  // {
+  //   path: 'register',
+  //   component: RegisterComponent,
+  // },
 
 ];
 
