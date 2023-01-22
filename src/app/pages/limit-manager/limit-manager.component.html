@@ -1,64 +1,154 @@
 <h3 nz-typography style="text-align: center; font-size: 24px">
-    <strong>DANH SÁCH HẠN MỨC</strong>
-  </h3>
-  
-  <app-button-add
-    [btnName]="'Tạo hạn mức mới'"
-    [iconBtn]="'plus-circle'"
-    style="font-size: 1rem"
-  ></app-button-add>
-  
-  <div>
-    <nz-table #basicTable [nzData]="listOfData">
-      <thead>
-        <tr class="head-style">
-          <th>Tên</th>
-          <th>Thời gian</th>
-          <th>Hạn mức</th>
-          <th>Sửa</th>
-          <th>Xóa</th>
-        </tr>
-      </thead>
-      <tbody style="text-align: center">
-        <tr *ngFor="let data of basicTable.data">
-          <td
-            class="catalogue-name"
-            style="border-radius: 1.5rem 0rem 0rem 1.5rem; padding: 0.5rem 2rem"
-          >
-            <app-icon-image
-              [iconImg]="data.icon"
-              style="margin-right: 2rem; margin-left: 3rem"
-            ></app-icon-image>
-            <span>{{ data.type }}</span>
-          </td>
-          <td>{{ data.time }}</td>
-          <td>{{ data.limitcash }}</td>
-          <td style="text-align: center; font-size: 1.2rem">
-            <span
-              (click)="showModalEdit(data)"
-              style="cursor: pointer"
-              nz-icon
-              nzType="edit"
-              nzTheme="fill"
-            ></span>
-          </td>
-          <td
+  <strong>DANH SÁCH HẠN MỨC</strong>
+</h3>
+
+<app-button-add
+  [btnName]="'Tạo hạn mức mới'"
+  [iconBtn]="'plus-circle'"
+  style="font-size: 1rem"
+  (click)="showModal()"
+></app-button-add>
+
+<div>
+  <nz-table #basicTable [nzData]="listOfData">
+    <thead>
+      <tr class="head-style">
+        <th>Tên</th>
+        <th>Thời gian</th>
+        <th>Hạn mức</th>
+        <th>Sửa</th>
+        <th>Xóa</th>
+      </tr>
+    </thead>
+    <tbody style="text-align: center">
+      <tr *ngFor="let data of basicTable.data">
+        <td
+          class="catalogue-name"
+          style="border-radius: 1.5rem 0rem 0rem 1.5rem; padding: 0.5rem 2rem"
+        >
+          <app-icon-image
+            [iconImg]="data.icon"
+            style="margin-right: 2rem; margin-left: 3rem"
+          ></app-icon-image>
+          <span>{{ data.type }}</span>
+        </td>
+        <td>{{ data.time }}</td>
+        <td>{{ data.limitcash }}</td>
+        <td style="text-align: center; font-size: 1.2rem">
+          <span
+            (click)="showModal(data)"
+            style="cursor: pointer"
+            nz-icon
+            nzType="edit"
+            nzTheme="fill"
+          ></span>
+        </td>
+        <td
+          style="
+            border-radius: 0rem 1.5rem 1.5rem 0rem;
+            text-align: center;
+            font-size: 1.2rem;
+          "
+        >
+          <span
+            (click)="showDeleteConfirm(data)"
+            style="cursor: pointer"
+            nz-icon
+            nzType="delete"
+            nzTheme="fill"
+          ></span>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</div>
+
+<!--Modal-->
+<nz-modal
+  [(nzVisible)]="isVisible"
+  [nzTitle]="addTitle"
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleOk()"
+  nzOkText="{{ comfirmText }}"
+>
+  <ng-template #addTitle style="text-align: center"
+    >Tạo hạn mức mới</ng-template
+  >
+  <div *nzModalContent>
+    <div>
+      <label for="transaction-name">Số tiền</label> <br />
+      <input
+        nz-input
+        style="margin-bottom: 1rem"
+        placeholder=""
+        [(ngModel)]="limitCash"
+        id="transaction-name"
+      />
+      <br />
+    </div>
+
+    <div style="margin-bottom: 1rem">
+      <label for="transaction-name">Thời gian</label> <br />
+      <div nz-row class="select-box">
+        <div nz-col [nzSpan]="8">
+          <div
             style="
-              border-radius: 0rem 1.5rem 1.5rem 0rem;
-              text-align: center;
-              font-size: 1.2rem;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              max-width: 100%;
             "
           >
-            <span
-              (click)="showDeleteConfirm(data)"
-              style="cursor: pointer"
-              nz-icon
-              nzType="delete"
-              nzTheme="fill"
-            ></span>
-          </td>
-        </tr>
-      </tbody>
-    </nz-table>
+            <nz-select
+              nzPlaceHolder=""
+              [(ngModel)]="yearSelected"
+              style="width: 100%"
+            >
+              <nz-option
+                *ngFor="let item of yearArray"
+                nzLabel="{{ item }}"
+                nzValue="{{ item }}"
+              ></nz-option>
+            </nz-select>
+          </div>
+        </div>
+        <div nz-col [nzSpan]="8">
+          <div
+            style="
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              max-width: 100%;
+              padding-left: 1rem;
+            "
+          >
+            <nz-select
+              nzPlaceHolder=""
+              [(ngModel)]="monthSelected"
+              style="width: 100%"
+            >
+              <nz-option
+                *ngFor="let item of monthArray"
+                nzLabel="{{ item.label }}"
+                nzValue="{{ item.value }}"
+              ></nz-option>
+            </nz-select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-bottom: 1rem">
+      <label for="transaction-type">Loại hạn mức</label> <br />
+      <nz-select
+        [(ngModel)]="limitSelected"
+        style="width: 100%"
+      >
+        <nz-option
+          *ngFor="let item of limitCashArray"
+          nzLabel="{{ item }}"
+          nzValue="{{ item }}"
+        ></nz-option>
+      </nz-select>
+    </div>
   </div>
-  
+</nz-modal>

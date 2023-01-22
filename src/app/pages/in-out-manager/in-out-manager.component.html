@@ -71,6 +71,7 @@
   ></nz-alert>
 </div>
 
+<!--Table-->
 <div>
   <nz-table #basicTable [nzData]="listOfData">
     <thead>
@@ -100,7 +101,9 @@
           ></app-icon-image>
           <span>{{ data.type }}</span>
         </td>
-        <td style="color: #FD3C4A; font-weight: bold;">{{ data.amount.toString() }} đ</td>
+        <td style="color: #fd3c4a; font-weight: bold">
+          {{ data.amount.toString() }} đ
+        </td>
         <td>{{ data.time }}</td>
         <td>{{ data.note }}</td>
         <td style="text-align: center; font-size: 1.2rem">
@@ -132,13 +135,13 @@
   </nz-table>
 </div>
 
-<!--Modal add-->
+<!--Modal-->
 <nz-modal
   [(nzVisible)]="isVisible"
   [nzTitle]="addTitle"
   (nzOnCancel)="handleCancel()"
   (nzOnOk)="handleOk()"
-  nzOkText="Tạo mới"
+  nzOkText="{{comfirmText}}"
 >
   <ng-template #addTitle style="text-align: center"
     >Tạo giao dịch mới</ng-template
@@ -155,10 +158,10 @@
       />
       <br />
     </div>
-    
+
     <div>
-      <label for="transaction-name">Tên giao dịch</label> <br />
-      <div nz-row class="select-box" >
+      <label for="transaction-name">Số tiền</label> <br />
+      <div nz-row class="select-box">
         <div nz-col [nzSpan]="20">
           <input
             nz-input
@@ -173,11 +176,18 @@
             class=""
             nz-col
             [nzSpan]="4"
-            style="display: flex; justify-content: center; align-items: center; margin-left: 2rem;"
+            style="
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              max-width: 100%;
+              padding-left: 1rem;
+            "
           >
             <nz-select
               nzPlaceHolder=""
               [(ngModel)]="inOutcomeSelect"
+              style="width: 100%"
             >
               <nz-option nzLabel="Thu" nzValue="income">Thu</nz-option>
               <nz-option nzLabel="Chi" nzValue="outcome">Chi</nz-option>
