@@ -21,6 +21,7 @@ import { NgChartsModule } from 'ng2-charts';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzCalendarModule } from 'ng-zorro-antd/calendar';
 import { CommonModule } from '@angular/common';
+import { AuthenticationModule } from './authentication/authentication.module';
 
 
 registerLocaleData(vi);
@@ -43,6 +44,7 @@ registerLocaleData(vi);
     NzTableModule,
     NzCalendarModule,
     CommonModule,
+    AuthenticationModule
   ],
   providers: [{ provide: NZ_I18N, useValue: vi_VN }],
   bootstrap: [AppComponent],

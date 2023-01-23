@@ -11,10 +11,13 @@ export class SearchPipe implements PipeTransform {
       const money = val.amount.toString();
       let rVal =
         val.id?.toLocaleLowerCase().includes(args) ||
+        val.id?.includes(args) ||
         val.icon?.toLocaleLowerCase().includes(args) ||
         val.type?.toLocaleLowerCase().includes(args) ||
+        val.type?.includes(args) ||
         money?.toLocaleLowerCase().includes(args) ||
         val.note?.toLocaleLowerCase().includes(args) ||
+        val.note?.includes(args) ||
         val.time?.toLocaleLowerCase().includes(args);
 
       // let rVal =
