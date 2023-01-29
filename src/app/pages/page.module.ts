@@ -9,8 +9,6 @@ import { SearchPipe } from './in-out-manager/search.pipe';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
 
-
-
 import { PageRoutingModule } from './page-routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
@@ -30,6 +28,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { IconImageComponent } from '../component/icon-image/icon-image.component';
 import { ButtonAddComponent } from '../component/button-add/button-add.component';
 import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzLayoutModule } from 'ng-zorro-antd/layout';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   UntypedFormBuilder,
@@ -75,7 +74,7 @@ import { DetailInfoComponent } from './detail-info/detail-info.component';
     NzSelectModule,
     NzModalModule,
     NzDatePickerModule,
-    NzAlertModule
+    NzAlertModule, NzLayoutModule
 
     // BrowserAnimationsModule
   ],

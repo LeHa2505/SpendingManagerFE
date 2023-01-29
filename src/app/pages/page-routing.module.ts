@@ -11,6 +11,13 @@ import { LimitManagerComponent } from './limit-manager/limit-manager.component';
 
 
 const routes: Routes = [
+
+  // {
+  //   path: '',
+  //   loadChildren: () =>
+  //     import('./pages/page.module').then((m) => m.DashboardModule),
+  // },
+
   {
     path: '',
     component: HomeComponent,
