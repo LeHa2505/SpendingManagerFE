@@ -1,4 +1,82 @@
-<p>login works!</p>
-<span [routerLink]="'/login'">Click to login</span>
-<span [routerLink]="'/login/register'">Click to register</span>
-<router-outlet></router-outlet>
+<div class="limiter">
+  <div class="container-login100">
+    <div class="wrap-login100">
+      <div class="login100-pic" data-tilt="">
+        <img src="../../../assets/favicon.png" alt="IMG" />
+      </div>
+      <form
+        nz-form
+        [formGroup]="validateForm"
+        class="login-form login100-form validate-form"
+        (ngSubmit)="submitForm()"
+      >
+        <span class="login100-form-title"><strong>LOGIN</strong></span>
+        <nz-form-item>
+          <nz-form-control
+            class="wrap-input100 validate-input"
+            nzErrorTip="Please input your username!"
+          >
+            <nz-input-group
+              style="display: flex; align-items: center; padding: 0 3rem"
+              nzPrefixIcon="user"
+              class="input100"
+            >
+              <input
+                style="background-color: inherit; margin-left: 1rem"
+                type="text"
+                name="email"
+                placeholder="Email"
+                nz-input
+                formControlName="email"
+              />
+              <span class="focus-input100"></span>
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-control nzErrorTip="Please input your Password!">
+            <nz-input-group
+              style="display: flex; align-items: center; padding: 0 3rem"
+              nzPrefixIcon="lock"
+              class="input100"
+            >
+              <input
+                style="background-color: inherit; margin-left: 1rem"
+                type="password"
+                nz-input
+                formControlName="password"
+                placeholder="Password"
+              />
+              <span class="focus-input100"></span>
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        <div nz-row class="login-form-margin">
+          <div nz-col [nzSpan]="24">
+            <label
+              nz-checkbox
+              formControlName="remember"
+              style="margin-top: 1rem"
+            >
+              <span>Remember me</span>
+            </label>
+          </div>
+        </div>
+        <div class="container-login100-form-btn">
+          <button class="login100-form-btn"><strong>LOGIN</strong></button>
+        </div>
+
+        <div class="text-center p-t-12">
+          <span class="txt1"> Forgot </span>
+          <a class="txt2" href=""> Username / Password? </a>
+        </div>
+        <div class="text-center p-t-136">
+          <a class="txt2" [routerLink]="'/login/register'">
+            Create your Account
+            <i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

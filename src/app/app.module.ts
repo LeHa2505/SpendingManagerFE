@@ -24,6 +24,7 @@ import { CommonModule } from '@angular/common';
 import { AuthenticationModule } from './authentication/authentication.module';
 
 
+
 registerLocaleData(vi);
 
 @NgModule({
