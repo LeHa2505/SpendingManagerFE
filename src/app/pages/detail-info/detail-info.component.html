@@ -1,1 +1,94 @@
-<p>detail-info works!</p>
+<h3 nz-typography style="text-align: center; font-size: 24px">
+  <strong>THÔNG TIN NGƯỜI DÙNG</strong>
+</h3>
+
+
+<div>
+  <nz-table >
+    <tbody style="text-align: center">
+      <tr>
+        <td [colSpan]="1">
+          <span class="avartar-img"
+            ><strong>{{ avatar }}</strong></span
+          >
+        </td>
+        <td [colSpan]="1">
+          <div>
+            <h6>Họ và tên</h6>
+            <strong>{{ fullName }}</strong>
+          </div>
+          <div>
+            <h6>Số điện thoại</h6>
+            <strong>{{ phoneNumber }}</strong>
+          </div>
+
+        </td>
+        <td [colSpan]="1">
+          <div>
+            <h6>Tuổi</h6>
+            <strong>{{ age }}</strong>
+          </div>
+        </td>
+        <td>
+          <app-button-add
+          [btnName]="'Chỉnh sửa thông tin cá nhân'"
+          style="font-size: 1rem"
+          (click)="showModal()"
+></app-button-add>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</div>
+
+<!--Modal-->
+<nz-modal
+  [(nzVisible)]="isVisible"
+  [nzTitle]="addTitle"
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleOk()"
+
+>
+  <ng-template #addTitle style="text-align: center"
+    >Chỉnh sửa thông tin cá nhân</ng-template
+  >
+  <div *nzModalContent>
+    <div>
+      <label for="full-name">Họ và tên</label> <br />
+      <input
+        nz-input
+        style="margin-bottom: 1rem"
+        placeholder=""
+        [(ngModel)]="fullName"
+        id="full-name"
+      />
+      <br />
+    </div>
+
+    <div style="margin-bottom:1rem">
+      <label for="age_value">Tuổi</label> <br />
+      <input
+        nz-input
+        style="margin-bottom: 1rem"
+        placeholder=""
+        [(ngModel)]="age"
+        id="age_value"
+      />
+      <br />
+    </div>
+
+    <div style="margin-bottom:1rem">
+      <label for="phone">Số điện thoại</label> <br />
+      <input
+        nz-input
+        style="margin-bottom: 1rem"
+        placeholder=""
+        [(ngModel)]="phoneNumber"
+        id="phone"
+      />
+      <br />
+    </div>
+  </div>
+</nz-modal>
+
+
