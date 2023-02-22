@@ -35,5 +35,7 @@ export class AuthService {
     localStorage.removeItem('name');
     localStorage.removeItem('role');
     localStorage.removeItem('walletId');
+    console.log("logout");
+    
   }
 }

@@ -59,9 +59,9 @@
         <div class="header-user">
           <div class="user-menu">
             <span style="font-size: 16px" [routerLink]="'user-infomation'">
-              <strong>{{ role }}</strong>
+              <strong>{{ name }}</strong>
             </span>
-            <span [routerLink]="'login'">
+            <span [routerLink]="'login'" (click)="auth.logout()">
               <span
                 style="font-size: 16px; color: #007bc3"
                 nz-icon

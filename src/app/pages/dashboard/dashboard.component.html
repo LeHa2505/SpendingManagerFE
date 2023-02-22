@@ -14,7 +14,7 @@
           nzAllowClear
           nzPlaceHolder=""
           [(ngModel)]="inOutcomeSelect"
-          (ngModelChange)="onChangeInOutcome($event)"
+          (ngModelChange)="onChange($event, inOutcomeSelect)"
         >
           <nz-option nzLabel="Thu" nzValue="1">Thu</nz-option>
           <nz-option nzLabel="Chi" nzValue="-1">Chi</nz-option>
@@ -40,6 +40,7 @@
           nzAllowClear
           nzPlaceHolder=""
           [(ngModel)]="yearSelected"
+          (ngModelChange)="onChange($event, yearSelected)"
           [nzOptionOverflowSize]="5"
         >
           <nz-option
@@ -56,6 +57,7 @@
           nzAllowClear
           nzPlaceHolder=""
           [(ngModel)]="monthSelected"
+          (ngModelChange)="onChange($event, monthSelected)"
           [disabled]="isDisabled"
         >
           <nz-option
@@ -87,8 +89,8 @@
 
   <!-- chart  -->
   <div nz-row [nzAlign]="'center'">
-    <div nz-col [nzSpan]="12">
-      <div style="width: 60%; margin-left: auto; margin-right: auto">
+    <div nz-col [nzSpan]="9">
+      <div style="width: 80%; margin-left: auto; margin-right: auto">
         <canvas
           baseChart
           [datasets]="pieChartNumberOfSpendingData"
@@ -101,7 +103,7 @@
         </canvas>
       </div>
     </div>
-    <div nz-col [nzSpan]="12">
+    <div nz-col [nzSpan]="15">
       <div class="">
         <canvas
           baseChart
@@ -119,7 +121,7 @@
 
   <!--table-->
   <div nz-row style="margin-top: 3rem;">
-    <div nz-col [nzSpan]="12">
+    <div nz-col [nzSpan]="9">
       <nz-table #basicTable [nzData]="listOfData" 
       [nzTotal] = '2'
       style="width: 60%; margin-left: auto; margin-right: auto">
@@ -137,7 +139,7 @@
         </tbody>
       </nz-table>
     </div>
-    <div nz-col [nzSpan]="12">
+    <div nz-col [nzSpan]="15">
       <nz-table #basicTable [nzData]="listOfData" style="width: 60%; margin-left: auto; margin-right: auto">
         <thead>
           <tr>

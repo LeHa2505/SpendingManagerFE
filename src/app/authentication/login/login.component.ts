@@ -33,23 +33,24 @@ export class LoginComponent {
 
   login(){
     this.auth.login({
-      "email" : this.validateForm.controls['email'],
-      "password" : this.validateForm.controls['password']
+      "email" : this.validateForm.controls['email'].value,
+      "password" : this.validateForm.controls['password'].value
     }).subscribe((res:any) => {
       if (res) {
         this.auth.setSession(res);
+        this.auth.isLoginScreen = false;
         this.route.navigateByUrl("/");
       }
       else{
         this.mess.error("Email hoặc mật khẩu sai!");
       }
-      
     },
     (error:any) =>{
-      this.mess.error("Có lỗi xảy ra!");
+      this.mess.error("Email hoặc mật khẩu sai!");
     }
     )
   }
+
 
 
 

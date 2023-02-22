@@ -19,6 +19,6 @@ export class DashboardService {
   }
 
   getAllCategory(userId: any, type: any): Observable<any>{
-    return this.http.get(environment.BASE_API_URI.CLIENT_ADDRESS + "api/user/allCategory?" + userId + "&" + type)
+    return this.http.get(environment.BASE_API_URI.CLIENT_ADDRESS + "api/user/allCategory?userId=" + userId + "&type=" + type)
   }
 }

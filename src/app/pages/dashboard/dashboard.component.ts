@@ -19,7 +19,6 @@ interface tableDataTime {
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.less'],
 })
-
 export class DashboardComponent implements OnInit {
   listBreadCrumb = [
     {
@@ -28,26 +27,28 @@ export class DashboardComponent implements OnInit {
     },
   ];
 
-  inOutcomeSelect = -1;
-  monthSelected = '1';
-  yearSelected = '2023';
+  date = new Date();
+
+  inOutcomeSelect = '1';
+  monthSelected = String(this.date.getMonth() + 1);
+  yearSelected = String(this.date.getFullYear());
   monthArray = [
-    { label: 'Tháng 1', value: '1' },
-    { label: 'Tháng 2', value: '2' },
-    { label: 'Tháng 3', value: '3' },
-    { label: 'Tháng 4', value: '4' },
-    { label: 'Tháng 5', value: '5' },
-    { label: 'Tháng 6', value: '6' },
-    { label: 'Tháng 7', value: '7' },
-    { label: 'Tháng 8', value: '8' },
-    { label: 'Tháng 9', value: '9' },
-    { label: 'Tháng 10', value: '10' },
-    { label: 'Tháng 11', value: '11' },
-    { label: 'Tháng 12', value: '12' },
+    { label: 'Tháng 1', value: 1 },
+    { label: 'Tháng 2', value: 2 },
+    { label: 'Tháng 3', value: 3 },
+    { label: 'Tháng 4', value: 4 },
+    { label: 'Tháng 5', value: 5 },
+    { label: 'Tháng 6', value: 6 },
+    { label: 'Tháng 7', value: 7 },
+    { label: 'Tháng 8', value: 8 },
+    { label: 'Tháng 9', value: 9 },
+    { label: 'Tháng 10', value: 10 },
+    { label: 'Tháng 11', value: 11 },
+    { label: 'Tháng 12', value: 12 },
   ];
 
-  
-  yearArray = ['2017', '2018', '2019', '2020', '2021', '2022', '2023'];
+  // yearArray = ['2017', '2018', '2019', '2020', '2021', '2022', '2023'];
+  yearArray = [2017, 2018, 2019, 2020, 2021, 2022, 2023];
   timeSelected = 'year';
   isDisabled = true;
 
@@ -56,52 +57,40 @@ export class DashboardComponent implements OnInit {
     if (newTimeSelected === 'year') {
       this.isDisabled = true;
     } else this.isDisabled = false;
-    console.log(this.isDisabled);
+    this.getListCategory();
+    this.getBarChart();
   }
 
-  onChangeInOutcome(newValue) {
-    this.inOutcomeSelect = newValue;
-    console.log(this.inOutcomeSelect);
+  onChange(newValue, changedValue) {
+    changedValue = newValue;
+    this.getBarChart();
+    this.getListCategory();
   }
 
   catalogueSelected = 'All';
-  catalogueArray = [
-    {label: 'Tất cả', value: 'All'},
-    {label: 'Ăn uống', value: 'Food'},
-    {label: 'Phương tiện', value: 'Transport'},
-    {label: 'Mỹ phẩm', value: 'Make-up'},
-  ];
-
+  catalogueArray = [];
 
   barChartAccumulatedNumberOfCustomersOptions: ChartOptions = {
     responsive: true,
   };
-  barChartAccumulatedNumberOfCustomersLabels: string[] = [
-    'Mon',
-    'Tue',
-    'Wed',
-    'Thu',
-    'Fri',
-    'Sat',
-    'Sun',
-  ];
+  barChartAccumulatedNumberOfCustomersLabels: string[] = [];
   barChartAccumulatedNumberOfCustomersType: ChartType = 'bar';
   barChartAccumulatedNumberOfCustomersLegend = true;
   barChartAccumulatedNumberOfCustomersPlugins = [];
   barChartAccumulatedNumberOfCustomersData: ChartDataset[] = [
     {
-      data: [45, 37, 60, 70, 46, 33, 40],
+      data: [],
       backgroundColor: '#1890FF',
       borderColor: '#007bff',
       hoverBackgroundColor: '#597a9e',
-      label: 'income',
+      label: 'Amount',
     },
     {
-      data: [45, 37, 60, 70, 46, 33, 40],
+      data: [],
       backgroundColor: '#F67F9B',
       borderColor: '#007bff',
       hoverBackgroundColor: '#597a9e',
-      label: 'outcome',
+      label: 'Budget',
     },
   ];
 
@@ -109,15 +98,7 @@ export class DashboardComponent implements OnInit {
   pieChartNumberOfSpendingOptions: ChartOptions = {
     responsive: true,
   };
-  pieChartNumberOfSpendingLabels: string[] = [
-    'Mon',
-    'Tue',
-    'Wed',
-    'Thu',
-    'Fri',
-    'Sat',
-    'Sun',
-  ];
+  pieChartNumberOfSpendingLabels: string[] = [];
   pieChartNumberOfSpendingType: ChartType = 'pie';
   pieChartNumberOfSpendingLegend = true;
   pieChartNumberOfSpendingPlugins = [];
@@ -143,17 +124,9 @@ export class DashboardComponent implements OnInit {
       label: '',
     },
   ];
-  // events
-  // public chartClicked(e: any): void {
-  //   console.log(e);
-  // }
-
-  // public chartHovered(e: any): void {
-  //   console.log(e);
-  // }
 
   //table
-  totalAmount =   29000000;
+  totalAmount = 29000000;
   listOfData: tableData[] = [
     {
       catalogue: 'Ăn uống',
@@ -177,24 +150,68 @@ export class DashboardComponent implements OnInit {
       amount: 200000,
     },
   ];
-  constructor(private serDashborad: DashboardService, private serAuth: AuthService) {}
-  
+  constructor(
+    private serDashborad: DashboardService,
+    private serAuth: AuthService
+  ) {}
+
   getBarChart() {
-    this.serDashborad.getBarChart({
-        "userId" : this.serAuth.userId,
-         "type" : this.inOutcomeSelect, //1 là thu, -1 là chi
-         "in" : "month", //nhận các giá trị month, year
-         "year" : 2022,
-         "month" : 1,
-         "categoryId" : 1 //lọc theo id danh mục, nếu 'Tất cả' thì truyền 0
-    }).subscribe((res:any) => {
-      console.log(res);
-    })
+    this.serDashborad
+      .getBarChart({
+        userId: this.serAuth.userId,
+        type: Number(this.inOutcomeSelect), //1 là thu, -1 là chi
+        in: this.timeSelected, //nhận các giá trị month, year
+        year: Number(this.yearSelected),
+        month: Number(this.monthSelected),
+        categoryId: this.getCategoryId(this.catalogueSelected), //lọc theo id danh mục, nếu 'Tất cả' thì truyền 0
+      })
+      .subscribe((res: any) => {
+        this.barChartAccumulatedNumberOfCustomersLabels = res.labels;
+        this.barChartAccumulatedNumberOfCustomersData[0].data = res.amount;
+        this.barChartAccumulatedNumberOfCustomersData[1].data = res.budget;
+      });
   }
 
+  getCategoryId(catalogueSelected: any) {
+    this.serDashborad
+      .getAllCategory(this.serAuth.userId, Number(this.inOutcomeSelect))
+      .subscribe((res: any) => {
+        let categoryId: number;
+        let label: string;
+        let value: string;
+        let newItem;
+        res.forEach((element) => {
+          if ((element.name = catalogueSelected)) {
+            categoryId = element.id;
+            label = element.name;
+            value = element.name;
+          }
+          newItem = {
+            label: label,
+            value: value,
+          };
+          this.catalogueArray.push(newItem);
+        });
+        return categoryId;
+      });
+  }
+
+  getListCategory() {
+    this.pieChartNumberOfSpendingLabels = [];
+    this.serDashborad
+      .getAllCategory(this.serAuth.userId, Number(this.inOutcomeSelect))
+      .subscribe((res: any) => {
+        console.log(res);
+        res.forEach((element) => {
+          this.pieChartNumberOfSpendingLabels.push(element.name);
+        });
+        console.log(this.pieChartNumberOfSpendingLabels);
+        this.pieChartNumberOfSpendingLegend = true;
+      });
+  }
 
   ngOnInit(): void {
-    console.log(this.inOutcomeSelect);
     this.getBarChart();
+    this.getListCategory();
   }
 }

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from '../service/auth/auth.service';
 
 @Component({
   selector: 'app-layout',
@@ -6,8 +8,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./layout.component.less'],
 })
 export class LayoutComponent implements OnInit {
-  role: any = 'User';
-  avatar: any = 'A';
+  role: any = localStorage.getItem('role');
+  name: any = localStorage.getItem('name');
+  avatar: any = this.name[0];
   isCollapsed = false;
   menus: any[] = [
     {
@@ -15,20 +18,6 @@ export class LayoutComponent implements OnInit {
       icon: 'home',
       url: '',
     },
-    // {
-    //   title: 'Quản lý đơn hàng',
-    //   icon: 'database',
-    //   subMenus: [
-    //     {
-    //       title: 'Danh sách đơn hàng',
-    //       url: `shipping-order-list`,
-    //     },
-    //     {
-    //       title: 'Tạo đơn hàng',
-    //       url: `shipping-order-list/create`,
-    //     },
-    //   ],
-    // },
     {
       title: 'Dashboard',
       icon: 'dashboard',
@@ -51,7 +40,11 @@ export class LayoutComponent implements OnInit {
     }
   ];
 
-  constructor() {}
+  constructor(public auth: AuthService, private route:Router) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if(!this.role){
+      this.route.navigateByUrl("/login");
+    }
+  }
 }
