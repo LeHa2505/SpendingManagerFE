@@ -59,15 +59,27 @@ export class DashboardComponent implements OnInit {
     } else this.isDisabled = false;
     this.getListCategory();
     this.getBarChart();
+    this.getcatalogueArray();
   }
 
   onChange(newValue, changedValue) {
+    this.totalAmount = 0;
+    this.barChartAccumulatedNumberOfCustomersData[0].data = [];
     changedValue = newValue;
     this.getBarChart();
     this.getListCategory();
+    this.getcatalogueArray();
   }
 
-  catalogueSelected = 'All';
+  onChangeCatalogue(newValue) {
+    this.totalAmount = 0;
+    this.catalogueSelected = newValue;
+    this.categoryId = this.getCategoryId(this.catalogueSelected);
+    this.getBarChart();
+  }
+
+  catalogueSelected = 'all';
+  categoryId: number = 0;
   catalogueArray = [];
 
   barChartAccumulatedNumberOfCustomersOptions: ChartOptions = {
@@ -138,24 +150,16 @@ export class DashboardComponent implements OnInit {
     },
   ];
 
-  totalAmountTime = 29000000;
-  averageAmount = 120000000;
-  listOfDataTime: tableDataTime[] = [
-    {
-      month: 'Tháng 1',
-      amount: 100000,
-    },
-    {
-      month: 'Tháng 2',
-      amount: 200000,
-    },
-  ];
+  totalAmountTime = 0;
+  averageAmount: number = 0;
+  listOfDataTime: tableDataTime[] = [];
   constructor(
     private serDashborad: DashboardService,
     private serAuth: AuthService
   ) {}
 
   getBarChart() {
+    this.listOfDataTime = [];
     this.serDashborad
       .getBarChart({
         userId: this.serAuth.userId,
@@ -163,36 +167,61 @@ export class DashboardComponent implements OnInit {
         in: this.timeSelected, //nhận các giá trị month, year
         year: Number(this.yearSelected),
         month: Number(this.monthSelected),
-        categoryId: this.getCategoryId(this.catalogueSelected), //lọc theo id danh mục, nếu 'Tất cả' thì truyền 0
+        categoryId: this.categoryId, //lọc theo id danh mục, nếu 'Tất cả' thì truyền 0
       })
       .subscribe((res: any) => {
         this.barChartAccumulatedNumberOfCustomersLabels = res.labels;
         this.barChartAccumulatedNumberOfCustomersData[0].data = res.amount;
         this.barChartAccumulatedNumberOfCustomersData[1].data = res.budget;
+        let month = '';
+        let length = res.labels.length;
+        for (let index = 0; index < length; index++) {
+          if (length > 12) {
+            month = 'Ngày ';
+          } else month = '';
+          let newItem = {
+            month: month + res.labels[index],
+            amount: res.amount[index],
+          };
+          this.listOfDataTime.push(newItem);
+        }
+        
       });
   }
 
-  getCategoryId(catalogueSelected: any) {
+  getCategoryId(catalogueSelected: string): number {
+    if ((catalogueSelected ==='all')) {
+      this.categoryId = 0;
+    }
+    else {
+      this.serDashborad.getAllCategory(this.serAuth.userId, Number(this.inOutcomeSelect)).subscribe((res: any) => {
+        res.forEach((element) => {
+          if (element.name === catalogueSelected) {
+            this.categoryId = element.id;
+          }
+        });
+      });
+    }
+      return this.categoryId;
+  }
+
+  getcatalogueArray() {
+    this.catalogueArray = [];
+    let newItem = {
+      label: 'All',
+      value: 'all',
+    };
+    this.catalogueArray.push(newItem);
     this.serDashborad
       .getAllCategory(this.serAuth.userId, Number(this.inOutcomeSelect))
       .subscribe((res: any) => {
-        let categoryId: number;
-        let label: string;
-        let value: string;
-        let newItem;
         res.forEach((element) => {
-          if ((element.name = catalogueSelected)) {
-            categoryId = element.id;
-            label = element.name;
-            value = element.name;
-          }
           newItem = {
-            label: label,
-            value: value,
+            label: element.name,
+            value: element.name,
           };
           this.catalogueArray.push(newItem);
         });
-        return categoryId;
       });
   }
 
@@ -201,17 +230,15 @@ export class DashboardComponent implements OnInit {
     this.serDashborad
       .getAllCategory(this.serAuth.userId, Number(this.inOutcomeSelect))
       .subscribe((res: any) => {
-        console.log(res);
         res.forEach((element) => {
           this.pieChartNumberOfSpendingLabels.push(element.name);
         });
-        console.log(this.pieChartNumberOfSpendingLabels);
-        this.pieChartNumberOfSpendingLegend = true;
       });
   }
 
   ngOnInit(): void {
     this.getBarChart();
     this.getListCategory();
+    this.getcatalogueArray();
   }
 }

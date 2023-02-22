@@ -10,7 +10,7 @@ import { AuthService } from '../service/auth/auth.service';
 export class LayoutComponent implements OnInit {
   role: any = localStorage.getItem('role');
   name: any = localStorage.getItem('name');
-  avatar: any = this.name[0];
+  avatar: string = this.name[0];
   isCollapsed = false;
   menus: any[] = [
     {

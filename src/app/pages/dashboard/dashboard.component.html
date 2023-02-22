@@ -71,11 +71,12 @@
     <div class="filter-item" style="float: right">
       <span>Lọc theo</span>
       <nz-select
-        style="margin-left: 1rem"
+        style="margin-left: 1rem; width: 120px; text-align: center;"
         nzShowSearch
         nzAllowClear
         nzPlaceHolder=""
         [(ngModel)]="catalogueSelected"
+        (ngModelChange)="onChangeCatalogue(catalogueSelected)"
         [nzOptionOverflowSize]="5"
       >
         <nz-option
