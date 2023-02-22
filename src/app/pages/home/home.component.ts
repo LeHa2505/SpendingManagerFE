@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { NzCalendarMode } from 'ng-zorro-antd/calendar';
 import { AuthService } from 'src/app/service/auth/auth.service';
 import { GetUserCalendarService } from 'src/app/service/get-user-calendar.service';
@@ -12,13 +13,18 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     console.log(this.date.getMonth() + 1);
     this.getCalendar();
+    if(!this.userId){
+      this.route.navigateByUrl("/login");
+    }
   }
   constructor(
     private serAuth: AuthService,
-    private serCalendar: GetUserCalendarService
+    private serCalendar: GetUserCalendarService,
+    private route:Router,
   ) {}
 
   listData: any;
+  userId = localStorage.getItem('userId');
 
   date = new Date();
   month = this.date.getMonth();
@@ -33,7 +39,7 @@ export class HomeComponent implements OnInit {
   getCalendar() {
     this.serCalendar
       .getCalendar({
-        "userId": this.serAuth.userId,
+        "userId": localStorage.getItem('userId'),
         "year": this.year,
         "month": this.month + 1,
       })

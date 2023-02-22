@@ -28,6 +28,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { BlankComponent } from './blank/blank.component';
+import { NzMessageModule } from 'ng-zorro-antd/message';
 
 
 
@@ -58,6 +59,7 @@ registerLocaleData(vi);
         NzLayoutModule,
         ReactiveFormsModule,
         NzCheckboxModule,
+        NzMessageModule
     ]
 })
 export class AppModule {}

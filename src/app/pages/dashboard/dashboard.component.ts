@@ -1,5 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ChartOptions, ChartType, ChartDataset, Scale } from 'chart.js';
+import { AuthService } from 'src/app/service/auth/auth.service';
+import { CategoryManagerService } from 'src/app/service/category-manager.service';
+import { DashboardService } from 'src/app/service/dashboard.service';
 
 interface tableData {
   catalogue: string;
@@ -25,7 +28,7 @@ export class DashboardComponent implements OnInit {
     },
   ];
 
-  inOutcomeSelect = 'outcome';
+  inOutcomeSelect = -1;
   monthSelected = '1';
   yearSelected = '2023';
   monthArray = [
@@ -157,19 +160,7 @@ export class DashboardComponent implements OnInit {
       amount: 100000,
     },
     {
-      catalogue: 'Tháng 2',
-      amount: 200000,
-    },
-    {
-      catalogue: 'Tháng 3',
-      amount: 250000,
-    },
-    {
-      catalogue: 'Tháng 4',
-      amount: 200000,
-    },
-    {
-      catalogue: 'Tháng 5',
+      catalogue: 'Đi lại',
       amount: 200000,
     },
   ];
@@ -185,23 +176,25 @@ export class DashboardComponent implements OnInit {
       month: 'Tháng 2',
       amount: 200000,
     },
-    {
-      month: 'Du lịch',
-      amount: 250000,
-    },
-    {
-      month: 'Mua sắm',
-      amount: 200000,
-    },
-    {
-      month: 'Học tập',
-      amount: 200000,
-    },
   ];
-  constructor() {}
+  constructor(private serDashborad: DashboardService, private serAuth: AuthService) {}
   
+  getBarChart() {
+    this.serDashborad.getBarChart({
+        "userId" : this.serAuth.userId,
+         "type" : this.inOutcomeSelect, //1 là thu, -1 là chi
+         "in" : "month", //nhận các giá trị month, year
+         "year" : 2022,
+         "month" : 1,
+         "categoryId" : 1 //lọc theo id danh mục, nếu 'Tất cả' thì truyền 0
+    }).subscribe((res:any) => {
+      console.log(res);
+    })
+  }
+
 
   ngOnInit(): void {
     console.log(this.inOutcomeSelect);
+    this.getBarChart();
   }
 }

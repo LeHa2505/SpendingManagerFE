@@ -4,6 +4,8 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
+import { Router } from '@angular/router';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { AuthService } from 'src/app/service/auth/auth.service';
 
 @Component({
@@ -16,18 +18,40 @@ export class LoginComponent {
 
   submitForm(): void {
     console.log('submit', this.validateForm.value);
+    this.login();
   }
 
-  constructor(private fb: UntypedFormBuilder, private auth: AuthService) {}
+  constructor(private fb: UntypedFormBuilder, private auth: AuthService, private mess: NzMessageService, private route:Router) {}
 
   ngOnInit(): void {
     this.validateForm = this.fb.group({
       email: [null, [Validators.required]],
       password: [null, [Validators.required]],
-      remember: [false],
     });
     
   }
+
+  login(){
+    this.auth.login({
+      "email" : this.validateForm.controls['email'],
+      "password" : this.validateForm.controls['password']
+    }).subscribe((res:any) => {
+      if (res) {
+        this.auth.setSession(res);
+        this.route.navigateByUrl("/");
+      }
+      else{
+        this.mess.error("Email hoặc mật khẩu sai!");
+      }
+      
+    },
+    (error:any) =>{
+      this.mess.error("Có lỗi xảy ra!");
+    }
+    )
+  }
+
+
 
   ngOnDestroy(): void {
     //Called once, before the instance is destroyed.
