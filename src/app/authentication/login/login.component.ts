@@ -4,6 +4,7 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
+import { AuthService } from 'src/app/service/auth/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +18,7 @@ export class LoginComponent {
     console.log('submit', this.validateForm.value);
   }
 
-  constructor(private fb: UntypedFormBuilder) {}
+  constructor(private fb: UntypedFormBuilder, private auth: AuthService) {}
 
   ngOnInit(): void {
     this.validateForm = this.fb.group({
@@ -25,5 +26,12 @@ export class LoginComponent {
       password: [null, [Validators.required]],
       remember: [false],
     });
+    
+  }
+
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    this.auth.isLoginScreen = false;
   }
 }

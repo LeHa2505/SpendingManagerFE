@@ -38,6 +38,9 @@ import {
 import { InOutManagerComponent } from './in-out-manager/in-out-manager.component';
 import { LimitManagerComponent } from './limit-manager/limit-manager.component';
 import { DetailInfoComponent } from './detail-info/detail-info.component';
+import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
+
 
 @NgModule({
   declarations: [
@@ -52,11 +55,13 @@ import { DetailInfoComponent } from './detail-info/detail-info.component';
     SearchPipe,
   ],
   imports: [
+    CommonModule,
+    // BrowserModule,
     PageRoutingModule,
     NzTableModule,
     NzDividerModule,
     ComponentsModule,
-    HttpClientModule,
+    // HttpClientModule,
     NgChartsModule,
     NzCardModule,
     IconsProviderModule,

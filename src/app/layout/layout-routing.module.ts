@@ -6,13 +6,10 @@ import { DetailInfoComponent } from '../pages/detail-info/detail-info.component'
 import { HomeComponent } from '../pages/home/home.component';
 import { InOutManagerComponent } from '../pages/in-out-manager/in-out-manager.component';
 import { LimitManagerComponent } from '../pages/limit-manager/limit-manager.component';
+import { LayoutComponent } from './layout.component';
 
 
 const routes: Routes = [
-  // {
-  //   path: '',
-  //   component: HomeComponent,
-  // },
   // {
   //   path: 'catalogue-manager',
   //   component: CatalogueManagerComponent,
@@ -43,6 +40,16 @@ const routes: Routes = [
   //   path: 'register',
   //   component: RegisterComponent,
   // },
+  {
+    path : 'page',
+    loadChildren: () =>
+      import('../pages/page.module').then((m) => m.DashboardModule),
+      component: LayoutComponent
+  },
+  {
+    path: '',
+    component: LayoutComponent
+  }
 
 ];
 

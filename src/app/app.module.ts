@@ -7,7 +7,7 @@ import { NZ_I18N } from 'ng-zorro-antd/i18n';
 import { vi_VN } from 'ng-zorro-antd/i18n';
 import { registerLocaleData } from '@angular/common';
 import vi from '@angular/common/locales/vi';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IconsProviderModule } from './icons-provider.module';
@@ -22,32 +22,42 @@ import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzCalendarModule } from 'ng-zorro-antd/calendar';
 import { CommonModule } from '@angular/common';
 import { AuthenticationModule } from './authentication/authentication.module';
+import { LoginComponent } from './authentication/login/login.component';
+import { RegisterComponent } from './authentication/register/register.component';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { BlankComponent } from './blank/blank.component';
 
 
 
 registerLocaleData(vi);
 
 @NgModule({
-  declarations: [AppComponent, LayoutComponent],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    FormsModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    IconsProviderModule,
-    NzLayoutModule,
-    NzMenuModule,
-    NzAnchorModule,
-    NgChartsModule,
-    NzIconModule,
-    NzButtonModule,
-    NzTableModule,
-    NzCalendarModule,
-    CommonModule,
-    AuthenticationModule
-  ],
-  providers: [{ provide: NZ_I18N, useValue: vi_VN }],
-  bootstrap: [AppComponent],
+    declarations: [AppComponent, LayoutComponent, LoginComponent, RegisterComponent, BlankComponent],
+    providers: [{ provide: NZ_I18N, useValue: vi_VN }],
+    bootstrap: [AppComponent],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        FormsModule,
+        HttpClientModule,
+        BrowserAnimationsModule,
+        IconsProviderModule,
+        NzLayoutModule,
+        NzMenuModule,
+        NzAnchorModule,
+        NgChartsModule,
+        NzIconModule,
+        NzButtonModule,
+        NzTableModule,
+        NzCalendarModule,
+        CommonModule,
+        NzFormModule,
+        NzInputModule,
+        NzLayoutModule,
+        ReactiveFormsModule,
+        NzCheckboxModule,
+    ]
 })
 export class AppModule {}

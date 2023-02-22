@@ -11,7 +11,7 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 
 @NgModule({
-  declarations: [LoginComponent, RegisterComponent],
+  declarations: [],
   imports: [
     CommonModule,
     AuthenticationRoutingModule,

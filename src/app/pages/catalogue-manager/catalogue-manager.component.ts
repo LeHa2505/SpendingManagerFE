@@ -108,9 +108,6 @@ export class CatalogueManagerComponent {
     };
     this.updateEditChange(this.checkedtemId);
     this.onCurrentPageDataChange(this.listOfData);
-    console.log(this.valueInputCatalogue);
-    console.log(this.checkedtemId);
-    console.log(this.editedItem);
   }
 
   handleEditCancel(): void {

@@ -9,13 +9,13 @@
 >
     <div *nzDateCell="let date" class="events">
         <ng-container *ngFor="let item of listData; let i = index">
-        <div *ngIf="date.getDate() === item.date " class="date-content">
+        <div *ngIf="date.getDate() === item.day && date.getMonth() == month" class="date-content">
             <span style="color: #1890FF;">
                 <span nz-icon nzType="plus" nzTheme="outline" style="font-size: 12px;"></span>
-                {{ item.income }} đ</span>
+                {{ item.thu }} đ</span>
               <span style="color: #F86060;">
                 <span nz-icon nzType="minus" nzTheme="outline" style="font-size: 12px;"></span>
-                {{ item.outcome }} đ</span>
+                {{ item.chi }} đ</span>
         </div>
     </ng-container>
 
