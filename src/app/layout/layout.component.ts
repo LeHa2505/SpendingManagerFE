@@ -37,7 +37,17 @@ export class LayoutComponent implements OnInit {
       title: 'Quản lý hạn mức',
       icon: 'account-book',
       url: 'limitcash-manager',
-    }
+    },
+    {
+      title: 'Quản lý user',
+      icon: 'user',
+      url: 'user-manager',
+    },
+    {
+      title: 'Quản lý danh mục chung',
+      icon: 'area-chart',
+      url: 'catalogue-manager-general',
+    },
   ];
 
   constructor(public auth: AuthService, private route:Router) {}

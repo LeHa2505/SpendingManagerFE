@@ -40,6 +40,8 @@ import { LimitManagerComponent } from './limit-manager/limit-manager.component';
 import { DetailInfoComponent } from './detail-info/detail-info.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
+import { UserManagerComponent } from './user-manager/user-manager.component';
+import { CatalogueGeneralComponent } from './catalogue-general/catalogue-general.component';
 
 
 @NgModule({
@@ -53,6 +55,8 @@ import { CommonModule } from '@angular/common';
     LimitManagerComponent,
     DetailInfoComponent,
     SearchPipe,
+    UserManagerComponent,
+    CatalogueGeneralComponent,
   ],
   imports: [
     CommonModule,
