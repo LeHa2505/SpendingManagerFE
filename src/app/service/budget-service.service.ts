@@ -16,7 +16,7 @@ export class BudgetServiceService {
     return this.http.get(environment.BASE_API_URI.CLIENT_ADDRESS + "api/user/budget?userId=" + userId);
   }
 
-  addListBudget(body:any, userId):Observable<any> {
+  addListBudget(body:any):Observable<any> {
     return this.http.post(environment.BASE_API_URI.CLIENT_ADDRESS + "api/user/budget", body);
   }
 

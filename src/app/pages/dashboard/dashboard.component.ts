@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Route, Router } from '@angular/router';
 import { ChartOptions, ChartType, ChartDataset, Scale } from 'chart.js';
 import { AuthService } from 'src/app/service/auth/auth.service';
 import { CategoryManagerService } from 'src/app/service/category-manager.service';
@@ -27,6 +28,7 @@ export class DashboardComponent implements OnInit {
     },
   ];
 
+  userId = localStorage.getItem("userId")
   date = new Date();
 
   inOutcomeSelect = '1';
@@ -57,28 +59,20 @@ export class DashboardComponent implements OnInit {
     if (newTimeSelected === 'year') {
       this.isDisabled = true;
     } else this.isDisabled = false;
-    this.getListCategory();
     this.getBarChart();
+    this.getPieChart();
+  }
+
+  onChange() {
+    this.getBarChart();
+    this.getPieChart();
     this.getcatalogueArray();
   }
 
-  onChange(newValue, changedValue) {
-    this.totalAmount = 0;
-    this.barChartAccumulatedNumberOfCustomersData[0].data = [];
-    changedValue = newValue;
-    this.getBarChart();
-    this.getListCategory();
-    this.getcatalogueArray();
-  }
-
-  onChangeCatalogue(newValue) {
-    this.totalAmount = 0;
-    this.catalogueSelected = newValue;
-    this.categoryId = this.getCategoryId(this.catalogueSelected);
+  onChangeCatalogue() {
     this.getBarChart();
   }
 
-  catalogueSelected = 'all';
   categoryId: number = 0;
   catalogueArray = [];
 
@@ -95,14 +89,14 @@ export class DashboardComponent implements OnInit {
       backgroundColor: '#1890FF',
       borderColor: '#007bff',
       hoverBackgroundColor: '#597a9e',
-      label: 'Amount',
+      label: 'Số tiền',
     },
     {
       data: [],
       backgroundColor: '#F67F9B',
       borderColor: '#007bff',
       hoverBackgroundColor: '#597a9e',
-      label: 'Budget',
+      label: 'Hạn mức',
     },
   ];
 
@@ -116,7 +110,7 @@ export class DashboardComponent implements OnInit {
   pieChartNumberOfSpendingPlugins = [];
   pieChartNumberOfSpendingData: ChartDataset[] = [
     {
-      data: [45, 37, 60, 70, 46, 33, 40],
+      data: [],
       backgroundColor: [
         '#93d9d9',
         '#ffa1b5',
@@ -139,30 +133,23 @@ export class DashboardComponent implements OnInit {
 
   //table
   totalAmount = 29000000;
-  listOfData: tableData[] = [
-    {
-      catalogue: 'Ăn uống',
-      amount: 100000,
-    },
-    {
-      catalogue: 'Đi lại',
-      amount: 200000,
-    },
-  ];
+  listOfData: any[] = []
 
   totalAmountTime = 0;
   averageAmount: number = 0;
   listOfDataTime: tableDataTime[] = [];
   constructor(
     private serDashborad: DashboardService,
-    private serAuth: AuthService
+    private serAuth: AuthService,
+    private route : Router
   ) {}
 
   getBarChart() {
+    this.totalAmountTime = 0
     this.listOfDataTime = [];
     this.serDashborad
       .getBarChart({
-        userId: localStorage.getItem('userId'),
+        userId: this.userId,
         type: Number(this.inOutcomeSelect), //1 là thu, -1 là chi
         in: this.timeSelected, //nhận các giá trị month, year
         year: Number(this.yearSelected),
@@ -176,6 +163,7 @@ export class DashboardComponent implements OnInit {
         let month = '';
         let length = res.labels.length;
         for (let index = 0; index < length; index++) {
+          this.totalAmountTime+=res.amount[index]
           if (length > 12) {
             month = 'Ngày ';
           } else month = '';
@@ -185,60 +173,66 @@ export class DashboardComponent implements OnInit {
           };
           this.listOfDataTime.push(newItem);
         }
-        
+        this.averageAmount=this.totalAmountTime/res.amount.length
       });
   }
 
-  getCategoryId(catalogueSelected: string): number {
-    if ((catalogueSelected ==='all')) {
-      this.categoryId = 0;
-    }
-    else {
-      this.serDashborad.getAllCategory(localStorage.getItem('userId'), Number(this.inOutcomeSelect)).subscribe((res: any) => {
-        res.forEach((element) => {
-          if (element.name === catalogueSelected) {
-            this.categoryId = element.id;
-          }
-        });
+
+  getPieChart() {
+    this.totalAmount = 0
+    this.serDashborad
+      .getPieChart({
+        userId: this.userId,
+        type: Number(this.inOutcomeSelect), //1 là thu, -1 là chi
+        in: this.timeSelected, //nhận các giá trị month, year
+        year: Number(this.yearSelected),
+        month: Number(this.monthSelected),
+        categoryId: this.categoryId, //lọc theo id danh mục, nếu 'Tất cả' thì truyền 0
+      })
+      .subscribe((res: any) => {
+        this.pieChartNumberOfSpendingLabels = res.labels;
+        this.pieChartNumberOfSpendingData[0].data = res.data;
+        let length = res.labels.length;
+        this.listOfData = [];
+        for (let index = 0; index < length; index++) {
+          this.totalAmount+=res.data[index]
+          let newItem = {
+            category:  res.labels[index],
+            amount: res.data[index],
+          };
+          this.listOfData.push(newItem);
+        }
+        console.log(this.listOfData)
       });
-    }
-      return this.categoryId;
   }
+
 
   getcatalogueArray() {
     this.catalogueArray = [];
     let newItem = {
       label: 'All',
-      value: 'all',
+      value: 0,
     };
     this.catalogueArray.push(newItem);
     this.serDashborad
-      .getAllCategory(localStorage.getItem('userId'), Number(this.inOutcomeSelect))
+      .getAllCategory(this.userId, Number(this.inOutcomeSelect))
       .subscribe((res: any) => {
         res.forEach((element) => {
           newItem = {
             label: element.name,
-            value: element.name,
+            value: element.id,
           };
           this.catalogueArray.push(newItem);
         });
       });
   }
 
-  getListCategory() {
-    this.pieChartNumberOfSpendingLabels = [];
-    this.serDashborad
-      .getAllCategory(localStorage.getItem('userId'), Number(this.inOutcomeSelect))
-      .subscribe((res: any) => {
-        res.forEach((element) => {
-          this.pieChartNumberOfSpendingLabels.push(element.name);
-        });
-      });
-  }
-
   ngOnInit(): void {
-    this.getBarChart();
-    this.getListCategory();
-    this.getcatalogueArray();
+
+    if (this.userId) {
+      this.getBarChart();
+      this.getPieChart()
+      this.getcatalogueArray();
+    } else this.route.navigateByUrl("/login")
   }
 }
