@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { NzLayoutComponent } from 'ng-zorro-antd/layout';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalService } from 'ng-zorro-antd/modal';
@@ -19,6 +20,7 @@ interface Data {
   styleUrls: ['./catalogue-manager.component.less'],
 })
 export class CatalogueManagerComponent {
+  userId = localStorage.getItem('userId');
   listOfData: Data[] = [];
   listOfCurrentData: Data[] = [];
   iconArray = [
@@ -66,7 +68,7 @@ export class CatalogueManagerComponent {
   addCatalogue() {
     this.serCatalogue
       .addCategoryUser({
-        userId: localStorage.getItem('userId'),
+        userId: this.userId,
         name: this.valueInputCatalogue,
         icon: this.catalogueIcon,
         type: Number(this.catalogueType),
@@ -113,7 +115,7 @@ export class CatalogueManagerComponent {
     this.serCatalogue
       .editCategoryUser(
         {
-          userId: localStorage.getItem('userId'),
+          userId: this.userId,
           name: this.valueInputCatalogue,
           icon: this.catalogueIcon,
           type: this.checkedtemType,
@@ -158,21 +160,22 @@ export class CatalogueManagerComponent {
     private serDashboard: DashboardService,
     private serAuth: AuthService,
     private serCatalogue: CategoryManagerService,
-    private mess: NzMessageService
+    private mess: NzMessageService,
+    private route: Router
   ) {}
 
   getListCatalogue() {
     this.listOfData = [];
     let userId = -1;
     this.serDashboard
-      .getAllCategory(localStorage.getItem('userId'), userId)
+      .getAllCategory(this.userId, userId)
       .subscribe((res: any) => {
         console.log(res);
         this.listOfData = res;
       });
     userId = 1;
     this.serDashboard
-      .getAllCategory(localStorage.getItem('userId'), userId)
+      .getAllCategory(this.userId, userId)
       .subscribe((res: any) => {
         res.forEach((element) => {
           this.listOfData.push(element);
@@ -186,6 +189,9 @@ export class CatalogueManagerComponent {
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
+    if(!this.userId){
+      this.route.navigateByUrl("/login");
+    } else
     this.getListCatalogue();
   }
 }

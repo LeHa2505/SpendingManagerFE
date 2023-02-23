@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { NzLayoutComponent } from 'ng-zorro-antd/layout';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalService } from 'ng-zorro-antd/modal';
@@ -41,6 +42,7 @@ export class CatalogueGeneralComponent {
   checkedtemId: any;
   checkedtemType: any;
   typeSelected: any;
+  userId = localStorage.getItem('userId');
 
   isVisible = false;
   isOkLoading = false;
@@ -65,15 +67,17 @@ export class CatalogueGeneralComponent {
   }
 
   addCatalogue() {
-    this.serCatalogue.addListGeneralCategory({
-      name: this.valueInputCatalogue,
-      icon: this.catalogueIcon,
-      type: this.catalogueType,
-    }).subscribe((res:any)=>{
-      console.log(res);
-      this.mess.success("Tạo mới danh mục thành công!");
-      this.getListCatalogue();
-    });
+    this.serCatalogue
+      .addListGeneralCategory({
+        name: this.valueInputCatalogue,
+        icon: this.catalogueIcon,
+        type: this.catalogueType,
+      })
+      .subscribe((res: any) => {
+        console.log(res);
+        this.mess.success('Tạo mới danh mục thành công!');
+        this.getListCatalogue();
+      });
   }
 
   handleOk(): void {
@@ -121,11 +125,11 @@ export class CatalogueGeneralComponent {
 
   deleteItem(index: any) {
     // this.listOfData.splice(index, 1);
-    this.serCatalogue.deleteGeneralCategory(index).subscribe((res:any)=>{
+    this.serCatalogue.deleteGeneralCategory(index).subscribe((res: any) => {
       console.log(res);
       this.mess.success('Xóa thành công!');
       this.getListCatalogue();
-    })
+    });
   }
 
   showDeleteConfirm(data): void {
@@ -147,7 +151,8 @@ export class CatalogueGeneralComponent {
     private serDashboard: DashboardService,
     private serAuth: AuthService,
     private serCatalogue: CategoryManagerService,
-    private mess: NzMessageService
+    private mess: NzMessageService,
+    private route:Router
   ) {}
 
   getListCatalogue() {
@@ -160,6 +165,8 @@ export class CatalogueGeneralComponent {
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
-    this.getListCatalogue();
+    if (!this.userId) {
+      this.route.navigateByUrl('/login');
+    } else this.getListCatalogue();
   }
 }
