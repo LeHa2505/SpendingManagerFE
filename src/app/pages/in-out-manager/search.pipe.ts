@@ -10,6 +10,8 @@ export class SearchPipe implements PipeTransform {
     return value.filter((val) => {
       const money = val.amount.toString();
       let rVal =
+        val.id?.toLocaleLowerCase().includes(args) ||
+        val.id?.includes(args) ||
         val.name?.toLocaleLowerCase().includes(args) ||
         val.name?.includes(args) ||
         val.icon?.toLocaleLowerCase().includes(args) ||

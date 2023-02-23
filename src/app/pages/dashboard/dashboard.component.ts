@@ -162,7 +162,7 @@ export class DashboardComponent implements OnInit {
     this.listOfDataTime = [];
     this.serDashborad
       .getBarChart({
-        userId: this.serAuth.userId,
+        userId: localStorage.getItem('userId'),
         type: Number(this.inOutcomeSelect), //1 là thu, -1 là chi
         in: this.timeSelected, //nhận các giá trị month, year
         year: Number(this.yearSelected),
@@ -194,7 +194,7 @@ export class DashboardComponent implements OnInit {
       this.categoryId = 0;
     }
     else {
-      this.serDashborad.getAllCategory(this.serAuth.userId, Number(this.inOutcomeSelect)).subscribe((res: any) => {
+      this.serDashborad.getAllCategory(localStorage.getItem('userId'), Number(this.inOutcomeSelect)).subscribe((res: any) => {
         res.forEach((element) => {
           if (element.name === catalogueSelected) {
             this.categoryId = element.id;
@@ -213,7 +213,7 @@ export class DashboardComponent implements OnInit {
     };
     this.catalogueArray.push(newItem);
     this.serDashborad
-      .getAllCategory(this.serAuth.userId, Number(this.inOutcomeSelect))
+      .getAllCategory(localStorage.getItem('userId'), Number(this.inOutcomeSelect))
       .subscribe((res: any) => {
         res.forEach((element) => {
           newItem = {
@@ -228,7 +228,7 @@ export class DashboardComponent implements OnInit {
   getListCategory() {
     this.pieChartNumberOfSpendingLabels = [];
     this.serDashborad
-      .getAllCategory(this.serAuth.userId, Number(this.inOutcomeSelect))
+      .getAllCategory(localStorage.getItem('userId'), Number(this.inOutcomeSelect))
       .subscribe((res: any) => {
         res.forEach((element) => {
           this.pieChartNumberOfSpendingLabels.push(element.name);

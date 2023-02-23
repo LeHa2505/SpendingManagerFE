@@ -72,7 +72,7 @@
 </div>
 
 <!--Table-->
-<div *ngIf="listOfData">
+<div *ngIf="listOfData.length > 0">
   <nz-table #basicTable [nzData]="listOfData">
     <thead>
       <tr class="head-style">
@@ -99,7 +99,7 @@
             [iconImg]="data.icon"
             style="margin-right: 2rem; margin-left: 3rem"
           ></app-icon-image>
-          <span>{{ data.type }}</span>
+          <span>{{ data.category }}</span>
         </td>
         <td style="color: #fd3c4a; font-weight: bold">
           {{ data.amount.toString() }} đ
@@ -135,9 +135,9 @@
   </nz-table>
 </div>
 
-<app-loading *ngIf="!listOfData"></app-loading>
+<app-loading *ngIf="listOfData.length == 0"></app-loading>
 
-<!--Modal-->
+<!--Modal add item-->
 <nz-modal
   [(nzVisible)]="isVisible"
   [nzTitle]="addTitle"
@@ -149,24 +149,120 @@
     >Tạo giao dịch mới</ng-template
   >
   <div *nzModalContent>
-    <div>
-      <label for="transaction-name">Loại giao dịch</label> <br /> 
-      <nz-select
-        [(ngModel)]="transactionCategory"
-        (ngModelChange)="onChangeValue($event, transactionCategory)"
-        style="width: 100%"
-      >
-      <nz-option
-      *ngFor="let item of listCatalogueCurrent"
-      nzLabel="{{ item.name }}"
-      nzValue="{{ item.id }}"
-    ></nz-option>
-      </nz-select>
-      <br />
+    <label for="transaction-name">Loại giao dịch</label> <br /> 
+    <div nz-row class="select-box">
+      <div nz-col [nzSpan]="16">
+        <nz-select
+          [(ngModel)]="transactionCategory"
+          (ngModelChange)="onChangeValue($event, transactionCategory)"
+          style="width: 100%"
+        >
+          <nz-option
+            *ngFor="let item of listCatalogueCurrent"
+            nzLabel="{{ item.name }}"
+            nzValue="{{ item.id }}"
+          ></nz-option>
+        </nz-select>
+        <br />  
+      </div>
+      <div nz-col [nzSpan]="8" style="padding-left: 1rem;">
+        <nz-date-picker
+          [(ngModel)]="dateTransaction"
+          (ngModelChange)="onChangeTime($event)"
+        ></nz-date-picker>
+        <br />
+      </div>
     </div>
 
     <div>
-      <label for="transaction-name" style="margin-top: 1rem;">Số tiền</label> <br />
+      <label for="transaction-name" style="margin-top: 1rem">Số tiền</label>
+      <br />
+      <div nz-row class="select-box">
+        <div nz-col [nzSpan]="18">
+          <input
+            nz-input
+            placeholder=""
+            [(ngModel)]="transactionAmount"
+            (ngModelChange)="onChangeValue($event, transactionAmount)"
+            id="transaction-name"
+          />
+          <br />
+        </div>
+        <div nz-col [nzSpan]="6">
+          <div
+            style="
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              margin-left: 1rem;
+            "
+          >
+            <nz-select
+              [(ngModel)]="transactionType"
+              (ngModelChange)="onChangeValue($event, transactionType)"
+              style="width: 100%"
+            >
+              <nz-option nzLabel="Thu" nzValue="1">Thu</nz-option>
+              <nz-option nzLabel="Chi" nzValue="-1">Chi</nz-option>
+            </nz-select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <label for="transaction-note">Ghi chú</label> <br />
+      <input
+        nz-input
+        style="margin-bottom: 1rem"
+        [(ngModel)]="transactionNote"
+        (ngModelChange)="onChangeValue($event, transactionNote)"
+        id="transaction-note"
+      />
+      <br />
+    </div>
+  </div>
+</nz-modal>
+
+<!--Modal update item-->
+<nz-modal
+  [(nzVisible)]="isVisibleUpdate"
+  [nzTitle]="addTitle"
+  (nzOnCancel)="handleEditCancel()"
+  (nzOnOk)="handleEditOk()"
+  nzOkText="{{ comfirmText }}"
+>
+  <ng-template #addTitle style="text-align: center"
+    >Tạo giao dịch mới</ng-template
+  >
+  <div *nzModalContent>
+    <label for="transaction-name">Loại giao dịch</label> <br /> 
+    <div nz-row class="select-box">
+      <div nz-col [nzSpan]="16">
+        <nz-select
+          [(ngModel)]="transactionCategory"
+          (ngModelChange)="onChangeValue($event, transactionCategory)"
+          style="width: 100%"
+        >
+          <nz-option
+            *ngFor="let item of listCatalogueCurrent"
+            nzLabel="{{ item.name }}"
+            nzValue="{{ item.id }}"
+          ></nz-option>
+        </nz-select>
+        <br />  
+      </div>
+      <div nz-col [nzSpan]="8" style="padding-left: 1rem;">
+        <nz-date-picker
+          [(ngModel)]="dateTransaction"
+          (ngModelChange)="onChangeTime($event)"
+        ></nz-date-picker>
+        <br />
+      </div>
+    </div>
+
+    <div>
+      <label for="transaction-name" style="margin-top: 1rem">Số tiền</label>
+      <br />
       <div nz-row class="select-box">
         <div nz-col [nzSpan]="18">
           <input

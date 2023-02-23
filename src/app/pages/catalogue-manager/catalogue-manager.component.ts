@@ -118,9 +118,9 @@ export class CatalogueManagerComponent {
         },
         this.checkedtemId
       )
-      .subscribe((res: any) => console.log(res));
-
-    this.getListCatalogue();
+      .subscribe((res: any) => {
+        this.getListCatalogue();
+      });
     // this.updateEditChange(this.checkedtemId);
   }
 

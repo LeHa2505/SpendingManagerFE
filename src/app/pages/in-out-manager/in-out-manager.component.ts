@@ -18,10 +18,13 @@ export class InOutManagerComponent {
   listOfData = [];
   transactionName: any;
   transactionAmount: any;
-  transactionType: any;
+  transactionType = '';
+  transactionId: any;
   transactionNote: any;
-  transactionCategory: any;
+  transactionCategory = '';
   categoryId: any;
+  dateTransaction = null;
+  editedItem:any;
 
   searchValue = '';
   aa: boolean = false;
@@ -30,7 +33,7 @@ export class InOutManagerComponent {
   }
 
   onChangeValue(newValue, changedValue) {
-    // changedValue = newValue;
+    changedValue = newValue;
     console.log(changedValue);
   }
 
@@ -52,7 +55,8 @@ export class InOutManagerComponent {
   compareLimit() {}
 
   isVisible = false;
-  comfirmText = 'Tạo mới';
+  isVisibleUpdate = false;
+  comfirmText = 'Xác nhận';
 
   showModal() {
     this.isVisible = true;
@@ -61,6 +65,23 @@ export class InOutManagerComponent {
     this.transactionAmount = '';
     this.transactionCategory = '';
     this.transactionNote = '';
+  }
+
+  padTo2Digits(num: number) {
+    return num.toString().padStart(2, '0');
+  }
+  formatDate(date: Date) {
+    return [
+      date.getFullYear(),
+      this.padTo2Digits(date.getMonth() + 1),
+      this.padTo2Digits(date.getDate()),
+    ].join('-');
+  }
+
+  onChangeTime(result: Date): void {
+    // this.dateTransaction = this.datepipe.transform(result, 'yyyy-MM-dd');
+    this.dateTransaction = this.formatDate(result);
+    console.log('onChange: ', result);
   }
 
   addTransaction() {
@@ -72,14 +93,17 @@ export class InOutManagerComponent {
         type: Number(this.transactionType),
         amount: Number(this.transactionAmount),
         note: this.transactionNote,
-        createAt: Date().toString,
+        createAt: this.dateTransaction,
       })
       .subscribe((res: any) => {
-        console.log(res);
-        this.mess.success(res.message);
-        this.getListTransaction();
+        if (res.mess === 'Thêm giao dịch thành công') {
+          this.mess.success(res.message);
+          this.getListTransaction();
+        }
+        if (res.mess === 'Vượt hạn mức') {
+          this.mess.error(res.message);
+        }
       });
-
   }
 
   handleOk(): void {
@@ -87,26 +111,58 @@ export class InOutManagerComponent {
     this.addTransaction();
   }
 
-  getCategoryId(catalogueSelected: string): number {
-    if (catalogueSelected === 'all') {
-      this.categoryId = 0;
-    } else {
-      this.serDashboard
-        .getAllCategory(this.serAuth.userId, Number(this.inOutcomeSelect))
-        .subscribe((res: any) => {
-          res.forEach((element) => {
-            if (element.name === catalogueSelected) {
-              this.categoryId = element.id;
-            }
-          });
-        });
-    }
-    return this.categoryId;
-  }
 
   showModalEdit(data) {
-    this.isVisible = true;
+    this.isVisibleUpdate = true;
+    this.transactionAmount = data.amount;
+    this.transactionCategory = data.category;
+    this.transactionNote = data.note;
+    this.transactionType = data.type.toString;
+    this.transactionId = data.id;
+    this.dateTransaction = data.time;
+    console.log(this.transactionCategory);
+    console.log(this.transactionId);
+    console.log(this.transactionType);   
   }
+
+  handleEditOk() {
+    this.isVisibleUpdate = false;
+    this.updateTransaction();
+    
+  }
+
+  // "id" : 2,
+  //   "userId" : 2,
+  //   "walletId" : 2,
+  //   "userCategoryId" : 1,
+  //   "type" : -1,
+  //   "amount" : 12000,
+  //   "note" : "ăn chơi sa đọa vs Hà",
+  //   "createAt" : "2022-11-11"
+
+  updateTransaction() {
+    this.serTransaction.updateTransaction({
+      id:   this.transactionId,
+      userId: localStorage.getItem('userId'),
+      walletId: localStorage.getItem('walletId'),
+      userCategoryId: this.transactionCategory,
+      type: Number(this.transactionType),
+      amount: Number(this.transactionAmount), 
+      note: this.transactionNote,
+      createAt: this.dateTransaction,
+    }).subscribe(
+      (res:any)=>{
+        console.log(res);
+        this.getListTransaction();
+      }
+    );
+  }
+
+  
+  handleEditCancel(): void {
+    this.isVisibleUpdate = false;
+  }
+
 
   showDeleteConfirm(data): void {
     // const deleteId = this.listOfData.indexOf(data);
@@ -131,23 +187,24 @@ export class InOutManagerComponent {
     private mess: NzMessageService,
     private serTransaction: TransactionServiceService,
     private serAuth: AuthService,
-    private serDashboard: DashboardService,
+    private serDashboard: DashboardService
   ) {}
 
   getListTransaction() {
     this.listOfData = [];
     this.serTransaction
-      .getListTransaction(this.serAuth.userId)
+      .getListTransaction(localStorage.getItem('userId'))
       .subscribe((res: any) => {
         console.log(res);
-        res.transactions.forEach((element:any) => {
+        res.transactions.forEach((element: any) => {
           let item = {
             id: element.id,
             icon: element.userCategory.icon,
-            type: element.userCategory.name,
+            category: element.userCategory.name,
             amount: element.amount,
             note: element.note,
             time: element.createAt,
+            type: element.type
           };
           this.listOfData.push(item);
         });
@@ -156,16 +213,16 @@ export class InOutManagerComponent {
 
   getListCatalogue() {
     this.listCatalogue = [];
-    let userId = -1;
+    let type = -1;
     this.serDashboard
-      .getAllCategory(localStorage.getItem('userId'), userId)
+      .getAllCategory(localStorage.getItem('userId'), type)
       .subscribe((res: any) => {
         console.log(res);
         this.listCatalogue = res;
       });
-    userId = 1;
+    type = 1;
     this.serDashboard
-      .getAllCategory(localStorage.getItem('userId'), userId)
+      .getAllCategory(localStorage.getItem('userId'), type)
       .subscribe((res: any) => {
         res.forEach((element) => {
           this.listCatalogue.push(element);
