@@ -65,7 +65,7 @@ export class CatalogueManagerComponent {
   addCatalogue() {
     this.serCatalogue
       .addCategoryUser({
-        userId: this.serAuth.userId,
+        userId: localStorage.getItem('userId'),
         name: this.valueInputCatalogue,
         icon: this.catalogueIcon,
         type: Number(this.catalogueType),
@@ -111,7 +111,7 @@ export class CatalogueManagerComponent {
     this.serCatalogue
       .editCategoryUser(
         {
-          userId: this.serAuth.userId,
+          userId: localStorage.getItem('userId'),
           name: this.valueInputCatalogue,
           icon: this.catalogueIcon,
           type: this.checkedtemType,
@@ -161,14 +161,14 @@ export class CatalogueManagerComponent {
     this.listOfData = [];
     let userId = -1;
     this.serDashboard
-      .getAllCategory(this.serAuth.userId, userId)
+      .getAllCategory(localStorage.getItem('userId'), userId)
       .subscribe((res: any) => {
         console.log(res);
         this.listOfData = res;
       });
     userId = 1;
     this.serDashboard
-      .getAllCategory(this.serAuth.userId, userId)
+      .getAllCategory(localStorage.getItem('userId'), userId)
       .subscribe((res: any) => {
         res.forEach((element) => {
           this.listOfData.push(element);

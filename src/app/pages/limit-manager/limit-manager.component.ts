@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { BudgetServiceService } from 'src/app/service/budget-service.service';
 
 @Component({
   selector: 'app-limit-manager',
@@ -7,32 +8,7 @@ import { NzModalService } from 'ng-zorro-antd/modal';
   styleUrls: ['./limit-manager.component.less'],
 })
 export class LimitManagerComponent {
-  listOfData = [
-    {
-      icon: 'shopping',
-      type: 'Mua sắm',
-      time: '1/2023',
-      limitcash: 2000000,
-    },
-    {
-      icon: 'shopping',
-      type: 'Mua sắm',
-      time: '1/2023',
-      limitcash: 2000000,
-    },
-    {
-      icon: 'shopping',
-      type: 'Mua sắm',
-      time: '1/2023',
-      limitcash: 2000000,
-    },
-    {
-      icon: 'shopping',
-      type: 'Mua sắm',
-      time: '1/2023',
-      limitcash: 2000000,
-    },
-  ];
+  listOfData = [];
 
   isVisible = false;
   comfirmText = 'Tạo mới';
@@ -49,7 +25,18 @@ export class LimitManagerComponent {
     this.isVisible = false;
   }
 
-  constructor(private modal: NzModalService) {}
+  constructor(
+    private modal: NzModalService,
+    private serBudget: BudgetServiceService
+  ) {}
+
+  getListBudget() {
+    this.serBudget
+      .getListBudget(localStorage.getItem('userId'))
+      .subscribe((res: any) => {
+        this.listOfData = res;
+      });
+  }
 
   showDeleteConfirm(data): void {
     // const deleteId = this.listOfData.indexOf(data);
@@ -86,5 +73,5 @@ export class LimitManagerComponent {
   timeSelected = 'year';
 
   limitSelected = 'Mua sắm';
-  limitCashArray = ['Mua sắm', 'Đi lại', 'Giải trí', 'Thức ăn']
+  limitCashArray = ['Mua sắm', 'Đi lại', 'Giải trí', 'Thức ăn'];
 }

@@ -27,13 +27,13 @@
           style="border-radius: 1.5rem 0rem 0rem 1.5rem; padding: 0.5rem 2rem"
         >
           <app-icon-image
-            [iconImg]="data.icon"
+            [iconImg]="data.category.icon"
             style="margin-right: 2rem; margin-left: 3rem"
           ></app-icon-image>
-          <span>{{ data.type }}</span>
+          <span>{{ data.category.name }}</span>
         </td>
-        <td>{{ data.time }}</td>
-        <td>{{ data.limitcash }}</td>
+        <td>{{ data.budgetTime }}</td>
+        <td>{{ data.amount }}</td>
         <td style="text-align: center; font-size: 1.2rem">
           <span
             (click)="showModal(data)"

@@ -2,7 +2,10 @@ import { Component } from '@angular/core';
 import { SearchPipe } from './search.pipe';
 import { getISOWeek } from 'date-fns';
 import { NzModalService } from 'ng-zorro-antd/modal';
-
+import { TransactionServiceService } from 'src/app/service/transaction-service.service';
+import { AuthService } from 'src/app/service/auth/auth.service';
+import { DashboardService } from 'src/app/service/dashboard.service';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'app-in-out-manager',
@@ -10,65 +13,28 @@ import { NzModalService } from 'ng-zorro-antd/modal';
   styleUrls: ['./in-out-manager.component.less'],
 })
 export class InOutManagerComponent {
-  listOfData = [
-    {
-      id: '1',
-      icon: 'shopping',
-      type: 'Mua sắm',
-      amount: 200000,
-      note: 'Quần áo',
-      time: '1/21/2023',
-    },
-    {
-      id: '2',
-      icon: 'shopping',
-      type: 'Mua sắm',
-      amount: 200000,
-      note: 'Quần áo',
-      time: '1/21/2023',
-    },
-    {
-      id: '3',
-      icon: 'shopping',
-      type: 'Mua sắm',
-      amount: 230000,
-      note: 'Quần áo',
-      time: '1/21/2023',
-    },
-    {
-      id: '4',
-      icon: 'dollar-circle',
-      type: 'Tiết kiệm',
-      amount: 290000,
-      note: 'Quần áo',
-      time: '1/21/2023',
-    },
-    {
-      id: '5',
-      icon: 'car',
-      type: 'Đi lại',
-      amount: 100000,
-      note: 'Quần áo',
-      time: '1/21/2023',
-    },
-    {
-      id: '6',
-      icon: 'shopping',
-      type: 'Mua sắm',
-      amount: 225000,
-      note: 'Quần áo',
-      time: '1/21/2023',
-    },
-  ];
+  listCatalogue: any[] = [];
+  listCatalogueCurrent: any[] = [];
+  listOfData = [];
+  transactionName: any;
+  transactionAmount: any;
+  transactionType: any;
+  transactionNote: any;
+  transactionCategory: any;
+  categoryId: any;
 
   searchValue = '';
   aa: boolean = false;
-  setIndex(ii){
-    this.aa=ii;
-    console.log
+  setIndex(ii) {
+    this.aa = ii;
   }
 
-  inOutcomeSelect = 'outcome';
+  onChangeValue(newValue, changedValue) {
+    // changedValue = newValue;
+    console.log(changedValue);
+  }
+
+  inOutcomeSelect = '1';
   onChangeInOutcome(newValue) {
     this.inOutcomeSelect = newValue;
     console.log(this.inOutcomeSelect);
@@ -83,15 +49,59 @@ export class InOutManagerComponent {
     console.log('week: ', result.map(getISOWeek));
   }
 
-  compareLimit(){
-    
-  }
+  compareLimit() {}
 
   isVisible = false;
-  comfirmText = 'Tạo mới';    
+  comfirmText = 'Tạo mới';
 
   showModal() {
     this.isVisible = true;
+    this.transactionName = '';
+    this.transactionType = '';
+    this.transactionAmount = '';
+    this.transactionCategory = '';
+    this.transactionNote = '';
+  }
+
+  addTransaction() {
+    this.serTransaction
+      .addTransaction({
+        userId: localStorage.getItem('userId'),
+        walletId: localStorage.getItem('walletId'),
+        userCategoryId: this.transactionCategory,
+        type: Number(this.transactionType),
+        amount: Number(this.transactionAmount),
+        note: this.transactionNote,
+        createAt: Date().toString,
+      })
+      .subscribe((res: any) => {
+        console.log(res);
+        this.mess.success(res.message);
+        this.getListTransaction();
+      });
+
+  }
+
+  handleOk(): void {
+    this.isVisible = false;
+    this.addTransaction();
+  }
+
+  getCategoryId(catalogueSelected: string): number {
+    if (catalogueSelected === 'all') {
+      this.categoryId = 0;
+    } else {
+      this.serDashboard
+        .getAllCategory(this.serAuth.userId, Number(this.inOutcomeSelect))
+        .subscribe((res: any) => {
+          res.forEach((element) => {
+            if (element.name === catalogueSelected) {
+              this.categoryId = element.id;
+            }
+          });
+        });
+    }
+    return this.categoryId;
   }
 
   showModalEdit(data) {
@@ -112,15 +122,62 @@ export class InOutManagerComponent {
     });
   }
 
-  handleOk(): void {
-    this.isVisible = false;
-  }
-
   handleCancel(): void {
     this.isVisible = false;
   }
 
-  constructor(private modal: NzModalService) {
-    
+  constructor(
+    private modal: NzModalService,
+    private mess: NzMessageService,
+    private serTransaction: TransactionServiceService,
+    private serAuth: AuthService,
+    private serDashboard: DashboardService,
+  ) {}
+
+  getListTransaction() {
+    this.listOfData = [];
+    this.serTransaction
+      .getListTransaction(this.serAuth.userId)
+      .subscribe((res: any) => {
+        console.log(res);
+        res.transactions.forEach((element:any) => {
+          let item = {
+            id: element.id,
+            icon: element.userCategory.icon,
+            type: element.userCategory.name,
+            amount: element.amount,
+            note: element.note,
+            time: element.createAt,
+          };
+          this.listOfData.push(item);
+        });
+      });
+  }
+
+  getListCatalogue() {
+    this.listCatalogue = [];
+    let userId = -1;
+    this.serDashboard
+      .getAllCategory(localStorage.getItem('userId'), userId)
+      .subscribe((res: any) => {
+        console.log(res);
+        this.listCatalogue = res;
+      });
+    userId = 1;
+    this.serDashboard
+      .getAllCategory(localStorage.getItem('userId'), userId)
+      .subscribe((res: any) => {
+        res.forEach((element) => {
+          this.listCatalogue.push(element);
+        });
+        this.listCatalogueCurrent = this.listCatalogue;
+        // this.listOfData.push(...res);
+      });
+  }
+  ngOnInit(): void {
+    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
+    //Add 'implements OnInit' to the class.
+    this.getListTransaction();
+    this.getListCatalogue();
   }
 }
