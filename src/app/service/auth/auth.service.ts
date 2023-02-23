@@ -19,6 +19,10 @@ export class AuthService {
     );
   }
 
+  changePassword(body:any):Observable<any>{
+    return this.http.put(environment.BASE_API_URI.CLIENT_ADDRESS + 'api/auth/changePassword', body)
+  }
+
   setSession(authResult:any) {
     localStorage.setItem('userId', authResult.id);
     localStorage.setItem('email', authResult.email);

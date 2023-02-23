@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { AuthService } from 'src/app/service/auth/auth.service';
 import { UserService } from 'src/app/service/user.service';
 
 @Component({
@@ -8,11 +9,37 @@ import { UserService } from 'src/app/service/user.service';
   styleUrls: ['./detail-info.component.less'],
 })
 export class DetailInfoComponent {
+  oldpasswordVisible = false;
+  passwordVisible = false;
+  againpasswordVisible = false;
   isVisible = false;
+  isVisiblePass = false;
   // isOkLoading = false;
 
   showModal(): void {
     this.isVisible = true;
+  }
+
+  showModalEditPass() {
+    this.isVisiblePass = true;
+    this.oldPassword = '';
+    this.password = '';
+    this.passwordEnteredAgain = '';
+  }
+
+  handleOkPass(): void {
+    this.isVisiblePass = false;
+
+    if (this.password === this.passwordEnteredAgain) {
+      this.changePassword();
+    }
+    else {
+      this.mess.error("Mật khẩu nhập lại không đúng!");
+    }
+  }
+
+  handleCancelPass() {
+    this.isVisiblePass = false;
   }
 
   handleOk(): void {
@@ -30,6 +57,9 @@ export class DetailInfoComponent {
   gender = '';
   age = '';
   phoneNumber = '';
+  oldPassword = '';
+  password = '';
+  passwordEnteredAgain = '';
   monthArray = [
     { label: 'Tháng 1', value: '1' },
     { label: 'Tháng 2', value: '2' },
@@ -48,7 +78,11 @@ export class DetailInfoComponent {
   limitSelected = 'Mua sắm';
   limitCashArray = ['Mua sắm', 'Đi lại', 'Giải trí', 'Thức ăn'];
 
-  constructor(private serUser: UserService, private mess: NzMessageService) {}
+  constructor(
+    private serUser: UserService,
+    private mess: NzMessageService,
+    private serAuth: AuthService
+  ) {}
 
   getUserInfo() {
     this.serUser
@@ -81,6 +115,24 @@ export class DetailInfoComponent {
         this.mess.success(res.message);
         this.getUserInfo();
         localStorage.setItem('name', this.firstName + ' ' + this.lastName);
+      });
+  }
+
+  changePassword() {
+    this.serAuth
+      .changePassword({
+        userId: localStorage.getItem('userId'),
+        oldPass: this.oldPassword,
+        newPass: this.password,
+      })
+      .subscribe((res: any) => {
+        console.log(res);
+        if (res.message === 'Mật khẩu cũ không chính xác. Vui lòng nhập lại!') {
+          this.mess.error(res.message);
+        }
+        if (res.message === 'Thay đổi mật khẩu thành công!') {
+          this.mess.success(res.message);
+        }
       });
   }
 
