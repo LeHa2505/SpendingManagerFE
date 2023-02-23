@@ -25,4 +25,16 @@ export class CategoryManagerService {
   deleteCategoryUser(id: any):Observable<any>{
     return this.http.delete(environment.BASE_API_URI.CLIENT_ADDRESS + 'api/user/category/' + id)
   }
+
+  getListGeneralCategory():Observable<any>{
+    return this.http.get(environment.BASE_API_URI.CLIENT_ADDRESS + "api/admin/category");
+  }
+
+  addListGeneralCategory(body: any):Observable<any> {
+    return this.http.post(environment.BASE_API_URI.CLIENT_ADDRESS + "api/admin/category", body);
+  }
+
+  updateListGeneralCategory(body:any, userId:any):Observable<any>{
+    return this.http.put(environment.BASE_API_URI.CLIENT_ADDRESS + 'api/admin/category/' + userId, body)
+  }
 }
