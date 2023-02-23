@@ -21,6 +21,7 @@
         nz-input
         placeholder="Tìm kiếm"
         [(ngModel)]="searchValue"
+        (ngModelChange)="search()"
       />
     </nz-input-group>
     <ng-template #suffixIconSearch>
@@ -35,14 +36,14 @@
     style="display: flex; justify-content: center; align-items: center"
   >
     <nz-select
-      nzShowSearch
-      nzAllowClear
+      style="width: 100px;"
       nzPlaceHolder=""
       [(ngModel)]="inOutcomeSelect"
-      (ngModelChange)="onChangeInOutcome($event)"
+      (ngModelChange)="search()"
     >
-      <nz-option nzLabel="Thu" nzValue="income">Thu</nz-option>
-      <nz-option nzLabel="Chi" nzValue="outcome">Chi</nz-option>
+      <nz-option [nzLabel]="'Tất cả'" [nzValue]="0"></nz-option>
+      <nz-option [nzLabel]="'Thu'" [nzValue]="1"></nz-option>
+      <nz-option [nzLabel]="'Chi'" [nzValue]="-1"></nz-option>
     </nz-select>
   </div>
   <div
@@ -54,14 +55,14 @@
     <nz-range-picker
       style="min-width: 27rem; margin: 0"
       [(ngModel)]="date"
-      (ngModelChange)="onChange($event)"
+      (ngModelChange)="search()"
     ></nz-range-picker>
     <br />
   </div>
 </div>
 
 <!--Alert-->
-<div *ngIf="compareLimit()">
+<div *ngIf="warning">
   <nz-alert
     nzType="warning"
     nzMessage="Thông báo"
@@ -73,10 +74,11 @@
 
 <!--Table-->
 <div *ngIf="listOfData.length > 0">
-  <nz-table #basicTable [nzData]="listOfData">
+  <nz-table #basicTable [nzData]="listOfDisplayData">
     <thead>
       <tr class="head-style">
-        <th>Loại giao dịch</th>
+        <th>Danh mục</th>
+        <th>Loại</th>
         <th>Số tiền</th>
         <th>Thời gian giao dịch</th>
         <th>Ghi chú</th>
@@ -87,7 +89,7 @@
     <tbody style="text-align: center">
       <tr
         *ngFor="
-          let data of basicTable.data | customerEmailFilter : searchValue;
+          let data of basicTable.data;
           let i = index
         "
       >
@@ -101,6 +103,8 @@
           ></app-icon-image>
           <span>{{ data.category }}</span>
         </td>
+        <td *ngIf="data.type==1">Thu</td>
+        <td *ngIf="data.type==-1">Chi</td>
         <td style="color: #fd3c4a; font-weight: bold">
           {{ data.amount.toString() }} đ
         </td>
@@ -149,30 +153,6 @@
     >Tạo giao dịch mới</ng-template
   >
   <div *nzModalContent>
-    <label for="transaction-name">Loại giao dịch</label> <br /> 
-    <div nz-row class="select-box">
-      <div nz-col [nzSpan]="16">
-        <nz-select
-          [(ngModel)]="transactionCategory"
-          (ngModelChange)="onChangeValue($event, transactionCategory)"
-          style="width: 100%"
-        >
-          <nz-option
-            *ngFor="let item of listCatalogueCurrent"
-            nzLabel="{{ item.name }}"
-            nzValue="{{ item.id }}"
-          ></nz-option>
-        </nz-select>
-        <br />  
-      </div>
-      <div nz-col [nzSpan]="8" style="padding-left: 1rem;">
-        <nz-date-picker
-          [(ngModel)]="dateTransaction"
-          (ngModelChange)="onChangeTime($event)"
-        ></nz-date-picker>
-        <br />
-      </div>
-    </div>
 
     <div>
       <label for="transaction-name" style="margin-top: 1rem">Số tiền</label>
@@ -180,10 +160,10 @@
       <div nz-row class="select-box">
         <div nz-col [nzSpan]="18">
           <input
+          type="number"
             nz-input
             placeholder=""
             [(ngModel)]="transactionAmount"
-            (ngModelChange)="onChangeValue($event, transactionAmount)"
             id="transaction-name"
           />
           <br />
@@ -199,23 +179,47 @@
           >
             <nz-select
               [(ngModel)]="transactionType"
-              (ngModelChange)="onChangeValue($event, transactionType)"
+              (ngModelChange)="getListCatalogue()"
               style="width: 100%"
             >
-              <nz-option nzLabel="Thu" nzValue="1">Thu</nz-option>
-              <nz-option nzLabel="Chi" nzValue="-1">Chi</nz-option>
+              <nz-option [nzLabel]="'Thu'" [nzValue]="1"></nz-option>
+              <nz-option [nzLabel]="'Chi'" [nzValue]="-1"></nz-option>
             </nz-select>
           </div>
         </div>
       </div>
     </div>
+
+    <label for="transaction-name">Danh mục</label> <br />
+    <div nz-row class="select-box">
+      <div nz-col [nzSpan]="16">
+        <nz-select
+          [(ngModel)]="transactionCategory"
+          style="width: 100%"
+        >
+          <nz-option
+            *ngFor="let item of listCatalogue"
+            [nzLabel]="item.name"
+            [nzValue]="item.id"
+          ></nz-option>
+        </nz-select>
+        <br />
+      </div>
+      <div nz-col [nzSpan]="8" style="padding-left: 1rem;">
+        <nz-date-picker
+          [(ngModel)]="dateTransaction"
+          (ngModelChange)="onChangeTime($event)"
+        ></nz-date-picker>
+        <br />
+      </div>
+    </div>
+
     <div>
       <label for="transaction-note">Ghi chú</label> <br />
       <input
         nz-input
         style="margin-bottom: 1rem"
         [(ngModel)]="transactionNote"
-        (ngModelChange)="onChangeValue($event, transactionNote)"
         id="transaction-note"
       />
       <br />
@@ -226,30 +230,46 @@
 <!--Modal update item-->
 <nz-modal
   [(nzVisible)]="isVisibleUpdate"
-  [nzTitle]="addTitle"
+  [nzTitle]="editTitle"
   (nzOnCancel)="handleEditCancel()"
   (nzOnOk)="handleEditOk()"
   nzOkText="{{ comfirmText }}"
 >
-  <ng-template #addTitle style="text-align: center"
-    >Tạo giao dịch mới</ng-template
+  <ng-template #editTitle style="text-align: center"
+    >Cập nhật giao dịch</ng-template
   >
   <div *nzModalContent>
-    <label for="transaction-name">Loại giao dịch</label> <br /> 
+
+    <div>
+      <label for="transaction-name" style="margin-top: 1rem">Số tiền</label>
+      <br />
+      <div nz-row class="select-box">
+        <div nz-col [nzSpan]="24">
+          <input
+          type="number"
+            nz-input
+            placeholder=""
+            [(ngModel)]="transactionAmount"
+            id="transaction-name"
+          />
+          <br />
+        </div>
+      </div>
+    </div>
+    <label for="transaction-name">Danh mục</label> <br />
     <div nz-row class="select-box">
       <div nz-col [nzSpan]="16">
         <nz-select
           [(ngModel)]="transactionCategory"
-          (ngModelChange)="onChangeValue($event, transactionCategory)"
           style="width: 100%"
         >
           <nz-option
-            *ngFor="let item of listCatalogueCurrent"
-            nzLabel="{{ item.name }}"
-            nzValue="{{ item.id }}"
+            *ngFor="let item of listCatalogue"
+            [nzLabel]="item.name"
+            [nzValue]="item.id"
           ></nz-option>
         </nz-select>
-        <br />  
+        <br />
       </div>
       <div nz-col [nzSpan]="8" style="padding-left: 1rem;">
         <nz-date-picker
@@ -261,47 +281,11 @@
     </div>
 
     <div>
-      <label for="transaction-name" style="margin-top: 1rem">Số tiền</label>
-      <br />
-      <div nz-row class="select-box">
-        <div nz-col [nzSpan]="18">
-          <input
-            nz-input
-            placeholder=""
-            [(ngModel)]="transactionAmount"
-            (ngModelChange)="onChangeValue($event, transactionAmount)"
-            id="transaction-name"
-          />
-          <br />
-        </div>
-        <div nz-col [nzSpan]="6">
-          <div
-            style="
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              margin-left: 1rem;
-            "
-          >
-            <nz-select
-              [(ngModel)]="transactionType"
-              (ngModelChange)="onChangeValue($event, transactionType)"
-              style="width: 100%"
-            >
-              <nz-option nzLabel="Thu" nzValue="1">Thu</nz-option>
-              <nz-option nzLabel="Chi" nzValue="-1">Chi</nz-option>
-            </nz-select>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div>
       <label for="transaction-note">Ghi chú</label> <br />
       <input
         nz-input
         style="margin-bottom: 1rem"
         [(ngModel)]="transactionNote"
-        (ngModelChange)="onChangeValue($event, transactionNote)"
         id="transaction-note"
       />
       <br />
