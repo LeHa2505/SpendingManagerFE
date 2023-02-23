@@ -73,7 +73,7 @@
 </div>
 
 <!--Table-->
-<div *ngIf="listOfData.length > 0">
+<div>
   <nz-table #basicTable [nzData]="listOfDisplayData">
     <thead>
       <tr class="head-style">
@@ -138,8 +138,6 @@
     </tbody>
   </nz-table>
 </div>
-
-<app-loading *ngIf="listOfData.length == 0"></app-loading>
 
 <!--Modal add item-->
 <nz-modal

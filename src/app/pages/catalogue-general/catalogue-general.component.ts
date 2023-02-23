@@ -107,7 +107,7 @@ export class CatalogueGeneralComponent {
         {
           name: this.valueInputCatalogue,
           icon: this.catalogueIcon,
-          type: this.typeSelected,
+          type: this.catalogueType,
         },
         this.checkedtemId
       )
