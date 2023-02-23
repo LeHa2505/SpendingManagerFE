@@ -19,6 +19,7 @@
       <thead>
         <tr class="head-style">
           <th>Tên</th>
+          <th>Loại</th>
           <th>Thời gian tạo</th>
           <th>Sửa</th>
           <th>Xóa</th>
@@ -35,6 +36,12 @@
               style="margin-right: 2rem; margin-left: 3rem"
             ></app-icon-image>
             <span>{{ data.name }}</span>
+          </td>
+          <td style="color: #50505a" *ngIf="data.type < 0">
+            Chi
+          </td>
+          <td style="color: #50505a" *ngIf="data.type > 0">
+            Thu
           </td>
           <td style="color: #50505a">
             {{ data.createAt | date : "yyyy-MM-dd" }}

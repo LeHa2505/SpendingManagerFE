@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NzLayoutComponent } from 'ng-zorro-antd/layout';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { AuthService } from 'src/app/service/auth/auth.service';
 import { CategoryManagerService } from 'src/app/service/category-manager.service';
@@ -73,6 +74,8 @@ export class CatalogueManagerComponent {
       .subscribe((res: any) => {
         console.log(res);
         console.log(Number(this.catalogueType));
+      this.mess.success('Tạo mới thành công!');
+        this.getListCatalogue();
       });
     // if (!(this.newItem.name === '')) {
     //   this.listOfData.push(this.newItem);
@@ -82,7 +85,6 @@ export class CatalogueManagerComponent {
   handleOk(): void {
     this.isVisible = false;
     this.addCatalogue();
-    this.getListCatalogue();
   }
 
   isVisibleEdit = false;
@@ -119,6 +121,7 @@ export class CatalogueManagerComponent {
         this.checkedtemId
       )
       .subscribe((res: any) => {
+      this.mess.success('Cập nhật thành công!');
         this.getListCatalogue();
       });
     // this.updateEditChange(this.checkedtemId);
@@ -131,8 +134,8 @@ export class CatalogueManagerComponent {
   deleteItem(index: number) {
     // this.listOfData.splice(index, 1);
     this.serCatalogue.deleteCategoryUser(index).subscribe((res:any)=>{
-      console.log("Da xoa");
-      
+      this.mess.success('Xóa thành công!');
+      this.getListCatalogue();
     })
   }
 
@@ -154,7 +157,8 @@ export class CatalogueManagerComponent {
     private modal: NzModalService,
     private serDashboard: DashboardService,
     private serAuth: AuthService,
-    private serCatalogue: CategoryManagerService
+    private serCatalogue: CategoryManagerService,
+    private mess: NzMessageService
   ) {}
 
   getListCatalogue() {
