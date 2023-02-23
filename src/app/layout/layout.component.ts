@@ -9,44 +9,49 @@ import { AuthService } from '../service/auth/auth.service';
 })
 export class LayoutComponent implements OnInit {
   role: any = localStorage.getItem('role');
-  name: any = localStorage.getItem('name');
-  avatar: string = ''
   isCollapsed = false;
   menus: any[] = [
     {
       title: 'Trang chủ',
       icon: 'home',
       url: '',
+      role : 'user'
     },
     {
       title: 'Dashboard',
       icon: 'dashboard',
       url: 'dashboard',
+      role:'user'
     },
     {
       title: 'Quản lý danh mục riêng',
       icon: 'appstore',
       url: 'catalogue-manager',
+      role:'user'
     },
     {
       title: 'Quản lý thông tin thu chi',
       icon: 'wallet',
       url: 'spending-info-manager',
+      role:'user'
     },
     {
       title: 'Quản lý hạn mức',
       icon: 'account-book',
       url: 'limitcash-manager',
+      role:'user'
     },
     {
       title: 'Quản lý user',
       icon: 'user',
       url: 'user-manager',
+      role:'admin'
     },
     {
       title: 'Quản lý danh mục chung',
       icon: 'area-chart',
       url: 'catalogue-manager-general',
+      role:'admin'
     },
   ];
 
@@ -56,6 +61,7 @@ export class LayoutComponent implements OnInit {
     if(!this.role){
       this.route.navigateByUrl("/login");
     }else
-    this.avatar = this.name[0];
+    this.auth.name = localStorage.getItem("name")
+    this.auth.avatar = this.auth.name[0];
   }
 }

@@ -115,6 +115,8 @@ export class DetailInfoComponent {
         this.mess.success(res.message);
         this.getUserInfo();
         localStorage.setItem('name', this.firstName + ' ' + this.lastName);
+        this.serAuth.name =  this.firstName + ' ' + this.lastName;
+        this.serAuth.avatar = this.serAuth.name[0];
       });
   }
 

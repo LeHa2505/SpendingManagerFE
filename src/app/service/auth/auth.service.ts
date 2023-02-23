@@ -10,6 +10,9 @@ export class AuthService {
   isLoginScreen = false;
   isRegisterScreen = false;
 
+  name: any ;
+  avatar: string = ''
+
   constructor(private http: HttpClient) {}
 
   login(body: any): Observable<any> {
