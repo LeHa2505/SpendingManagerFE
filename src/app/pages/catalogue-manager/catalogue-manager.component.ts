@@ -74,14 +74,12 @@ export class CatalogueManagerComponent {
         type: Number(this.catalogueType),
       })
       .subscribe((res: any) => {
-        console.log(res);
-        console.log(Number(this.catalogueType));
-      this.mess.success('Tạo mới thành công!');
-        this.getListCatalogue();
-      });
-    // if (!(this.newItem.name === '')) {
-    //   this.listOfData.push(this.newItem);
-    // }
+        this.mess.success('Thành công')
+        this.getListCatalogue()
+      },
+      (error:any)=>{
+        this.mess.error('Vui lòng thử lại!')
+      })
   }
 
   handleOk(): void {
@@ -123,10 +121,12 @@ export class CatalogueManagerComponent {
         this.checkedtemId
       )
       .subscribe((res: any) => {
-      this.mess.success('Cập nhật thành công!');
-        this.getListCatalogue();
-      });
-    // this.updateEditChange(this.checkedtemId);
+        this.mess.success('Thành công')
+        this.getListCatalogue()
+      },
+      (error:any)=>{
+        this.mess.error('Vui lòng thử lại!')
+      })
   }
 
   handleEditCancel(): void {
@@ -134,10 +134,12 @@ export class CatalogueManagerComponent {
   }
 
   deleteItem(index: number) {
-    // this.listOfData.splice(index, 1);
     this.serCatalogue.deleteCategoryUser(index).subscribe((res:any)=>{
-      this.mess.success('Xóa thành công!');
-      this.getListCatalogue();
+      this.mess.success('Thành công')
+      this.getListCatalogue()
+    },
+    (error:any)=>{
+      this.mess.error('Vui lòng thử lại!')
     })
   }
 
@@ -166,23 +168,10 @@ export class CatalogueManagerComponent {
 
   getListCatalogue() {
     this.listOfData = [];
-    let userId = -1;
-    this.serDashboard
-      .getAllCategory(this.userId, userId)
+    this.serCatalogue.getListCategoryUser(this.userId)
       .subscribe((res: any) => {
         console.log(res);
         this.listOfData = res;
-      });
-    userId = 1;
-    this.serDashboard
-      .getAllCategory(this.userId, userId)
-      .subscribe((res: any) => {
-        res.forEach((element) => {
-          this.listOfData.push(element);
-        });
-        console.log(this.listOfData);
-        this.listOfCurrentData = this.listOfData;
-        // this.listOfData.push(...res);
       });
   }
 
@@ -193,5 +182,8 @@ export class CatalogueManagerComponent {
       this.route.navigateByUrl("/login");
     } else
     this.getListCatalogue();
+    if (localStorage.getItem('userId')) {
+      this.getListCatalogue();
+    } else this.route.navigateByUrl("/login");
   }
 }

@@ -6,6 +6,7 @@ import { TransactionServiceService } from 'src/app/service/transaction-service.s
 import { AuthService } from 'src/app/service/auth/auth.service';
 import { DashboardService } from 'src/app/service/dashboard.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-in-out-manager',
@@ -14,17 +15,18 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 })
 export class InOutManagerComponent {
   listCatalogue: any[] = [];
-  listCatalogueCurrent: any[] = [];
   listOfData = [];
+  listOfDisplayData = [];
   transactionName: any;
   transactionAmount: any;
-  transactionType = '';
+  transactionType :any;
   transactionId: any;
   transactionNote: any;
   transactionCategory = '';
   categoryId: any;
   dateTransaction = null;
   editedItem:any;
+  warning = false
 
   searchValue = '';
   aa: boolean = false;
@@ -32,25 +34,8 @@ export class InOutManagerComponent {
     this.aa = ii;
   }
 
-  onChangeValue(newValue, changedValue) {
-    changedValue = newValue;
-    console.log(changedValue);
-  }
-
-  inOutcomeSelect = '1';
-  onChangeInOutcome(newValue) {
-    this.inOutcomeSelect = newValue;
-    console.log(this.inOutcomeSelect);
-  }
-  date = null;
-
-  onChange(result: Date[]): void {
-    console.log('onChange: ', result);
-  }
-
-  getWeek(result: Date[]): void {
-    console.log('week: ', result.map(getISOWeek));
-  }
+  inOutcomeSelect = 0;
+  date = [];
 
   compareLimit() {}
 
@@ -61,16 +46,18 @@ export class InOutManagerComponent {
   showModal() {
     this.isVisible = true;
     this.transactionName = '';
-    this.transactionType = '';
+    this.transactionType = -1;
     this.transactionAmount = '';
     this.transactionCategory = '';
     this.transactionNote = '';
+    this.getListCatalogue()
   }
 
   padTo2Digits(num: number) {
     return num.toString().padStart(2, '0');
   }
-  formatDate(date: Date) {
+  formatDate(d: any) {
+    let date = new Date(d)
     return [
       date.getFullYear(),
       this.padTo2Digits(date.getMonth() + 1),
@@ -81,7 +68,6 @@ export class InOutManagerComponent {
   onChangeTime(result: Date): void {
     // this.dateTransaction = this.datepipe.transform(result, 'yyyy-MM-dd');
     this.dateTransaction = this.formatDate(result);
-    console.log('onChange: ', result);
   }
 
   addTransaction() {
@@ -93,16 +79,19 @@ export class InOutManagerComponent {
         type: Number(this.transactionType),
         amount: Number(this.transactionAmount),
         note: this.transactionNote,
-        createAt: this.dateTransaction,
+        createAt: this.formatDate(this.dateTransaction),
       })
       .subscribe((res: any) => {
-        if (res.mess === 'Thêm giao dịch thành công') {
+        if (res.message == 'Thêm giao dịch thành công') {
           this.mess.success(res.message);
-          this.getListTransaction();
         }
-        if (res.mess === 'Vượt hạn mức') {
+        if (res.message == 'Vượt hạn mức') {
           this.mess.error(res.message);
         }
+        this.getListTransaction();
+      },
+      (error:any)=>{
+        this.mess.error("Vui lòng thử lại!")
       });
   }
 
@@ -115,30 +104,19 @@ export class InOutManagerComponent {
   showModalEdit(data) {
     this.isVisibleUpdate = true;
     this.transactionAmount = data.amount;
-    this.transactionCategory = data.category;
+    this.transactionCategory = data.categoryId;
     this.transactionNote = data.note;
-    this.transactionType = data.type.toString;
+    this.transactionType = data.type;
     this.transactionId = data.id;
     this.dateTransaction = data.time;
-    console.log(this.transactionCategory);
-    console.log(this.transactionId);
-    console.log(this.transactionType);   
+    this.getListCatalogue()
   }
 
   handleEditOk() {
     this.isVisibleUpdate = false;
     this.updateTransaction();
-    
-  }
 
-  // "id" : 2,
-  //   "userId" : 2,
-  //   "walletId" : 2,
-  //   "userCategoryId" : 1,
-  //   "type" : -1,
-  //   "amount" : 12000,
-  //   "note" : "ăn chơi sa đọa vs Hà",
-  //   "createAt" : "2022-11-11"
+  }
 
   updateTransaction() {
     this.serTransaction.updateTransaction({
@@ -147,18 +125,26 @@ export class InOutManagerComponent {
       walletId: localStorage.getItem('walletId'),
       userCategoryId: this.transactionCategory,
       type: Number(this.transactionType),
-      amount: Number(this.transactionAmount), 
+      amount: Number(this.transactionAmount),
       note: this.transactionNote,
-      createAt: this.dateTransaction,
+      createAt: this.formatDate(this.dateTransaction)+' 00:00:00',
     }).subscribe(
       (res:any)=>{
-        console.log(res);
+        if (res.message == 'Cập nhật giao dịch thành công') {
+          this.mess.success(res.message);
+        }
+        if (res.message == 'Vượt hạn mức') {
+          this.mess.error(res.message);
+          // this.warning=true
+        }
         this.getListTransaction();
-      }
-    );
+      },
+      (error:any)=>{
+        this.mess.error("Vui lòng thử lại!")
+      });
   }
 
-  
+
   handleEditCancel(): void {
     this.isVisibleUpdate = false;
   }
@@ -172,9 +158,8 @@ export class InOutManagerComponent {
       nzOkText: 'Xóa',
       nzOkType: 'primary',
       nzOkDanger: true,
-      nzOnOk: () => console.log(''),
+      nzOnOk: () => this.delete(data),
       nzCancelText: 'Hủy',
-      nzOnCancel: () => console.log('Cancel'),
     });
   }
 
@@ -187,7 +172,8 @@ export class InOutManagerComponent {
     private mess: NzMessageService,
     private serTransaction: TransactionServiceService,
     private serAuth: AuthService,
-    private serDashboard: DashboardService
+    private serDashboard: DashboardService,
+    private route : Router
   ) {}
 
   getListTransaction() {
@@ -195,12 +181,12 @@ export class InOutManagerComponent {
     this.serTransaction
       .getListTransaction(localStorage.getItem('userId'))
       .subscribe((res: any) => {
-        console.log(res);
         res.transactions.forEach((element: any) => {
           let item = {
             id: element.id,
             icon: element.userCategory.icon,
             category: element.userCategory.name,
+            categoryId : element.userCategory.id,
             amount: element.amount,
             note: element.note,
             time: element.createAt,
@@ -208,33 +194,54 @@ export class InOutManagerComponent {
           };
           this.listOfData.push(item);
         });
+        this.listOfDisplayData = [...this.listOfData]
       });
   }
 
+  delete(item:any){
+    this.serTransaction.deleteTransaction(item.id).subscribe(
+      (res:any)=>{
+        this.mess.success("Thành công!")
+        this.getListTransaction()
+      },
+      (err:any)=>{
+        this.mess.error("Vui lòng thử lại!")
+      }
+    )
+  }
+
   getListCatalogue() {
-    this.listCatalogue = [];
-    let type = -1;
     this.serDashboard
-      .getAllCategory(localStorage.getItem('userId'), type)
+      .getAllCategory(localStorage.getItem('userId'), this.transactionType)
       .subscribe((res: any) => {
-        console.log(res);
         this.listCatalogue = res;
-      });
-    type = 1;
-    this.serDashboard
-      .getAllCategory(localStorage.getItem('userId'), type)
-      .subscribe((res: any) => {
-        res.forEach((element) => {
-          this.listCatalogue.push(element);
-        });
-        this.listCatalogueCurrent = this.listCatalogue;
-        // this.listOfData.push(...res);
       });
   }
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
-    this.getListTransaction();
-    this.getListCatalogue();
+    if (localStorage.getItem("userId")) {
+      this.dateTransaction = this.formatDate(new Date());
+      this.getListTransaction();
+    } else this.route.navigateByUrl("/login")
+
+  }
+
+  search(){
+    if (this.inOutcomeSelect != 0) {
+      this.listOfDisplayData = this.listOfData.filter((item:any)=>item.type==this.inOutcomeSelect);
+    } else this.listOfDisplayData = [...this.listOfData]
+
+    if (this.searchValue!=null) {
+      this.listOfDisplayData = this.listOfDisplayData.filter((item:any)=>item.category.toLowerCase().indexOf(this.searchValue.trim().toLowerCase()) > -1 || item.amount.toString().indexOf(this.searchValue.trim().toLowerCase()) > -1);
+    }
+
+    if (this.date.length > 0) {
+      this.listOfDisplayData = this.listOfDisplayData.filter((item:any)=> Date.parse(item.time) >= Date.parse(this.date[0]));
+
+      this.listOfDisplayData = this.listOfDisplayData.filter((item:any)=>Date.parse(item.time) <= Date.parse(this.date[1]) + Date.parse('02 Jan 1970 00:00:00 GMT'));
+    }
+
+
   }
 }

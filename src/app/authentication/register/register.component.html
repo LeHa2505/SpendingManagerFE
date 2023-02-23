@@ -1,1 +1,90 @@
-<p>register works!</p>
+<div class="limiter">
+  <div class="container-login100">
+    <div class="wrap-login100">
+      <div class="login100-pic" data-tilt="">
+        <img src="../../../assets/favicon.png" alt="IMG" />
+      </div>
+      <form
+        nz-form
+        [formGroup]="validateForm"
+        (ngSubmit)="submitForm()"
+      >
+        <span class="login100-form-title"><strong>SIGNUP</strong></span>
+
+        <nz-form-item>
+          <nz-form-control nzErrorTip="Họ không được để trống">
+            <input nz-input placeholder="Họ" id="nickname" formControlName="firstName" />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-control nzErrorTip="Tên không được để trống">
+            <input nz-input placeholder="Tên" id="nickname" formControlName="lastName" />
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-control nzErrorTip="Giới tính không được để trống">
+            <nz-select [nzPlaceHolder]="'Giới tính'" formControlName="sex">
+            <nz-option [nzLabel]="'Nam'" [nzValue]="'nam'"></nz-option>
+            <nz-option [nzLabel]="'Nữ'" [nzValue]="'nữ'"></nz-option>
+            <nz-option [nzLabel]="'Khác'" [nzValue]="'Khác'"></nz-option>
+          </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-control nzErrorTip="Ngày sinh không được để trống">
+            <nz-date-picker [nzPlaceHolder]="'Ngày sinh'" [nzFormat]="'yyyy-MM-dd'" formControlName="dateOfBirth" >
+            </nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-control
+            [nzValidateStatus]="validateForm.controls['phoneNumber']"
+            nzErrorTip="Số điện thoại không được để trống"
+          >
+            <nz-input-group>
+              <input formControlName="phoneNumber" placeholder="Số điện thoại" id="'phoneNumber'" nz-input />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-control nzErrorTip="Email không đúng định dạng!">
+            <input nz-input placeholder="E-mail" formControlName="email" id="email" />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-control nzErrorTip="Mật khẩu không được để trống!">
+            <input
+              nz-input
+              placeholder="Mật khẩu"
+              type="password"
+              id="password"
+              formControlName="password"
+              (ngModelChange)="updateConfirmValidator()"
+            />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-control [nzErrorTip]="errorTpl">
+            <input nz-input type="password" placeholder="Nhập lại mật khẩu" formControlName="checkPassword" id="checkPassword" />
+            <ng-template #errorTpl let-control>
+              <ng-container *ngIf="control.hasError('required')">Yêu cầu nhập lại mật khẩu</ng-container>
+              <ng-container *ngIf="control.hasError('confirm')">
+                Mật khẩu không khớp!
+              </ng-container>
+            </ng-template>
+          </nz-form-control>
+        </nz-form-item>
+        <div nz-row class="login-form-margin">
+        </div>
+        <div class="container-login100-form-btn">
+          <button class="login100-form-btn"><strong>Tạo tài khoản</strong></button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
