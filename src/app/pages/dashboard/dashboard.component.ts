@@ -32,8 +32,8 @@ export class DashboardComponent implements OnInit {
   date = new Date();
 
   inOutcomeSelect = '1';
-  monthSelected = String(this.date.getMonth() + 1);
-  yearSelected = String(this.date.getFullYear());
+  monthSelected = (this.date.getMonth() + 1);
+  yearSelected = (this.date.getFullYear());
   monthArray = [
     { label: 'Tháng 1', value: 1 },
     { label: 'Tháng 2', value: 2 },

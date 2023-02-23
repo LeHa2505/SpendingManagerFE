@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { NzLayoutComponent } from 'ng-zorro-antd/layout';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { AuthService } from 'src/app/service/auth/auth.service';
 import { CategoryManagerService } from 'src/app/service/category-manager.service';
@@ -18,6 +20,7 @@ interface Data {
   styleUrls: ['./catalogue-manager.component.less'],
 })
 export class CatalogueManagerComponent {
+  userId = localStorage.getItem('userId');
   listOfData: Data[] = [];
   listOfCurrentData: Data[] = [];
   iconArray = [
@@ -71,12 +74,12 @@ export class CatalogueManagerComponent {
         type: Number(this.catalogueType),
       })
       .subscribe((res: any) => {
-        console.log(res);
-        console.log(Number(this.catalogueType));
-      });
-    // if (!(this.newItem.name === '')) {
-    //   this.listOfData.push(this.newItem);
-    // }
+        this.mess.success('Thành công')
+        this.getListCatalogue()
+      },
+      (error:any)=>{
+        this.mess.error('Vui lòng thử lại!')
+      })
   }
 
   handleOk(): void {
@@ -119,9 +122,12 @@ export class CatalogueManagerComponent {
         this.checkedtemId
       )
       .subscribe((res: any) => {
-        this.getListCatalogue();
-      });
-    // this.updateEditChange(this.checkedtemId);
+        this.mess.success('Thành công')
+        this.getListCatalogue()
+      },
+      (error:any)=>{
+        this.mess.error('Vui lòng thử lại!')
+      })
   }
 
   handleEditCancel(): void {
@@ -129,10 +135,12 @@ export class CatalogueManagerComponent {
   }
 
   deleteItem(index: number) {
-    // this.listOfData.splice(index, 1);
     this.serCatalogue.deleteCategoryUser(index).subscribe((res:any)=>{
-      console.log("Da xoa");
-      
+      this.mess.success('Thành công')
+      this.getListCatalogue()
+    },
+    (error:any)=>{
+      this.mess.error('Vui lòng thử lại!')
     })
   }
 
@@ -152,30 +160,17 @@ export class CatalogueManagerComponent {
 
   constructor(
     private modal: NzModalService,
-    private serDashboard: DashboardService,
-    private serAuth: AuthService,
-    private serCatalogue: CategoryManagerService
+    private rou :Router,
+    private serCatalogue: CategoryManagerService,
+    private mess : NzMessageService
   ) {}
 
   getListCatalogue() {
     this.listOfData = [];
-    let userId = -1;
-    this.serDashboard
-      .getAllCategory(localStorage.getItem('userId'), userId)
+    this.serCatalogue.getListCategoryUser(this.userId)
       .subscribe((res: any) => {
         console.log(res);
         this.listOfData = res;
-      });
-    userId = 1;
-    this.serDashboard
-      .getAllCategory(localStorage.getItem('userId'), userId)
-      .subscribe((res: any) => {
-        res.forEach((element) => {
-          this.listOfData.push(element);
-        });
-        console.log(this.listOfData);
-        this.listOfCurrentData = this.listOfData;
-        // this.listOfData.push(...res);
       });
   }
 
@@ -183,5 +178,8 @@ export class CatalogueManagerComponent {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
     this.getListCatalogue();
+    if (localStorage.getItem('userId')) {
+      this.getListCatalogue();
+    } else this.rou.navigateByUrl("/login");
   }
 }
