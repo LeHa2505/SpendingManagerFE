@@ -12,14 +12,10 @@
 
 <!--table-->
 <div>
-<<<<<<< HEAD
-  <nz-table #basicTable [nzData]="listOfCurrentData">
-=======
   <nz-table
     #basicTable
     [nzData]="listOfData"
   >
->>>>>>> b7b815485c5ce9c2e157dc5a097b903ef7326777
     <thead>
       <tr class="head-style">
         <th>Tên</th>
@@ -42,17 +38,12 @@
           ></app-icon-image>
           <span>{{ data.name }}</span>
         </td>
-<<<<<<< HEAD
-        <td style="color: #50505a" *ngIf="data.type < 0">Chi</td>
-        <td style="color: #50505a" *ngIf="data.type > 0">Thu</td>
-=======
         <td *ngIf="data.type==1" style="color: #50505a">
           Thu
         </td>
         <td *ngIf="data.type==-1" style="color: #50505a">
           Chi
         </td>
->>>>>>> b7b815485c5ce9c2e157dc5a097b903ef7326777
         <td style="color: #50505a">
           {{ data.createAt | date : "yyyy-MM-dd" }}
         </td>
