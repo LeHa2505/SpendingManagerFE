@@ -29,6 +29,8 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { BlankComponent } from './blank/blank.component';
 import { NzMessageModule } from 'ng-zorro-antd/message';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 
 
 
@@ -59,7 +61,9 @@ registerLocaleData(vi);
         NzLayoutModule,
         ReactiveFormsModule,
         NzCheckboxModule,
-        NzMessageModule
+        NzMessageModule,
+        NzSelectModule,
+        NzDatePickerModule
     ]
 })
 export class AppModule {}

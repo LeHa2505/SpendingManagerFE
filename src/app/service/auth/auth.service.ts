@@ -34,6 +34,13 @@ export class AuthService {
     localStorage.removeItem('role');
     localStorage.removeItem('walletId');
     console.log("logout");
-    
+
+  }
+
+  signup(body:any){
+    return this.http.post(
+      environment.BASE_API_URI.CLIENT_ADDRESS + 'api/auth/signup',
+      body
+    )
   }
 }

@@ -20,6 +20,11 @@ export class LoginComponent {
     console.log('submit', this.validateForm.value);
     this.login();
   }
+  signup(){
+    this.auth.isRegisterScreen=true
+    this.auth.isLoginScreen=false
+    this.route.navigateByUrl("/register")
+  }
 
   constructor(private fb: UntypedFormBuilder, private auth: AuthService, private mess: NzMessageService, private route:Router) {}
 
@@ -28,7 +33,7 @@ export class LoginComponent {
       email: [null, [Validators.required]],
       password: [null, [Validators.required]],
     });
-    
+
   }
 
   login(){
