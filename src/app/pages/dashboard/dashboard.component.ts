@@ -110,7 +110,7 @@ export class DashboardComponent implements OnInit {
   pieChartNumberOfSpendingPlugins = [];
   pieChartNumberOfSpendingData: ChartDataset[] = [
     {
-      data: [45, 37, 60, 70, 46, 33, 40],
+      data: [],
       backgroundColor: [
         '#93d9d9',
         '#ffa1b5',

@@ -46,8 +46,8 @@
         >
           <nz-option
             *ngFor="let item of yearArray"
-            nzLabel="{{ item }}"
-            nzValue="{{ item }}"
+            [nzLabel]="item"
+            [nzValue]="item"
           ></nz-option>
         </nz-select>
       </div>
@@ -64,8 +64,8 @@
         >
           <nz-option
             *ngFor="let item of monthArray"
-            nzLabel="{{ item.label }}"
-            nzValue="{{ item.value }}"
+            [nzLabel]="item.label"
+            [nzValue]="item.value"
           ></nz-option>
         </nz-select>
       </div>
@@ -83,8 +83,8 @@
       >
         <nz-option
           *ngFor="let item of catalogueArray"
-          nzLabel="{{ item.label }}"
-          nzValue="{{ item.value }}"
+          [nzLabel]="item.label"
+          [nzValue]="item.value"
         ></nz-option>
       </nz-select>
     </div>
