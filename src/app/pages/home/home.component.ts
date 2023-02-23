@@ -11,11 +11,10 @@ import { GetUserCalendarService } from 'src/app/service/get-user-calendar.servic
 })
 export class HomeComponent implements OnInit {
   ngOnInit(): void {
-    console.log(this.date.getMonth() + 1);
-    this.getCalendar();
     if(!this.userId){
       this.route.navigateByUrl("/login");
-    }
+    } else
+    this.getCalendar();
   }
   constructor(
     private serAuth: AuthService,
@@ -31,9 +30,16 @@ export class HomeComponent implements OnInit {
   year = this.date.getFullYear();
   mode: NzCalendarMode = 'month';
 
+  change(date:any){
+    this.month = date.getMonth();
+    this.year = date.getFullYear();
+    this.getCalendar();
+  }
+
   panelChange(change: { date: Date; mode: string }): void {
-    this.month = this.date.getMonth();
-    console.log(change.date, change.mode);
+    console.log('panel')
+
+
   }
 
   getCalendar() {
@@ -44,7 +50,6 @@ export class HomeComponent implements OnInit {
         "month": this.month + 1,
       })
       .subscribe((res: any) => {
-        console.log(res);
         this.listData = res;
       });
   }

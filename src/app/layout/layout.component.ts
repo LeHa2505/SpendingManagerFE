@@ -10,7 +10,7 @@ import { AuthService } from '../service/auth/auth.service';
 export class LayoutComponent implements OnInit {
   role: any = localStorage.getItem('role');
   name: any = localStorage.getItem('name');
-  avatar: string = this.name[0];
+  avatar: string = ''
   isCollapsed = false;
   menus: any[] = [
     {
@@ -45,6 +45,7 @@ export class LayoutComponent implements OnInit {
   ngOnInit(): void {
     if(!this.role){
       this.route.navigateByUrl("/login");
-    }
+    }else
+    this.avatar = this.name[0];
   }
 }

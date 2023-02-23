@@ -5,7 +5,8 @@
 <nz-calendar
   [(ngModel)]="date"
   [(nzMode)]="mode"
-  (nzPanelChange)="panelChange($event)"
+  (nzSelectChange)="change($event)"
+
 >
     <div *nzDateCell="let date" class="events">
         <ng-container *ngFor="let item of listData; let i = index">
