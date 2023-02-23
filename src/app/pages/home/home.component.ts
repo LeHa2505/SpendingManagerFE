@@ -15,12 +15,17 @@ export class HomeComponent implements OnInit {
       this.route.navigateByUrl("/login");
     } else
     this.getCalendar();
+    if (localStorage.getItem('role') == 'user') {
+      this.isUser = true
+    }
   }
   constructor(
     private serAuth: AuthService,
     private serCalendar: GetUserCalendarService,
     private route:Router,
   ) {}
+
+  isUser = false;
 
   listData: any;
   userId = localStorage.getItem('userId');

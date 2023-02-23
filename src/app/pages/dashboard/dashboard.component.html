@@ -11,26 +11,24 @@
       <div class="filter-item">
         <nz-select
           nzShowSearch
-          nzAllowClear
           nzPlaceHolder=""
           [(ngModel)]="inOutcomeSelect"
-          (ngModelChange)="onChange()"
+          (ngModelChange)="categoryId=0;onChange()"
         >
-          <nz-option nzLabel="Thu" nzValue="1">Thu</nz-option>
-          <nz-option nzLabel="Chi" nzValue="-1">Chi</nz-option>
+          <nz-option [nzLabel]="'Thu'" [nzValue]="1"></nz-option>
+          <nz-option [nzLabel]="'Chi'" [nzValue]="-1"></nz-option>
         </nz-select>
       </div>
 
       <div class="filter-item">
         <nz-select
           nzShowSearch
-          nzAllowClear
           nzPlaceHolder=""
           [(ngModel)]="timeSelected"
           (ngModelChange)="onChangeTime($event)"
         >
-          <nz-option nzLabel="Trong năm" nzValue="year"></nz-option>
-          <nz-option nzLabel="Trong tháng" nzValue="month"></nz-option>
+          <nz-option [nzLabel]="'Trong năm'" [nzValue]="'year'"></nz-option>
+          <nz-option [nzLabel]="'Trong tháng'" [nzValue]="'month'"></nz-option>
         </nz-select>
       </div>
 
@@ -38,7 +36,6 @@
         <nz-select
           style="width:100px"
           nzShowSearch
-          nzAllowClear
           nzPlaceHolder=""
           [(ngModel)]="yearSelected"
           (ngModelChange)="onChange()"
@@ -56,7 +53,6 @@
         <nz-select
           style="width:100px"
           nzShowSearch
-          nzAllowClear
           nzPlaceHolder=""
           [(ngModel)]="monthSelected"
           (ngModelChange)="onChange()"
@@ -75,7 +71,6 @@
       <nz-select
         style="margin-left: 1rem; width: 150px; text-align: center;"
         nzShowSearch
-        nzAllowClear
         nzPlaceHolder=""
         [(ngModel)]="categoryId"
         (ngModelChange)="onChangeCatalogue()"

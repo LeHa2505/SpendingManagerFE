@@ -31,7 +31,7 @@ export class DashboardComponent implements OnInit {
   userId = localStorage.getItem("userId")
   date = new Date();
 
-  inOutcomeSelect = '1';
+  inOutcomeSelect = 1;
   monthSelected = (this.date.getMonth() + 1);
   yearSelected = (this.date.getFullYear());
   monthArray = [
@@ -145,8 +145,6 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   getBarChart() {
-    this.totalAmountTime = 0
-    this.listOfDataTime = [];
     this.serDashborad
       .getBarChart({
         userId: this.userId,
@@ -157,6 +155,8 @@ export class DashboardComponent implements OnInit {
         categoryId: this.categoryId, //lọc theo id danh mục, nếu 'Tất cả' thì truyền 0
       })
       .subscribe((res: any) => {
+        this.totalAmountTime = 0
+        this.listOfDataTime = [];
         this.barChartAccumulatedNumberOfCustomersLabels = res.labels;
         this.barChartAccumulatedNumberOfCustomersData[0].data = res.amount;
         this.barChartAccumulatedNumberOfCustomersData[1].data = res.budget;
