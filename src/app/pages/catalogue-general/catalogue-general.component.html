@@ -174,6 +174,25 @@
           </nz-option>
         </nz-select>
       </div>
+      <div style="margin-top: 1.5rem; width: auto">
+        <label for="input-catalogue">Loại</label> <br />
+        <nz-select
+          nzShowSearch
+          nzAllowClear
+          [(ngModel)]="catalogueType"
+          (ngModelChange)="onChange($event, catalogueType)"
+          style="width: 100%"
+          placeholder="Mặc định là thu"
+          nzLabel="catalogueType"
+        >
+          <nz-option
+            *ngFor="let item of catalogueTypeArray"
+            nzLabel="{{ item.label }}"
+            nzValue="{{ item.value }}"
+          >
+          </nz-option>
+        </nz-select>
+      </div>
     </ng-container>
   </nz-modal>
   

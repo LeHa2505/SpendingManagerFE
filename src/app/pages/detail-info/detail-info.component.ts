@@ -48,7 +48,7 @@ export class DetailInfoComponent {
   limitSelected = 'Mua sắm';
   limitCashArray = ['Mua sắm', 'Đi lại', 'Giải trí', 'Thức ăn'];
 
-  constructor(private serUser: UserService, private mess: NzMessageService,) {}
+  constructor(private serUser: UserService, private mess: NzMessageService) {}
 
   getUserInfo() {
     this.serUser
@@ -66,20 +66,22 @@ export class DetailInfoComponent {
   }
 
   updateUserInfo() {
-    this.serUser.updateIserInfo(
-      {
-        date_of_birth: this.age,
-        sex: this.gender,
-        last_name: this.lastName,
-        phone_number: this.phoneNumber,
-        first_name: this.firstName,
-      },
-      localStorage.getItem('userId')
-    ).subscribe((res:any)=>{
+    this.serUser
+      .updateIserInfo(
+        {
+          date_of_birth: this.age,
+          sex: this.gender,
+          last_name: this.lastName,
+          phone_number: this.phoneNumber,
+          first_name: this.firstName,
+        },
+        localStorage.getItem('userId')
+      )
+      .subscribe((res: any) => {
         this.mess.success(res.message);
         this.getUserInfo();
-        // localStorage.setItem('name', this.firstName);
-    });
+        localStorage.setItem('name', this.firstName + ' ' + this.lastName);
+      });
   }
 
   ngOnInit(): void {

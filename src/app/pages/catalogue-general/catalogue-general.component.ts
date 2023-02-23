@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NzLayoutComponent } from 'ng-zorro-antd/layout';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { AuthService } from 'src/app/service/auth/auth.service';
 import { CategoryManagerService } from 'src/app/service/category-manager.service';
@@ -39,6 +40,7 @@ export class CatalogueGeneralComponent {
   editedItem: any;
   checkedtemId: any;
   checkedtemType: any;
+  typeSelected: any;
 
   isVisible = false;
   isOkLoading = false;
@@ -63,26 +65,20 @@ export class CatalogueGeneralComponent {
   }
 
   addCatalogue() {
-    this.serCatalogue
-      .addCategoryUser({
-        userId: localStorage.getItem('userId'),
-        name: this.valueInputCatalogue,
-        icon: this.catalogueIcon,
-        type: Number(this.catalogueType),
-      })
-      .subscribe((res: any) => {
-        console.log(res);
-        console.log(Number(this.catalogueType));
-      });
-    // if (!(this.newItem.name === '')) {
-    //   this.listOfData.push(this.newItem);
-    // }
+    this.serCatalogue.addListGeneralCategory({
+      name: this.valueInputCatalogue,
+      icon: this.catalogueIcon,
+      type: this.catalogueType,
+    }).subscribe((res:any)=>{
+      console.log(res);
+      this.mess.success("Tạo mới danh mục thành công!");
+      this.getListCatalogue();
+    });
   }
 
   handleOk(): void {
     this.isVisible = false;
     this.addCatalogue();
-    this.getListCatalogue();
   }
 
   isVisibleEdit = false;
@@ -101,24 +97,19 @@ export class CatalogueGeneralComponent {
 
   handleEditOk() {
     this.isVisibleEdit = false;
-    this.editedItem = {
-      id: this.checkedtemId,
-      icon: this.catalogueIcon,
-      name: this.valueInputCatalogue,
-      time: new Date().toLocaleDateString(),
-    };
 
     this.serCatalogue
-      .editCategoryUser(
+      .updateListGeneralCategory(
         {
-          userId: localStorage.getItem('userId'),
           name: this.valueInputCatalogue,
           icon: this.catalogueIcon,
-          type: this.checkedtemType,
+          type: this.typeSelected,
         },
         this.checkedtemId
       )
       .subscribe((res: any) => {
+        console.log(res);
+        this.mess.success('Cập nhật thành công!');
         this.getListCatalogue();
       });
     // this.updateEditChange(this.checkedtemId);
@@ -128,16 +119,17 @@ export class CatalogueGeneralComponent {
     this.isVisibleEdit = false;
   }
 
-  deleteItem(index: number) {
+  deleteItem(index: any) {
     // this.listOfData.splice(index, 1);
-    this.serCatalogue.deleteCategoryUser(index).subscribe((res:any)=>{
-      console.log("Da xoa");
-      
+    this.serCatalogue.deleteGeneralCategory(index).subscribe((res:any)=>{
+      console.log(res);
+      this.mess.success('Xóa thành công!');
+      this.getListCatalogue();
     })
   }
 
   showDeleteConfirm(data): void {
-    const deleteId = data.id
+    const deleteId = data.id;
     this.modal.confirm({
       nzTitle: 'Xác nhận xóa?',
       nzContent: '',
@@ -154,14 +146,15 @@ export class CatalogueGeneralComponent {
     private modal: NzModalService,
     private serDashboard: DashboardService,
     private serAuth: AuthService,
-    private serCatalogue: CategoryManagerService
+    private serCatalogue: CategoryManagerService,
+    private mess: NzMessageService
   ) {}
 
   getListCatalogue() {
     this.listOfData = [];
-    this.serCatalogue.getListGeneralCategory().subscribe((res:any)=>{
+    this.serCatalogue.getListGeneralCategory().subscribe((res: any) => {
       this.listOfData = res;
-    })
+    });
   }
 
   ngOnInit(): void {

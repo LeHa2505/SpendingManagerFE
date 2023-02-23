@@ -37,4 +37,8 @@ export class CategoryManagerService {
   updateListGeneralCategory(body:any, userId:any):Observable<any>{
     return this.http.put(environment.BASE_API_URI.CLIENT_ADDRESS + 'api/admin/category/' + userId, body)
   }
+
+  deleteGeneralCategory(userId:any):Observable<any>{
+    return this.http.delete(environment.BASE_API_URI.CLIENT_ADDRESS + 'api/admin/category/' + userId)
+  }
 }
