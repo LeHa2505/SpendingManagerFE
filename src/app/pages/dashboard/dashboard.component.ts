@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Route, Router } from '@angular/router';
 import { ChartOptions, ChartType, ChartDataset, Scale } from 'chart.js';
 import { AuthService } from 'src/app/service/auth/auth.service';
 import { CategoryManagerService } from 'src/app/service/category-manager.service';
@@ -27,6 +28,7 @@ export class DashboardComponent implements OnInit {
     },
   ];
 
+  userId = localStorage.getItem("userId")
   date = new Date();
 
   inOutcomeSelect = '1';
@@ -138,7 +140,8 @@ export class DashboardComponent implements OnInit {
   listOfDataTime: tableDataTime[] = [];
   constructor(
     private serDashborad: DashboardService,
-    private serAuth: AuthService
+    private serAuth: AuthService,
+    private route : Router
   ) {}
 
   getBarChart() {
@@ -146,7 +149,7 @@ export class DashboardComponent implements OnInit {
     this.listOfDataTime = [];
     this.serDashborad
       .getBarChart({
-        userId: this.serAuth.userId,
+        userId: this.userId,
         type: Number(this.inOutcomeSelect), //1 là thu, -1 là chi
         in: this.timeSelected, //nhận các giá trị month, year
         year: Number(this.yearSelected),
@@ -178,7 +181,7 @@ export class DashboardComponent implements OnInit {
     this.totalAmount = 0
     this.serDashborad
       .getPieChart({
-        userId: this.serAuth.userId,
+        userId: this.userId,
         type: Number(this.inOutcomeSelect), //1 là thu, -1 là chi
         in: this.timeSelected, //nhận các giá trị month, year
         year: Number(this.yearSelected),
@@ -211,7 +214,7 @@ export class DashboardComponent implements OnInit {
     };
     this.catalogueArray.push(newItem);
     this.serDashborad
-      .getAllCategory(this.serAuth.userId, Number(this.inOutcomeSelect))
+      .getAllCategory(this.userId, Number(this.inOutcomeSelect))
       .subscribe((res: any) => {
         res.forEach((element) => {
           newItem = {
@@ -224,8 +227,11 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getBarChart();
-    this.getPieChart()
-    this.getcatalogueArray();
+
+    if (this.userId) {
+      this.getBarChart();
+      this.getPieChart()
+      this.getcatalogueArray();
+    } else this.route.navigateByUrl("/login")
   }
 }
