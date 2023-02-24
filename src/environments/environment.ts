@@ -5,9 +5,9 @@
 export const environment = {
   production: false,
   BASE_API_URI: {
-    BASE_SERVICE_CUSTOMER_API: 'http://139.162.3.13:8017/',
-    BASE_SERVICE_SELLER_API: 'http://139.162.3.13:9002/',
-    CLIENT_ADDRESS: 'http://localhost:8082',
+    // BASE_SERVICE_CUSTOMER_API: 'http://139.162.3.13:8017/',
+    // BASE_SERVICE_SELLER_API: 'http://139.162.3.13:9002/',
+    CLIENT_ADDRESS: 'http://localhost:8088/',
     // BASE_SERVICE_API: 'http://10.254.145.209:8088/',
     // CLIENT_ADDRESS:    'http://10.254.145.209:8082',
   },

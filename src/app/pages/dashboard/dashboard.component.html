@@ -11,57 +11,57 @@
       <div class="filter-item">
         <nz-select
           nzShowSearch
-          nzAllowClear
           nzPlaceHolder=""
           [(ngModel)]="inOutcomeSelect"
-          (ngModelChange)="onChangeInOutcome($event)"
+          (ngModelChange)="categoryId=0;onChange()"
         >
-          <nz-option nzLabel="Thu" nzValue="income">Thu</nz-option>
-          <nz-option nzLabel="Chi" nzValue="outcome">Chi</nz-option>
+          <nz-option [nzLabel]="'Thu'" [nzValue]="1"></nz-option>
+          <nz-option [nzLabel]="'Chi'" [nzValue]="-1"></nz-option>
         </nz-select>
       </div>
 
       <div class="filter-item">
         <nz-select
           nzShowSearch
-          nzAllowClear
           nzPlaceHolder=""
           [(ngModel)]="timeSelected"
           (ngModelChange)="onChangeTime($event)"
         >
-          <nz-option nzLabel="Theo năm" nzValue="year"></nz-option>
-          <nz-option nzLabel="Theo tháng" nzValue="month"></nz-option>
+          <nz-option [nzLabel]="'Trong năm'" [nzValue]="'year'"></nz-option>
+          <nz-option [nzLabel]="'Trong tháng'" [nzValue]="'month'"></nz-option>
         </nz-select>
       </div>
 
       <div class="filter-item">
         <nz-select
+          style="width:100px"
           nzShowSearch
-          nzAllowClear
           nzPlaceHolder=""
           [(ngModel)]="yearSelected"
+          (ngModelChange)="onChange()"
           [nzOptionOverflowSize]="5"
         >
           <nz-option
             *ngFor="let item of yearArray"
-            nzLabel="{{ item }}"
-            nzValue="{{ item }}"
+            [nzLabel]="item"
+            [nzValue]="item"
           ></nz-option>
         </nz-select>
       </div>
 
       <div class="filter-item">
         <nz-select
+          style="width:100px"
           nzShowSearch
-          nzAllowClear
           nzPlaceHolder=""
           [(ngModel)]="monthSelected"
+          (ngModelChange)="onChange()"
           [disabled]="isDisabled"
         >
           <nz-option
             *ngFor="let item of monthArray"
-            nzLabel="{{ item.label }}"
-            nzValue="{{ item.value }}"
+            [nzLabel]="item.label"
+            [nzValue]="item.value"
           ></nz-option>
         </nz-select>
       </div>
@@ -69,17 +69,17 @@
     <div class="filter-item" style="float: right">
       <span>Lọc theo</span>
       <nz-select
-        style="margin-left: 1rem"
+        style="margin-left: 1rem; width: 150px; text-align: center;"
         nzShowSearch
-        nzAllowClear
         nzPlaceHolder=""
-        [(ngModel)]="catalogueSelected"
+        [(ngModel)]="categoryId"
+        (ngModelChange)="onChangeCatalogue()"
         [nzOptionOverflowSize]="5"
       >
         <nz-option
           *ngFor="let item of catalogueArray"
-          nzLabel="{{ item.label }}"
-          nzValue="{{ item.value }}"
+          [nzLabel]="item.label"
+          [nzValue]="item.value"
         ></nz-option>
       </nz-select>
     </div>
@@ -87,8 +87,8 @@
 
   <!-- chart  -->
   <div nz-row [nzAlign]="'center'">
-    <div nz-col [nzSpan]="12">
-      <div style="width: 60%; margin-left: auto; margin-right: auto">
+    <div nz-col [nzSpan]="9">
+      <div style="width: 80%; margin-left: auto; margin-right: auto">
         <canvas
           baseChart
           [datasets]="pieChartNumberOfSpendingData"
@@ -101,7 +101,7 @@
         </canvas>
       </div>
     </div>
-    <div nz-col [nzSpan]="12">
+    <div nz-col [nzSpan]="15">
       <div class="">
         <canvas
           baseChart
@@ -119,8 +119,8 @@
 
   <!--table-->
   <div nz-row style="margin-top: 3rem;">
-    <div nz-col [nzSpan]="12">
-      <nz-table #basicTable [nzData]="listOfData" 
+    <div nz-col [nzSpan]="9">
+      <nz-table #pie [nzData]="listOfData"
       [nzTotal] = '2'
       style="width: 60%; margin-left: auto; margin-right: auto">
         <thead>
@@ -130,15 +130,15 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let data of listOfData">
-            <td>{{ data.catalogue }}</td>
+          <tr *ngFor="let data of pie.data">
+            <td>{{ data.category }}</td>
             <td>{{ data.amount }} đ</td>
           </tr>
         </tbody>
       </nz-table>
     </div>
-    <div nz-col [nzSpan]="12">
-      <nz-table #basicTable [nzData]="listOfData" style="width: 60%; margin-left: auto; margin-right: auto">
+    <div nz-col [nzSpan]="15">
+      <nz-table #bar [nzData]="listOfDataTime" style="width: 60%; margin-left: auto; margin-right: auto">
         <thead>
           <tr>
             <th>Tổng</th>
@@ -150,7 +150,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let data of listOfDataTime">
+          <tr *ngFor="let data of bar.data">
             <td>{{ data.month }}</td>
             <td>{{ data.amount }} đ</td>
           </tr>

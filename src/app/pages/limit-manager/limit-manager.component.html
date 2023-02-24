@@ -27,16 +27,16 @@
           style="border-radius: 1.5rem 0rem 0rem 1.5rem; padding: 0.5rem 2rem"
         >
           <app-icon-image
-            [iconImg]="data.icon"
+            [iconImg]="data.category.icon"
             style="margin-right: 2rem; margin-left: 3rem"
           ></app-icon-image>
-          <span>{{ data.type }}</span>
+          <span>{{ data.category.name }}</span>
         </td>
-        <td>{{ data.time }}</td>
-        <td>{{ data.limitcash }}</td>
+        <td>{{ data.budgetTime }}</td>
+        <td>{{ data.amount }}</td>
         <td style="text-align: center; font-size: 1.2rem">
           <span
-            (click)="showModal(data)"
+            (click)="showEditModal(data)"
             style="cursor: pointer"
             nz-icon
             nzType="edit"
@@ -79,6 +79,7 @@
       <label for="transaction-name">Số tiền</label> <br />
       <input
         nz-input
+        type="number"
         style="margin-bottom: 1rem"
         placeholder=""
         [(ngModel)]="limitCash"
@@ -145,8 +146,97 @@
       >
         <nz-option
           *ngFor="let item of limitCashArray"
-          nzLabel="{{ item }}"
-          nzValue="{{ item }}"
+          nzLabel="{{ item.name }}"
+          nzValue="{{ item.id }}"
+        ></nz-option>
+      </nz-select>
+    </div>
+  </div>
+</nz-modal>
+
+<!-- editmodal -->
+<nz-modal
+  [(nzVisible)]="isEdit"
+  [nzTitle]="editTitle"
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleEditOk()"
+>
+  <ng-template #editTitle style="text-align: center"
+    >Chỉnh sửa hạn mức</ng-template
+  >
+  <div *nzModalContent>
+    <div>
+      <label for="transaction-name">Số tiền</label> <br />
+      <input
+        nz-input
+        type="number"
+        style="margin-bottom: 1rem"
+        placeholder=""
+        [(ngModel)]="limitCash"
+        id="transaction-name"
+      />
+      <br />
+    </div>
+
+    <div style="margin-bottom: 1rem">
+      <label for="transaction-name">Thời gian</label> <br />
+      <div nz-row class="select-box">
+        <div nz-col [nzSpan]="8">
+          <div
+            style="
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              max-width: 100%;
+            "
+          >
+            <nz-select
+              nzPlaceHolder=""
+              [(ngModel)]="yearSelected"
+              style="width: 100%"
+            >
+              <nz-option
+                *ngFor="let item of yearArray"
+                [nzLabel]="item"
+                [nzValue]="item"
+              ></nz-option>
+            </nz-select>
+          </div>
+        </div>
+        <div nz-col [nzSpan]="8">
+          <div
+            style="
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              max-width: 100%;
+              padding-left: 1rem;
+            "
+          >
+            <nz-select
+              [(ngModel)]="monthSelected"
+              style="width: 100%"
+            >
+              <nz-option
+                *ngFor="let item of monthArray"
+                [nzLabel]="item.label"
+                [nzValue]="item.value"
+              ></nz-option>
+            </nz-select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-bottom: 1rem">
+      <label for="transaction-type">Loại hạn mức</label> <br />
+      <nz-select
+        [(ngModel)]="limitSelected"
+        style="width: 100%"
+      >
+        <nz-option
+          *ngFor="let item of limitCashArray"
+          [nzLabel]="item.name"
+          [nzValue]="item.id"
         ></nz-option>
       </nz-select>
     </div>

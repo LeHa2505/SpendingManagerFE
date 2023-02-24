@@ -12,6 +12,8 @@ export class SearchPipe implements PipeTransform {
       let rVal =
         val.id?.toLocaleLowerCase().includes(args) ||
         val.id?.includes(args) ||
+        val.name?.toLocaleLowerCase().includes(args) ||
+        val.name?.includes(args) ||
         val.icon?.toLocaleLowerCase().includes(args) ||
         val.type?.toLocaleLowerCase().includes(args) ||
         val.type?.includes(args) ||

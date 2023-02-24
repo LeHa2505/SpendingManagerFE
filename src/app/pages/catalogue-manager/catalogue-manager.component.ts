@@ -1,11 +1,18 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { NzLayoutComponent } from 'ng-zorro-antd/layout';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { AuthService } from 'src/app/service/auth/auth.service';
+import { CategoryManagerService } from 'src/app/service/category-manager.service';
+import { DashboardService } from 'src/app/service/dashboard.service';
 
-// interface Catalogue {
-//   name: string;
-//   time: string;
-// }
+interface Data {
+  name: any;
+  icon: any;
+  type: any;
+  createAt: any;
+}
 
 @Component({
   selector: 'app-catalogue-manager',
@@ -13,37 +20,47 @@ import { NzModalService } from 'ng-zorro-antd/modal';
   styleUrls: ['./catalogue-manager.component.less'],
 })
 export class CatalogueManagerComponent {
-  listOfData = [
-    {
-      id: '1',
-      icon: 'car',
-      name: 'Đi lại',
-      time: '1/20/2023',
-    },
-    {
-      id: '2',
-      icon: 'medicine-box',
-      name: 'Y tế',
-      time: '1/20/2023',
-    },
-    {
-      id: '3',
-      icon: 'dollar-circle',
-      name: 'Tiết kiệm',
-      time: '1/20/2023',
-    },
-    {
-      id: '4',
-      icon: 'customer-service',
-      name: 'Giải trí',
-      time: '1/20/2023',
-    },
+  userId = localStorage.getItem('userId');
+  listOfData: Data[] = [];
+  listOfCurrentData: Data[] = [];
+  iconArray = [
+    'gift',
+    'shopping',
+    'plus-circle',
+    'dollar-circle',
+    'medicine-box',
+    'bell',
+    'dribbble-circle',
+    'play-circle',
+    'behance-square',
+    'car',
+    'cloud',
+    'credit-card',
+    'customer-service',
   ];
-
-  iconArray = ['car', 'dollar-circle', 'medicine-box', 'customer-service'];
+  catalogueType = 1;
+  catalogueTypeArray = [
+    { label: 'Thu', value: 1 },
+    { label: 'Chi', value: -1 },
+  ];
+  valueInputCatalogue: string;
+  newItem: any;
+  catalogueIcon = 'car';
+  editedItem: any;
+  checkedtemId: any;
+  checkedtemType: any;
 
   isVisible = false;
   isOkLoading = false;
+
+  onChange(newValue, changedValue) {
+    changedValue = newValue;
+    console.log(changedValue);
+  }
+
+  onCurrentPageDataChange(listOfCurrentPageData: Data[]) {
+    this.listOfData = listOfCurrentPageData;
+  }
 
   showModal(): void {
     this.isVisible = true;
@@ -55,34 +72,26 @@ export class CatalogueManagerComponent {
     this.isVisible = false;
   }
 
-  valueInputCatalogue: string;
-  newItem: any;
-  catalogueIcon = 'car';
-  editedItem: any;
-  checkedtemId: any;
-
-  addCatalogue(valueInputCatalogue) {
-    valueInputCatalogue = this.valueInputCatalogue;
-    const newTime = new Date();
-    this.newItem = {
-      id: this.listOfData.length + 1,
-      icon: this.catalogueIcon,
-      name: valueInputCatalogue,
-      time: newTime.toLocaleDateString(),
-    };
-    if (!(this.newItem.name === '')) {
-      this.listOfData.push(this.newItem);
-    }
-  }
-
-  onCurrentPageDataChange(listOfCurrentPageData: any[]): void {
-    this.listOfData = listOfCurrentPageData;
+  addCatalogue() {
+    this.serCatalogue
+      .addCategoryUser({
+        userId: this.userId,
+        name: this.valueInputCatalogue,
+        icon: this.catalogueIcon,
+        type: Number(this.catalogueType),
+      })
+      .subscribe((res: any) => {
+        this.mess.success('Thành công')
+        this.getListCatalogue()
+      },
+      (error:any)=>{
+        this.mess.error('Vui lòng thử lại!')
+      })
   }
 
   handleOk(): void {
     this.isVisible = false;
-    this.addCatalogue(this.newItem);
-    this.onCurrentPageDataChange(this.listOfData);
+    this.addCatalogue();
   }
 
   isVisibleEdit = false;
@@ -91,6 +100,7 @@ export class CatalogueManagerComponent {
     this.checkedtemId = editItem.id;
     this.valueInputCatalogue = editItem.name;
     this.catalogueIcon = editItem.icon;
+    this.checkedtemType = editItem.type;
     this.isVisibleEdit = true;
   }
 
@@ -98,7 +108,7 @@ export class CatalogueManagerComponent {
     this.listOfData[Number(editItemId) - 1] = this.editedItem;
   }
 
-  handleEditOk(): void {
+  handleEditOk() {
     this.isVisibleEdit = false;
     this.editedItem = {
       id: this.checkedtemId,
@@ -106,11 +116,24 @@ export class CatalogueManagerComponent {
       name: this.valueInputCatalogue,
       time: new Date().toLocaleDateString(),
     };
-    this.updateEditChange(this.checkedtemId);
-    this.onCurrentPageDataChange(this.listOfData);
-    console.log(this.valueInputCatalogue);
-    console.log(this.checkedtemId);
-    console.log(this.editedItem);
+
+    this.serCatalogue
+      .editCategoryUser(
+        {
+          userId: this.userId,
+          name: this.valueInputCatalogue,
+          icon: this.catalogueIcon,
+          type: this.checkedtemType,
+        },
+        this.checkedtemId
+      )
+      .subscribe((res: any) => {
+        this.mess.success('Thành công')
+        this.getListCatalogue()
+      },
+      (error:any)=>{
+        this.mess.error('Vui lòng thử lại!')
+      })
   }
 
   handleEditCancel(): void {
@@ -118,12 +141,17 @@ export class CatalogueManagerComponent {
   }
 
   deleteItem(index: number) {
-    this.listOfData.splice(index, 1);
-    this.onCurrentPageDataChange(this.listOfData);
+    this.serCatalogue.deleteCategoryUser(index).subscribe((res:any)=>{
+      this.mess.success('Thành công')
+      this.getListCatalogue()
+    },
+    (error:any)=>{
+      this.mess.error('Vui lòng thử lại!')
+    })
   }
 
   showDeleteConfirm(data): void {
-    const deleteId = this.listOfData.indexOf(data);
+    const deleteId = data.id
     this.modal.confirm({
       nzTitle: 'Xác nhận xóa?',
       nzContent: '',
@@ -136,10 +164,33 @@ export class CatalogueManagerComponent {
     });
   }
 
-  constructor(private modal: NzModalService) {}
+  constructor(
+    private modal: NzModalService,
+    private serDashboard: DashboardService,
+    private serAuth: AuthService,
+    private serCatalogue: CategoryManagerService,
+    private mess: NzMessageService,
+    private route: Router
+  ) {}
+
+  getListCatalogue() {
+    this.listOfData = [];
+    this.serCatalogue.getListCategoryUser(this.userId)
+      .subscribe((res: any) => {
+        console.log(res);
+        this.listOfData = res;
+      });
+  }
 
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
+    if(!this.userId){
+      this.route.navigateByUrl("/login");
+    } else
+    this.getListCatalogue();
+    if (localStorage.getItem('userId')) {
+      this.getListCatalogue();
+    } else this.route.navigateByUrl("/login");
   }
 }

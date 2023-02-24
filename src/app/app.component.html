@@ -1,2 +1,5 @@
-<app-layout></app-layout>
+<app-layout *ngIf="!auth.isLoginScreen && !auth.isRegisterScreen">
+</app-layout>
 <!-- <router-outlet></router-outlet> -->
+<app-login *ngIf="auth.isLoginScreen"></app-login>
+<app-register *ngIf="auth.isRegisterScreen"></app-register>

@@ -10,7 +10,7 @@
   >
     <div class="sidebar-logo">
       <img
-        src="../../assets/kisspng-money-bag-computer-icons-coin-tax-market-5abbb0febf56f2.7630683415222499827837.jpg"
+        src="../../assets/favicon.png"
         alt="logo"
       />
       <span style="margin: 1em; font-size: 16px"><strong>Menu</strong></span>
@@ -34,7 +34,7 @@
             </li>
           </ul>
         </li>
-        <li [routerLink]="item.url" nz-menu-item *ngIf="!item.subMenus">
+        <li [routerLink]="item.url" nz-menu-item *ngIf="!item.subMenus && item.role == role">
           <span nz-icon [nzType]="item.icon"></span>
           <span>{{ item.title }}</span>
         </li>
@@ -59,9 +59,9 @@
         <div class="header-user">
           <div class="user-menu">
             <span style="font-size: 16px" [routerLink]="'user-infomation'">
-              <strong>{{ role }}</strong>
+              <strong>{{ auth.name }}</strong>
             </span>
-            <span [routerLink]="'login'">
+            <span [routerLink]="'login'" (click)="auth.logout()">
               <span
                 style="font-size: 16px; color: #007bc3"
                 nz-icon
@@ -72,7 +72,7 @@
             </span>
           </div>
           <span class="avartar-img" [routerLink]="'user-infomation'"
-            ><strong>{{ avatar }}</strong></span
+            ><strong>{{ auth.avatar | uppercase}}</strong></span
           >
         </div>
       </div>

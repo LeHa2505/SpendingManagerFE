@@ -1,1 +1,183 @@
-<p>detail-info works!</p>
+<h3 nz-typography style="text-align: center; font-size: 24px">
+  <strong>THÔNG TIN NGƯỜI DÙNG</strong>
+</h3>
+
+<div>
+  <nz-table #basicTable [nzData]="['']" [nzFrontPagination]="false">
+    <tbody style="text-align: center">
+      <tr> 
+        <td [colSpan]="1">
+          <span class="avartar-img"
+            ><strong>{{ avatar }}</strong></span
+          >
+        </td>
+        <td [colSpan]="1" style="min-width: 125px;">
+          <div style="margin: 2rem; min-width: 125px;">
+            <h6>Họ</h6>
+            <strong>{{ firstName }}</strong>
+          </div>
+          <div>
+            <h6>Số điện thoại</h6>
+            <strong>{{ phoneNumber }}</strong>
+          </div>
+        </td>
+        <td [colSpan]="1" style="min-width: 125px;">
+          <div style="margin: 2rem; min-width: 125px;">
+            <h6>Tên</h6>
+            <strong>{{ lastName }}</strong>
+          </div>
+          <div>
+            <h6>Năm sinh</h6>
+            <strong>{{ age }}</strong>
+          </div>
+        </td>
+        <td [colSpan]="1" style="min-width: 125px;" style="margin: 2rem">
+          <div style="min-width: 125px;">
+            <h6>Giới tính</h6>
+            <strong>{{ gender }}</strong>
+          </div>
+        </td>
+        <td>
+          <app-button-add
+            [btnName]="'Chỉnh sửa thông tin cá nhân'"
+            style="font-size: 1rem"
+            (click)="showModal()"
+          ></app-button-add>
+          <app-button-add
+            [btnName]="'Thay đổi mật khẩu hiện tại'"
+            style="font-size: 1rem"
+            (click)="showModalEditPass()"
+          ></app-button-add>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</div>
+
+<!--Modal edit info-->
+<nz-modal
+  [(nzVisible)]="isVisible"
+  [nzTitle]="addTitle"
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleOk()"
+>
+  <ng-template #addTitle style="text-align: center"
+    >Chỉnh sửa thông tin cá nhân</ng-template
+  >
+  <div *nzModalContent>
+    <div>
+      <label for="full-name">Họ</label> <br />
+      <input
+        nz-input
+        style="margin-bottom: 1rem"
+        placeholder=""
+        [(ngModel)]="firstName"
+        id="first-name"
+      />
+      <br />
+    </div>
+    <div>
+      <label for="full-name">Tên</label> <br />
+      <input
+        nz-input
+        style="margin-bottom: 1rem"
+        placeholder=""
+        [(ngModel)]="lastName"
+        id="last-name"
+      />
+      <br />
+    </div>
+
+    <div style="margin-bottom: 1rem">
+      <label for="age_value">Năm sinh</label> <br />
+      <input
+        nz-input
+        style="margin-bottom: 1rem"
+        placeholder=""
+        [(ngModel)]="age"
+        id="age_value"
+      />
+      <br />
+    </div>
+
+    <div style="margin-bottom: 1rem">
+      <label for="phone">Số điện thoại</label> <br />
+      <input
+        nz-input
+        style="margin-bottom: 1rem"
+        placeholder=""
+        [(ngModel)]="phoneNumber"
+        id="phone"
+      />
+      <br />
+    </div>
+  </div>
+</nz-modal>
+
+<!--Modal change pass-->
+<nz-modal
+  [(nzVisible)]="isVisiblePass"
+  [nzTitle]="addTitle"
+  (nzOnCancel)="handleCancelPass()"
+  (nzOnOk)="handleOkPass()"
+>
+  <ng-template #addTitle style="text-align: center"
+    >Thay đổi mật khẩu</ng-template
+  >
+  <div *nzModalContent>
+    <div style="margin: 1rem 0;">
+      <label for="full-name">Nhập mật khẩu cũ</label> <br />
+      <nz-input-group [nzSuffix]="suffixTemplate1">
+        <input
+          [type]="oldpasswordVisible ? 'text' : 'password'"
+          nz-input
+          [(ngModel)]="oldPassword"
+        />
+      </nz-input-group>
+      <ng-template #suffixTemplate1>
+        <span
+          nz-icon
+          [nzType]="oldpasswordVisible ? 'eye-invisible' : 'eye'"
+          (click)="oldpasswordVisible = !oldpasswordVisible"
+        ></span>
+      </ng-template>
+    </div>
+
+    <div style="margin: 1rem 0;">
+      <label for="full-name">Nhập mật khẩu mới</label> <br />
+      <nz-input-group [nzSuffix]="suffixTemplate2">
+        <input
+          [type]="passwordVisible ? 'text' : 'password'"
+          nz-input
+          [(ngModel)]="password"
+        />
+      </nz-input-group>
+      <ng-template #suffixTemplate2>
+        <span
+          nz-icon
+          [nzType]="passwordVisible ? 'eye-invisible' : 'eye'"
+          (click)="passwordVisible = !passwordVisible"
+        ></span>
+      </ng-template>
+    </div>
+
+    <div style="margin: 1rem 0;">
+      <label for="full-name">Nhập lại mật khẩu mới</label> <br />
+      <nz-input-group [nzSuffix]="suffixTemplate3">
+        <input
+          [type]="againpasswordVisible ? 'text' : 'password'"
+          nz-input
+          [(ngModel)]="passwordEnteredAgain"
+        />
+      </nz-input-group>
+      <ng-template #suffixTemplate3>
+        <span
+          nz-icon
+          [nzType]="againpasswordVisible ? 'eye-invisible' : 'eye'"
+          (click)="againpasswordVisible = !againpasswordVisible"
+        ></span>
+      </ng-template>
+    </div>
+
+  </div>
+</nz-modal>
