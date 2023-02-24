@@ -24,12 +24,19 @@ export class CatalogueManagerComponent {
   listOfData: Data[] = [];
   listOfCurrentData: Data[] = [];
   iconArray = [
+    'gift',
+    'shopping',
     'plus-circle',
     'dollar-circle',
     'medicine-box',
     'bell',
     'dribbble-circle',
     'play-circle',
+    'behance-square',
+    'car',
+    'cloud',
+    'credit-card',
+    'customer-service',
   ];
   catalogueType = 1;
   catalogueTypeArray = [
